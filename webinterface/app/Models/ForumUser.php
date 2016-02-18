@@ -106,9 +106,48 @@ class ForumUser extends Model implements AuthenticateableContract
         return $this->remember_token_name;
     }
 
+    /**
+     * Links the Forum User with the website roles
+     */
     public function roles()
     {
-        return $this->belongsToMany(SiteRoleModel::class,'role_user');
+        return $this->belongsToMany(SiteRole::class,'role_user','user_id','role_id');
     }
 
+
+    /**
+     * Checks if the user has a role. String or object accepted
+     *
+     * @param $role
+     *
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        if(is_string($role))
+        {
+            return $this->roles()->contains('name',$role);
+        }
+
+        return !! $role->intersect($this->roles)->count();
+    }
+
+    /**
+     * Assigns a Role to a User
+     *
+     * @param $role
+     *
+     * @return Model
+     */
+    public function assignRole($role)
+    {
+        if(is_string($role))
+        {
+            return $this->roles()->save(
+                SiteRole::whereName($role)->firstOrfail
+            );
+        }
+
+        return $this->roles()->save($role);
+    }
 }

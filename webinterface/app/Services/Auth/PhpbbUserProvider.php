@@ -18,7 +18,7 @@
 
 
 namespace App\Services\Auth;
-use App\Models\ForumUserModel;
+use App\Models\ForumUser;
 use Carbon\Carbon;
 use Illuminate\Auth\GenericUser;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -36,7 +36,7 @@ class PhpbbUserProvider implements UserProvider{
     {
         // TODO: Implement retrieveById() method.
 
-        $qry = ForumUserModel::where('user_id','=',$identifier);
+        $qry = ForumUser::where('user_id','=',$identifier);
         if($qry->count() > 0)
         {
             $user = $qry->select('user_id','username','username_clean','user_password','user_email')->first();
@@ -82,7 +82,7 @@ class PhpbbUserProvider implements UserProvider{
     public function retrieveByCredentials(array $credentials)
     {
         // TODO: Implement retrieveByCredentials() method.
-        $qry = ForumUserModel::where('username_clean','=',$credentials['username']);
+        $qry = ForumUser::where('username_clean','=',$credentials['username']);
         if($qry->count() > 0)
         {
             $user = $qry->select('user_id','username','username_clean','user_password','user_email')->first();

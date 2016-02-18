@@ -1,11 +1,26 @@
-<!DOCTYPE html>
+{{--Copyright (c) 2016 "Werner Maisl"--}}
+
+{{--This file is part of the Aurora Webinterface--}}
+
+{{--The Aurora Webinterface is free software: you can redistribute it and/or modify--}}
+{{--it under the terms of the GNU Affero General Public License as--}}
+{{--published by the Free Software Foundation, either version 3 of the--}}
+{{--License, or (at your option) any later version.--}}
+
+{{--This program is distributed in the hope that it will be useful,--}}
+{{--but WITHOUT ANY WARRANTY; without even the implied warranty of--}}
+{{--MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the--}}
+{{--GNU Affero General Public License for more details.--}}
+
+{{--You should have received a copy of the GNU Affero General Public License--}}
+{{--along with this program. If not, see <http://www.gnu.org/licenses/>.<!DOCTYPE html>--}}
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>Aurora-WI</title>
 
     <!-- Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
@@ -40,7 +55,7 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Laravel
+                    Aurora Webinterface
                 </a>
             </div>
 
@@ -48,6 +63,49 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/home') }}">Home</a></li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            User Menu <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-btn"></i>Show / Edit / Add Characters</a></li>
+                            <li><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>
+                            <li><a href="#"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            Contract Database <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-btn"></i>Show available Contracts</a></li>
+                            <li><a href="#"><i class="fa fa-btn"></i>Moderate Contracts</a></li>
+                            <li><a href="#"><i class="fa fa-btn"></i>Submit new Contract</a></li>
+                        </ul>
+                    </li>
+
+                    {{--@can('admin_menu_access')--}}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Admin Menu <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#"><i class="fa fa-btn"></i>WhiteLists</a></li>
+                                <li><a href="#"><i class="fa fa-btn"></i>Server Permissions</a></li>
+                                <li><a href="#"><i class="fa fa-btn"></i>Staff Roster</a></li>
+                                <li><a href="#"><i class="fa fa-btn"></i>Character Records</a></li>
+                                <li><a href="#"><i class="fa fa-btn"></i>DO Recorder Logs</a></li>
+                                <li><a href="#"><i class="fa fa-btn"></i>Site Roles</a></li>
+                                <li><a href="#"><i class="fa fa-btn"></i>Site Permissions</a></li>
+                                <li><a href="#"><i class="fa fa-btn"></i>WebSite Logs</a></li>
+                            </ul>
+                        </li>
+                    {{--@endcan--}}
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -55,11 +113,11 @@
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
+                        {{--<li><a href="{{ url('/register') }}">Register</a></li>--}}
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="caret"></span>
+                                {{ Auth::user()->username }} <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
