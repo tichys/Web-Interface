@@ -23,7 +23,7 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticateableContract;
 use Illuminate\Database\Eloquent\Model;
 
-class ForumUserModel extends Model implements AuthenticateableContract
+class ForumUser extends Model implements AuthenticateableContract
 {
     use Authenticatable;
     protected $connection = 'forum';
@@ -104,6 +104,11 @@ class ForumUserModel extends Model implements AuthenticateableContract
     public function getRememberTokenName()
     {
         return $this->remember_token_name;
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(SiteRoleModel::class,'role_user');
     }
 
 }
