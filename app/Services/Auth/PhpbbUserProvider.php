@@ -35,7 +35,6 @@ class PhpbbUserProvider implements UserProvider{
     public function retrieveById($identifier)
     {
         // TODO: Implement retrieveById() method.
-
         $qry = ForumUser::where('user_id','=',$identifier);
         if($qry->count() > 0)
         {
@@ -82,7 +81,7 @@ class PhpbbUserProvider implements UserProvider{
     public function retrieveByCredentials(array $credentials)
     {
         // TODO: Implement retrieveByCredentials() method.
-        $qry = ForumUser::where('username_clean','=',$credentials['username']);
+        $qry = ForumUser::where('username_clean','=',strtolower($credentials['username']));
         if($qry->count() > 0)
         {
             $user = $qry->select('user_id','username','username_clean','user_password','user_email')->first();
@@ -102,7 +101,7 @@ class PhpbbUserProvider implements UserProvider{
     {
         // TODO: Implement validateCredentials() method.
 
-        if($user->username == $credentials['username'] && $user->getAuthPassword() == $credentials['password'])
+        if($user->username_clean == strtolower($credentials['username']) && $user->getAuthPassword() == $credentials['password'])
         {
             return true;
         }
