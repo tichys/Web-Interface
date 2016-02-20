@@ -28,10 +28,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -42,13 +38,30 @@ Route::get('/', function () {
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
-Route::group(['middleware' => ['web']], function () {
-    //
-});
-
 Route::group(['middleware' => 'web'], function () {
-    Route::auth();
 
-    Route::get('/home', 'HomeController@index');
+    Route::group(['middleware' => 'guest'],function(){
+        Route::get('/', function () {
+            return view('welcome');
+        });
+    });
+
+    Route::auth(); //Auth Routes
+
+    Route::get('/home', 'HomeController@index'); //Home Page
+
+    //Syndie Stuff
+    Route::group(['prefix' => 'syndie'], function () {
+        //Contract DB
+        Route::group(['prefix' => 'contracts','middleware' => 'auth'], function () {
+            Route::get('', ['as' => 'syndie.contracts.index', 'uses'=>'ContractController@index']);
+            Route::get('/add', ['as' => 'syndie.contracts.add.get', 'uses'=>'ContractController@getAdd']);
+            route::post('/add', ['as' => 'syndie.contracts.add.post', 'uses'=>'ContractController@postAdd']);
+            Route::get('/{contract}/show', ['as' => 'syndie.contracts.show.get', 'uses'=>'ContractController@getShow']);
+            Route::get('/{contract}/edit', ['as' => 'syndie.contracts.edit.get', 'uses'=>'ContractController@getEdit']);
+            Route::get('/{contract}/accept', ['as' => 'syndie.contracts.accept.get', 'uses'=>'ContractController@getAccept']);
+            Route::get('/{contract}/complete', ['as' => 'syndie.contracts.complete.get', 'uses'=>'ContractController@getComplete']);
+            Route::get('/{contract}/confirm', ['as' => 'syndie.contracts.confirm.get', 'uses'=>'ContractController@getConfirm']);
+        });
+    });
 });

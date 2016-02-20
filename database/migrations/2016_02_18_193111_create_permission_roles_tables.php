@@ -12,7 +12,14 @@ class CreatePermissionRolesTables extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function(Blueprint $table)
+        Schema::connection('wi')->create('roles', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('label')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::connection('wi')->create('permissions', function(Blueprint $table)
         {
             $table->increments('id');
             $table->string('name');
@@ -20,15 +27,7 @@ class CreatePermissionRolesTables extends Migration
             $table->timestamps();
         });
 
-        Schema::create('permissions', function(Blueprint $table)
-        {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('label')->nullable();
-            $table->timestamps();
-        });
-
-        Schema::create('permission_role', function(Blueprint $table)
+        Schema::connection('wi')->create('permission_role', function(Blueprint $table)
         {
             $table->integer('permission_id')->unsigned();
             $table->integer('role_id')->unsigned();
@@ -46,7 +45,7 @@ class CreatePermissionRolesTables extends Migration
             $table->primary(['permission_id','role_id']);
         });
 
-        Schema::create('role_user', function(Blueprint $table)
+        Schema::connection('wi')->create('role_user', function(Blueprint $table)
         {
             $table->integer('role_id')->unsigned();
             $table->integer('user_id')->unsigned();
@@ -68,6 +67,9 @@ class CreatePermissionRolesTables extends Migration
      */
     public function down()
     {
-        //
+        Schema::connection('wi')->drop('roles');
+        Schema::connection('wi')->drop('permissions');
+        Schema::connection('wi')->drop('permission_role');
+        Schema::connection('wi')->drop('role_user');
     }
 }

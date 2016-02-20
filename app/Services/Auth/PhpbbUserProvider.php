@@ -18,13 +18,15 @@
 
 
 namespace App\Services\Auth;
-use App\Models\ForumUser;
+use App\Services\Auth\ForumUserModel as ForumUser;
 use Carbon\Carbon;
 use Illuminate\Auth\GenericUser;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 
 class PhpbbUserProvider implements UserProvider{
+
+    private $use_remember_me = false;
 
     /**
      * Retrieve a user by their unique identifier.
@@ -34,7 +36,6 @@ class PhpbbUserProvider implements UserProvider{
      */
     public function retrieveById($identifier)
     {
-        // TODO: Implement retrieveById() method.
         $qry = ForumUser::where('user_id','=',$identifier);
         if($qry->count() > 0)
         {
@@ -53,14 +54,15 @@ class PhpbbUserProvider implements UserProvider{
      */
     public function retrieveByToken($identifier, $token)
     {
-        // TODO: Implement retrieveByToken() method.
-//
-//        $qry = ForumUserModel::where('username_clean','=',$identifier)->where('remember_token','=',$token);
-//        if($qry->count() > 0)
-//        {
-//            $user = $qry->select('user_id','username','username_clean','user_password','user_email')->first();
-//            return $user;
-//        }
+        if($this->use_remember_me == true)
+        {
+            $qry = ForumUserModel::where('username_clean','=',strtolower($identifier))->where('remember_token','=',$token);
+            if($qry->count() > 0)
+            {
+                $user = $qry->select('user_id','username','username_clean','user_password','user_email')->first();
+                return $user;
+            }
+        }
         return null;
     }
 
@@ -73,9 +75,11 @@ class PhpbbUserProvider implements UserProvider{
      */
     public function updateRememberToken(Authenticatable $user, $token)
     {
-        // TODO: Implement updateRememberToken() method.
-//        $user->setRememberToken($token);
-//        $user->save();
+        if($this->use_remember_me == true)
+        {
+            $user->setRememberToken($token);
+            $user->save();
+        }
     }
 
     public function retrieveByCredentials(array $credentials)
@@ -99,8 +103,6 @@ class PhpbbUserProvider implements UserProvider{
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        // TODO: Implement validateCredentials() method.
-
         if($user->username_clean == strtolower($credentials['username']) && $user->getAuthPassword() == $credentials['password'])
         {
             return true;

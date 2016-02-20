@@ -17,17 +17,17 @@
 //along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-namespace App\Models;
+namespace App\Services\Auth;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticateableContract;
 use Illuminate\Database\Eloquent\Model;
 
-class ForumUser extends Model implements AuthenticateableContract
+class ForumUserModel extends Model implements AuthenticateableContract
 {
     use Authenticatable;
     protected $connection = 'forum';
-    protected $table = 'phpbb_users';
+    protected $table = 'users';
     protected $primaryKey = 'user_id';
     public $timestamps = false;
 
