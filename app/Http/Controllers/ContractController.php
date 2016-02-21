@@ -13,9 +13,17 @@ use App\Models\SyndieContractImage;
 
 class ContractController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $contracts = SyndieContract::all();
+        //For contract mods: Show all contracts
+        if($request->user()->can('contract_moderate'))
+        {
+            $contracts = SyndieContract::all();
+        }
+        else //For normal users: Show all contracts that have a status of open, assigned, completed, confirmed or that they own
+        {
+            $contracts = SyndieContract::whereIn('status',['open','assigned','completed','confirmed'])->OrWhere('contractee_id','=',$request->user()->user_id)->get();
+        }
 
         return view('syndie.contract.index',['contracts' => $contracts]);
     }
@@ -46,7 +54,10 @@ class ContractController extends Controller
 
     public function getShow($contract)
     {
-        return "Show: " . $contract;
+        $contract = SyndieContract::find($contract);
+        $comments = SyndieContractComment::where('contract_id','=',$contract->contract_id)->get();
+
+        return view('syndie.contract.view',['contract' => $contract,'comments'=>$comments]);
     }
 
     public function getEdit($contract)
@@ -67,5 +78,11 @@ class ContractController extends Controller
     public function getConfirm($contract)
     {
         return "Confirm: " . $contract;
+    }
+
+
+    public function postAddMessage($contract)
+    {
+        return redirect()->route('syndie.contracts.show.get',['contract'=>$contract]);
     }
 }

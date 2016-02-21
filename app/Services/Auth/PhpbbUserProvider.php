@@ -18,65 +18,68 @@
 
 
 namespace App\Services\Auth;
+
 use App\Services\Auth\ForumUserModel as ForumUser;
+use App\Services\Auth\PasswordHash;
 use Carbon\Carbon;
 use Illuminate\Auth\GenericUser;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 
-class PhpbbUserProvider implements UserProvider{
+class PhpbbUserProvider implements UserProvider
+{
 
-    private $use_remember_me = false;
+    private $use_remember_me = FALSE;
+    private $hash_password = FALSE;
 
     /**
      * Retrieve a user by their unique identifier.
      *
      * @param  mixed $identifier
+     *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function retrieveById($identifier)
     {
-        $qry = ForumUser::where('user_id','=',$identifier);
-        if($qry->count() > 0)
-        {
-            $user = $qry->select('user_id','username','username_clean','user_password','user_email')->first();
+        $qry = ForumUser::where('user_id', '=', $identifier);
+        if ($qry->count() > 0) {
+            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email')->first();
             return $user;
         }
-        return null;
+        return NULL;
     }
 
     /**
      * Retrieve a user by by their unique identifier and "remember me" token.
      *
-     * @param  mixed $identifier
+     * @param  mixed  $identifier
      * @param  string $token
+     *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function retrieveByToken($identifier, $token)
     {
-        if($this->use_remember_me == true)
-        {
-            $qry = ForumUserModel::where('username_clean','=',strtolower($identifier))->where('remember_token','=',$token);
-            if($qry->count() > 0)
-            {
-                $user = $qry->select('user_id','username','username_clean','user_password','user_email')->first();
+        if ($this->use_remember_me == TRUE) {
+            $qry = ForumUserModel::where('username_clean', '=', strtolower($identifier))->where('remember_token', '=', $token);
+            if ($qry->count() > 0) {
+                $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email')->first();
                 return $user;
             }
         }
-        return null;
+        return NULL;
     }
 
     /**
      * Update the "remember me" token for the given user in storage.
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable $user
-     * @param  string $token
+     * @param  string                                     $token
+     *
      * @return void
      */
     public function updateRememberToken(Authenticatable $user, $token)
     {
-        if($this->use_remember_me == true)
-        {
+        if ($this->use_remember_me == TRUE) {
             $user->setRememberToken($token);
             $user->save();
         }
@@ -85,28 +88,38 @@ class PhpbbUserProvider implements UserProvider{
     public function retrieveByCredentials(array $credentials)
     {
         // TODO: Implement retrieveByCredentials() method.
-        $qry = ForumUser::where('username_clean','=',strtolower($credentials['username']));
-        if($qry->count() > 0)
-        {
-            $user = $qry->select('user_id','username','username_clean','user_password','user_email')->first();
+        $qry = ForumUser::where('username_clean', '=', strtolower($credentials['username']));
+        if ($qry->count() > 0) {
+            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email')->first();
             return $user;
         }
-        return null;
+        return NULL;
     }
 
     /**
      * Validate a user against the given credentials.
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable $user
-     * @param  array $credentials
+     * @param  array                                      $credentials
+     *
      * @return bool
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        if($user->username_clean == strtolower($credentials['username']) && $user->getAuthPassword() == $credentials['password'])
+        if($this->hash_password)
         {
-            return true;
+            $passwordhash = new PasswordHash;
+            $pwmatch = $passwordhash->CheckPassword($credentials['password'],$user->getAuthPassword());
         }
-        return false;
+        else
+        {
+            $pwmatch = $credentials['password'] == $user->getAuthPassword();
+        }
+
+
+        if ($user->username_clean == strtolower($credentials['username']) && $pwmatch == true) {
+            return TRUE;
+        }
+        return FALSE;
     }
 }

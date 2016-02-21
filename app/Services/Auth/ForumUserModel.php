@@ -22,10 +22,12 @@ namespace App\Services\Auth;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticateableContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 
 class ForumUserModel extends Model implements AuthenticateableContract
 {
     use Authenticatable;
+    use Authorizable;
     protected $connection = 'forum';
     protected $table = 'users';
     protected $primaryKey = 'user_id';

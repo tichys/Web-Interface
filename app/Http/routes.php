@@ -62,6 +62,7 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/{contract}/accept', ['as' => 'syndie.contracts.accept.get', 'uses'=>'ContractController@getAccept']);
             Route::get('/{contract}/complete', ['as' => 'syndie.contracts.complete.get', 'uses'=>'ContractController@getComplete']);
             Route::get('/{contract}/confirm', ['as' => 'syndie.contracts.confirm.get', 'uses'=>'ContractController@getConfirm']);
+            Route::post('/{contract}/addmessage',['as' => 'syndie.contracts.addmessage.post', 'uses'=>'ContractController@postAddMessage']);
         });
     });
 });

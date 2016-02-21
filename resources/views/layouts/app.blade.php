@@ -23,12 +23,13 @@
     <title>Aurora-WI</title>
 
     <!-- Fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/" rel='stylesheet' type='text/css'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
 
     <!-- Styles -->
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
+    @yield('styles')
 
     <style>
         body {
@@ -137,6 +138,7 @@
     <!-- JavaScripts -->
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+    @yield('javascripts')
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
 </body>
 </html>
