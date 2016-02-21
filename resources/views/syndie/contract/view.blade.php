@@ -127,7 +127,21 @@
                                     </div>
                                 </li>
                             @elseif($comment->type === 'ooc')
-
+                                    @if($comment->commentor_id == $contract->contractee_id)<li> @else <li class="timeline-inverted">@endif
+                                    <div class="timeline-badge"><i class="glyphicon"></i></div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <h4 class="timeline-title"><b>OOC Message: </b>{{$comment->title}}</h4>
+                                            <p>
+                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago  </small>
+                                                <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
+                                            </p>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>{{$comment->comment}}</p>
+                                        </div>
+                                    </div>
+                                </li>
                             @endif()
                         @endif()
                     @endforeach
