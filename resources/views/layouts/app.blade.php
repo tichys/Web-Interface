@@ -28,6 +28,7 @@
 
     <!-- Styles -->
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
+    {{--<link href="{{asset('assets/css/fixed-footer.css')}}" rel="stylesheet">--}}
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
     @yield('styles')
 
@@ -132,8 +133,16 @@
             </div>
         </div>
     </nav>
+    <div id="wrap">
+        @yield('content')
+    </div>
 
-    @yield('content')
+
+    <footer>
+        <div class="footer navbar-fixed-bottom">
+            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.0.1-alpha.1</p></small>
+        </div>
+    </footer>
 
     <!-- JavaScripts -->
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
