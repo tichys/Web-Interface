@@ -57,12 +57,13 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('', ['as' => 'syndie.contracts.index', 'uses'=>'ContractController@index']);
             Route::get('/add', ['as' => 'syndie.contracts.add.get', 'uses'=>'ContractController@getAdd']);
             route::post('/add', ['as' => 'syndie.contracts.add.post', 'uses'=>'ContractController@postAdd']);
-            Route::get('/{contract}/show', ['as' => 'syndie.contracts.show.get', 'uses'=>'ContractController@getShow']);
+            Route::get('/{contract}/show', ['as' => 'syndie.contracts.show', 'uses'=>'ContractController@show']);
             Route::get('/{contract}/edit', ['as' => 'syndie.contracts.edit.get', 'uses'=>'ContractController@getEdit']);
-            Route::get('/{contract}/accept', ['as' => 'syndie.contracts.accept.get', 'uses'=>'ContractController@getAccept']);
-            Route::get('/{contract}/complete', ['as' => 'syndie.contracts.complete.get', 'uses'=>'ContractController@getComplete']);
-            Route::get('/{contract}/confirm', ['as' => 'syndie.contracts.confirm.get', 'uses'=>'ContractController@getConfirm']);
-            Route::post('/{contract}/addmessage',['as' => 'syndie.contracts.addmessage.post', 'uses'=>'ContractController@postAddMessage']);
+            Route::get('/{contract}/approve', ['as' => 'syndie.contracts.approve', 'uses'=>'ContractController@approve']); //Mod Approve the contract
+            Route::get('/{contract}/reject', ['as' => 'syndie.contracts.reject', 'uses'=>'ContractController@reject']); //Mod Reject the contract
+            Route::get('/{comment}/confirm', ['as' => 'syndie.contracts.confirm', 'uses'=>'ContractController@confirm']); //Confirm Completion of the Contract
+            Route::get('/{comment}/reopen', ['as' => 'syndie.contracts.reopen', 'uses'=>'ContractController@reopen']); // Reopen the contract
+            Route::post('/{contract}/addmessage',['as' => 'syndie.contracts.addmessage', 'uses'=>'ContractController@addMessage']);
         });
     });
 });

@@ -23,6 +23,7 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticateableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use App\Models\SiteRole;
 
 class ForumUserModel extends Model implements AuthenticateableContract
 {
@@ -33,8 +34,14 @@ class ForumUserModel extends Model implements AuthenticateableContract
     protected $primaryKey = 'user_id';
     public $timestamps = false;
 
-    protected $enable_remember_me = false; //If remember me should be enabled
+    protected $enable_remember_me = false;
     protected $remember_token_name = "remember_me";
+
+
+    public function __construct()
+    {
+        $this->enable_remember_me = config('aurora.enable_remember_me');
+    }
 
     /**
      * Get the name of the unique identifier for the user.

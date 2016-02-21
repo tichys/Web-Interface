@@ -30,7 +30,13 @@ class PhpbbUserProvider implements UserProvider
 {
 
     private $use_remember_me = FALSE;
-    private $hash_password = FALSE;
+    private $hash_password = TRUE;
+
+    public function __construct()
+    {
+        $this->hash_password = config('aurora.hash_password');
+        $this->use_remember_me = config('aurora.enable_remember_me');
+    }
 
     /**
      * Retrieve a user by their unique identifier.
@@ -106,18 +112,15 @@ class PhpbbUserProvider implements UserProvider
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        if($this->hash_password)
-        {
+        if ($this->hash_password) {
             $passwordhash = new PasswordHash;
-            $pwmatch = $passwordhash->CheckPassword($credentials['password'],$user->getAuthPassword());
-        }
-        else
-        {
+            $pwmatch = $passwordhash->CheckPassword($credentials['password'], $user->getAuthPassword());
+        } else {
             $pwmatch = $credentials['password'] == $user->getAuthPassword();
         }
 
 
-        if ($user->username_clean == strtolower($credentials['username']) && $pwmatch == true) {
+        if ($user->username_clean == strtolower($credentials['username']) && $pwmatch == TRUE) {
             return TRUE;
         }
         return FALSE;
