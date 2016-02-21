@@ -114,7 +114,7 @@ class PhpbbUserProvider implements UserProvider
     {
         if ($this->hash_password) {
             $passwordhash = new PasswordHash;
-            $pwmatch = $passwordhash->CheckPassword($credentials['password'], $user->getAuthPassword());
+            $pwmatch = $passwordhash->phpbb_check_hash($credentials['password'], $user->getAuthPassword());
         } else {
             $pwmatch = $credentials['password'] == $user->getAuthPassword();
         }
