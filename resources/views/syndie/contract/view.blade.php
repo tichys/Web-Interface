@@ -20,21 +20,47 @@
                 <strong>Rejected by Moderator: </strong> This contract has been rejected by a moderator. Check the comment why this happend and then improve the contract.
             </div>
         @endif
+        @if($contract->status == 'completed')
+            <div class="alert alert-success">
+                <strong>Contract Completed: </strong> This contract has been marked as completed by a contractor. As Author, please confirm the completion or reopen the contract
+            </div>
+        @endif
 
         {{-- Contract Overview --}}
         <div class="row">
             {{-- Details about the contract--}}
-            @if(Auth::user()->cannot('contract_moderate'))<div class="col-md-12">@else() <div class="col-md-8"> @endif()
+            <div class="col-md-4">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Contract Details</div>
+                    <div class="panel-heading"><h4><b>{{$contract->title}}</b></h4></div>
+
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><b>Contractee:</b></td>
+                            <td>{{$contract->contractee_name}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Status:</b></td>
+                            <td>@include("components.syndiecontractstatus")</td>
+                        </tr>
+                        <tr>
+                            <td><b>Reward:</b></td>
+                            <td>{{$contract->reward_other}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    {{--<div class="panel-body">--}}
+                        {{--<p><b>Contractee:</b> <i>{{$contract->contractee_name}}</i></p>--}}
+                        {{--<p><b>Status:</b> @include("components.syndiecontractstatus")</p>--}}
+                        {{--<p><b>Reward:</b> {{$contract->reward_other}}</p>--}}
+                    {{--</div>--}}
+                </div>
+            </div>
+            @if(Auth::user()->cannot('contract_moderate'))<div class="col-md-8">@else() <div class="col-md-4"> @endif()
+                <div class="panel panel-default">
+                    <div class="panel-heading">Contract Description:</div>
 
                     <div class="panel-body">
-                        <p><b>Title:</b> {{$contract->title}}</p>
-                        <p><b>Contractee:</b> {{$contract->contractee_name}}</p>
-                        <p><b>Status:</b> {{$contract->status}}</p>
-                        <p><b>Reward:</b> {{$contract->reward_other}}</p>
-                        <p></p>
-                        <p><b>Description:</b></p>
                         <p>{!! nl2br(e($contract->description)) !!}</p>
                     </div>
                 </div>
