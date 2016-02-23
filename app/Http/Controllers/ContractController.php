@@ -47,6 +47,19 @@ class ContractController extends Controller
         $contract->status = "new";
         $contract->reward_other = $request->input('reward');
         $contract->save();
+
+        //Add a info that the contract has been confirmed as completed.
+        $SystemComment = new SyndieContractComment;
+        $SystemComment->contract_id = $contract->contract_id;
+        $SystemComment->commentor_id = 0;
+        $SystemComment->commentor_name = "System";
+        $SystemComment->title = "Contract Added";
+        $SystemComment->comment = "The has been added to our database.
+        A contract moderator will review this contract shortly.
+        Thank you for your patience.";
+        $SystemComment->type = 'ic';
+        $SystemComment->save();
+
         return redirect()->route('syndie.contracts.index');
     }
 
@@ -67,9 +80,21 @@ class ContractController extends Controller
     {
         //Check if player is contract mod
         if ($request->user()->can('contract_moderate')) {
-            $contr = SyndieContract::find($contract);
-            $contr->status = "open";
-            $contr->save();
+            $SyndieContract = SyndieContract::find($contract);
+            $SyndieContract->status = "open";
+            $SyndieContract->save();
+
+            //Add a info that the contract has been confirmed as completed.
+            $SystemComment = new SyndieContractComment;
+            $SystemComment->contract_id = $SyndieContract->contract_id;
+            $SystemComment->commentor_id = 0;
+            $SystemComment->commentor_name = "System";
+            $SystemComment->title = "Contract Approved";
+            $SystemComment->comment = "The contract has been approved by a contract moderator.
+            Contractors are now able to see it in the contract overview.";
+            $SystemComment->type = 'ic';
+            $SystemComment->save();
+
             return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
         } else {
             abort(403, 'Unauthorized action.');
@@ -148,7 +173,17 @@ class ContractController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        //TODO: Add System message that author has accepted contract as completed
+        //Add a info that the contract has been confirmed as completed.
+        $SystemComment = new SyndieContractComment;
+        $SystemComment->contract_id = $SyndieContract->contract_id;
+        $SystemComment->commentor_id = 0;
+        $SystemComment->commentor_name = "System";
+        $SystemComment->title = "Contract Reopened";
+        $SystemComment->comment = "The contractee has rejected the completion report.
+        The contract has been reopened.
+        The contractee is expected to provide a explanation, why the completion report is not satisfying";
+        $SystemComment->type = 'ic';
+        $SystemComment->save();
     }
 
     public function cancel(Request $request, $contract)
