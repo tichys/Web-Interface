@@ -21,9 +21,9 @@
                                 @foreach($contracts as $contract)
                                     <tr>
                                         <td width="10px">{{$contract->contract_id}}</td>
-                                        <td><a href="{{route('syndie.contracts.show',['contract'=>$contract->contract_id])}}">{{$contract->title}}</a></td>
-                                        <td>{{$contract->contractee_name}}</td>
-                                        <td>{{$contract->status}}</td>
+                                        <td><a href="{{route('syndie.contracts.show',['contract'=>$contract->contract_id])}}"><b>{{$contract->title}}</b></a></td>
+                                        <td><i>{{$contract->contractee_name}}</i></td>
+                                        <td>@include("components.syndiecontractstatus")</td>
                                     </tr>
                                 @endforeach
                             </tbody>
