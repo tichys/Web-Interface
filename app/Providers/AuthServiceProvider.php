@@ -43,6 +43,10 @@ class AuthServiceProvider extends ServiceProvider
                 });
 
             }
+
+            $gate->define('byond_linked', function ($user) {
+                return $user->byond_linked == true;
+            });
         }
 
     }

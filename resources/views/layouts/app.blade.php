@@ -65,51 +65,57 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/home') }}">Home</a></li>
+                    @if(Auth::check())
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                User Menu <span class="caret"></span>
+                            </a>
 
-                    {{--<li class="dropdown">--}}
-                        {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">--}}
-                            {{--User Menu <span class="caret"></span>--}}
-                        {{--</a>--}}
+                            <ul class="dropdown-menu" role="menu">
+                                @can("byond_linked")
+                                <li><a href="{{route('user.dashboard')}}"><i class="fa fa-btn"></i>User Dashboard</a></li>
+                                <li><a href="#"><i class="fa fa-btn"></i>Show / Edit / Add Characters</a></li>
+                                <li><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>
+                                <li><a href="#"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>
+                                @else
+                                    <li><a href="{{route('user.link')}}"><i class="fa fa-btn"></i>Link Byond</a></li>
+                                    @endcan
+                            </ul>
+                        </li>
 
-                        {{--<ul class="dropdown-menu" role="menu">--}}
-                            {{--<li><a href="#"><i class="fa fa-btn"></i>Show / Edit / Add Characters</a></li>--}}
-                            {{--<li><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>--}}
-                            {{--<li><a href="#"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>--}}
-                        {{--</ul>--}}
-                    {{--</li>--}}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Contract Database <span class="caret"></span>
+                            </a>
 
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            Contract Database <span class="caret"></span>
-                        </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{route('syndie.contracts.index')}}"><i class="fa fa-btn"></i>Show available Contracts</a></li>
+                                <li><a href="{{route('syndie.contracts.add.get')}}"><i class="fa fa-btn"></i>Submit new Contract</a></li>
+                                {{--<li><a href="{{route()}}"><i class="fa fa-btn"></i>Moderate Contracts</a></li>--}}
+                            </ul>
+                        </li>
 
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{route('syndie.contracts.index')}}"><i class="fa fa-btn"></i>Show available Contracts</a></li>
-                            {{--<li><a href="{{route()}}"><i class="fa fa-btn"></i>Moderate Contracts</a></li>--}}
-                            <li><a href="{{route('syndie.contracts.add.get')}}"><i class="fa fa-btn"></i>Submit new Contract</a></li>
-                        </ul>
-                    </li>
-
-                    @can('admin_menu_view')
+                        @can('admin_menu_view')
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 Admin Menu <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                @can('admin_whitelists_show')<li><a href="#"><i class="fa fa-btn"></i>WhiteLists</a></li>@endcan
-                                @can('admin_server_permissions_show')<li><a href="#"><i class="fa fa-btn"></i>Server Permissions</a></li>@endcan
-                                @can('admin_staff_roster_show')<li><a href="#"><i class="fa fa-btn"></i>Staff Roster</a></li>@endcan
-                                @can('admin_character_records_show')<li><a href="#"><i class="fa fa-btn"></i>Character Records</a></li>@endcan
-                                @can('admin_do_recorder_logs_show')<li><a href="#"><i class="fa fa-btn"></i>DO Recorder Logs</a></li>@endcan
-                                @can('admin_server_stats_show')<li><a href="#"><i class="fa fa-btn"></i>Statistics</a></li>@endcan
-                                @can('admin_site_roles_show')<li><a href="#"><i class="fa fa-btn"></i>Site Roles</a></li>@endcan
-                                @can('admin_site_permissions_show')<li><a href="#"><i class="fa fa-btn"></i>Site Permissions</a></li>@endcan
-                                @can('admin_site_logs_show')<li><a href="#"><i class="fa fa-btn"></i>WebSite Logs</a></li>@endcan
-                                @can('admin_server_logs_show')<li><a href="#"><i class="fa fa-btn"></i>Server Logs</a></li>@endcan
+                                {{--@can('admin_whitelists_show')<li><a href="#"><i class="fa fa-btn"></i>WhiteLists</a></li>@endcan--}}
+                                {{--@can('admin_server_permissions_show')<li><a href="#"><i class="fa fa-btn"></i>Server Permissions</a></li>@endcan--}}
+                                {{--@can('admin_staff_roster_show')<li><a href="#"><i class="fa fa-btn"></i>Staff Roster</a></li>@endcan--}}
+                                {{--@can('admin_character_records_show')<li><a href="#"><i class="fa fa-btn"></i>Character Records</a></li>@endcan--}}
+                                {{--@can('admin_do_recorder_logs_show')<li><a href="#"><i class="fa fa-btn"></i>DO Recorder Logs</a></li>@endcan--}}
+                                @can('admin_server_stats_show')<li><a href="{{route('admin.stats.index')}}"><i class="fa fa-btn"></i>Statistics</a></li>@endcan
+                                {{--@can('admin_site_roles_show')<li><a href="#"><i class="fa fa-btn"></i>Site Roles</a></li>@endcan--}}
+                                {{--@can('admin_site_permissions_show')<li><a href="#"><i class="fa fa-btn"></i>Site Permissions</a></li>@endcan--}}
+                                {{--@can('admin_site_logs_show')<li><a href="#"><i class="fa fa-btn"></i>WebSite Logs</a></li>@endcan--}}
+                                {{--@can('admin_server_logs_show')<li><a href="#"><i class="fa fa-btn"></i>Server Logs</a></li>@endcan--}}
                             </ul>
                         </li>
-                    @endcan
+                        @endcan
+                    @endif
                 </ul>
 
                 <!-- Right Side Of Navbar -->
