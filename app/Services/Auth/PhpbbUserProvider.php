@@ -49,7 +49,7 @@ class PhpbbUserProvider implements UserProvider
     {
         $qry = ForumUser::where('user_id', '=', $identifier);
         if ($qry->count() > 0) {
-            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email','user_new_privmsg','user_unread_privmsg')->first();
+            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email','user_new_privmsg','user_unread_privmsg','user_byond','user_byond_linked')->first();
             return $user;
         }
         return NULL;
@@ -68,7 +68,7 @@ class PhpbbUserProvider implements UserProvider
         if ($this->use_remember_me == TRUE) {
             $qry = ForumUserModel::where('username_clean', '=', strtolower($identifier))->where('remember_token', '=', $token);
             if ($qry->count() > 0) {
-                $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email','user_new_privmsg','user_unread_privmsg')->first();
+                $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email','user_new_privmsg','user_unread_privmsg','user_byond','user_byond_linked')->first();
                 return $user;
             }
         }
@@ -96,7 +96,7 @@ class PhpbbUserProvider implements UserProvider
         // TODO: Implement retrieveByCredentials() method.
         $qry = ForumUser::where('username_clean', '=', strtolower($credentials['username']));
         if ($qry->count() > 0) {
-            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email','user_new_privmsg','user_unread_privmsg')->first();
+            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email','user_new_privmsg','user_unread_privmsg','user_byond','user_byond_linked')->first();
             return $user;
         }
         return NULL;
