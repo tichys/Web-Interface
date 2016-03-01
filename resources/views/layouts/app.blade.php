@@ -74,8 +74,8 @@
                             <ul class="dropdown-menu" role="menu">
                                 @can("byond_linked")
                                 <li><a href="{{route('user.dashboard')}}"><i class="fa fa-btn"></i>User Dashboard</a></li>
-                                <li><a href="#"><i class="fa fa-btn"></i>Show / Edit / Add Characters</a></li>
-                                <li><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>
+                                <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Show / Edit / Add Characters</a></li>
+                                <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>
                                 <li><a href="#"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>
                                 @else
                                     <li><a href="{{route('user.link')}}"><i class="fa fa-btn"></i>Link Byond</a></li>
@@ -102,16 +102,16 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                {{--@can('admin_whitelists_show')<li><a href="#"><i class="fa fa-btn"></i>WhiteLists</a></li>@endcan--}}
-                                {{--@can('admin_server_permissions_show')<li><a href="#"><i class="fa fa-btn"></i>Server Permissions</a></li>@endcan--}}
-                                {{--@can('admin_staff_roster_show')<li><a href="#"><i class="fa fa-btn"></i>Staff Roster</a></li>@endcan--}}
-                                {{--@can('admin_character_records_show')<li><a href="#"><i class="fa fa-btn"></i>Character Records</a></li>@endcan--}}
-                                {{--@can('admin_do_recorder_logs_show')<li><a href="#"><i class="fa fa-btn"></i>DO Recorder Logs</a></li>@endcan--}}
+                                @can('admin_whitelists_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>WhiteLists</a></li>@endcan
+                                @can('admin_server_permissions_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Server Permissions</a></li>@endcan
+                                @can('admin_staff_roster_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Staff Roster</a></li>@endcan
+                                @can('admin_character_records_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Character Records</a></li>@endcan
+                                @can('admin_do_recorder_logs_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>DO Recorder Logs</a></li>@endcan
                                 @can('admin_server_stats_show')<li><a href="{{route('admin.stats.index')}}"><i class="fa fa-btn"></i>Statistics</a></li>@endcan
-                                {{--@can('admin_site_roles_show')<li><a href="#"><i class="fa fa-btn"></i>Site Roles</a></li>@endcan--}}
-                                {{--@can('admin_site_permissions_show')<li><a href="#"><i class="fa fa-btn"></i>Site Permissions</a></li>@endcan--}}
-                                {{--@can('admin_site_logs_show')<li><a href="#"><i class="fa fa-btn"></i>WebSite Logs</a></li>@endcan--}}
-                                {{--@can('admin_server_logs_show')<li><a href="#"><i class="fa fa-btn"></i>Server Logs</a></li>@endcan--}}
+                                @can('admin_site_roles_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Site Roles</a></li>@endcan
+                                @can('admin_site_permissions_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Site Permissions</a></li>@endcan
+                                @can('admin_site_logs_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>WebSite Logs</a></li>@endcan
+                                @can('admin_server_logs_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Server Logs</a></li>@endcan
                             </ul>
                         </li>
                         @endcan
