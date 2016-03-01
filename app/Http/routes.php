@@ -51,19 +51,38 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/home', 'HomeController@index'); //Home Page
 
     //Syndie Stuff
-    Route::group(['prefix' => 'syndie'], function () {
+    Route::group(['prefix' => 'syndie','middleware' => 'auth'], function () {
         //Contract DB
-        Route::group(['prefix' => 'contracts','middleware' => 'auth'], function () {
-            Route::get('', ['as' => 'syndie.contracts.index', 'uses'=>'ContractController@index']);
-            Route::get('/add', ['as' => 'syndie.contracts.add.get', 'uses'=>'ContractController@getAdd']);
-            route::post('/add', ['as' => 'syndie.contracts.add.post', 'uses'=>'ContractController@postAdd']);
-            Route::get('/{contract}/show', ['as' => 'syndie.contracts.show', 'uses'=>'ContractController@show']);
-            Route::get('/{contract}/edit', ['as' => 'syndie.contracts.edit.get', 'uses'=>'ContractController@getEdit']);
-            Route::get('/{contract}/approve', ['as' => 'syndie.contracts.approve', 'uses'=>'ContractController@approve']); //Mod Approve the contract
-            Route::get('/{contract}/reject', ['as' => 'syndie.contracts.reject', 'uses'=>'ContractController@reject']); //Mod Reject the contract
-            Route::get('/{comment}/confirm', ['as' => 'syndie.contracts.confirm', 'uses'=>'ContractController@confirm']); //Confirm Completion of the Contract
-            Route::get('/{comment}/reopen', ['as' => 'syndie.contracts.reopen', 'uses'=>'ContractController@reopen']); // Reopen the contract
-            Route::post('/{contract}/addmessage',['as' => 'syndie.contracts.addmessage', 'uses'=>'ContractController@addMessage']);
+        Route::group(['prefix' => 'contracts'], function () {
+            Route::get('', ['as' => 'syndie.contracts.index', 'uses'=>'Syndie\ContractController@index']);
+            Route::get('/add', ['as' => 'syndie.contracts.add.get', 'uses'=>'Syndie\ContractController@getAdd']);
+            route::post('/add', ['as' => 'syndie.contracts.add.post', 'uses'=>'Syndie\ContractController@postAdd']);
+            Route::get('/{contract}/show', ['as' => 'syndie.contracts.show', 'uses'=>'Syndie\ContractController@show']);
+            Route::get('/{contract}/edit', ['as' => 'syndie.contracts.edit.get', 'uses'=>'Syndie\ContractController@getEdit']);
+            Route::get('/{contract}/approve', ['as' => 'syndie.contracts.approve', 'uses'=>'Syndie\ContractController@approve']); //Mod Approve the contract
+            Route::get('/{contract}/reject', ['as' => 'syndie.contracts.reject', 'uses'=>'Syndie\ContractController@reject']); //Mod Reject the contract
+            Route::get('/{comment}/confirm', ['as' => 'syndie.contracts.confirm', 'uses'=>'Syndie\ContractController@confirm']); //Confirm Completion of the Contract
+            Route::get('/{comment}/reopen', ['as' => 'syndie.contracts.reopen', 'uses'=>'Syndie\ContractController@reopen']); // Reopen the contract
+            Route::get('/{comment}/reopen', ['as' => 'syndie.contracts.reopen', 'uses'=>'Syndie\ContractController@reopen']); // Reopen the contract
+            Route::get('/{comment}/delete',['as' => 'syndie.contracts.delete', 'uses'=>'Syndie\ContractController@deleteMessage']); //Delete a comment
+        });
+    });
+
+    //User Stuff
+    Route::group(['prefix' => 'user','middleware' => 'auth'], function () {
+        //User Dashboard
+        Route::get('/', ['as' => 'user.dashboard', 'uses'=>'User\DashboardController@index']);
+        //User Linking
+        Route::get('/link/', ['as' => 'user.link', 'uses'=>'User\LinkController@index']);
+        Route::post('/link/add', ['as' => 'user.link.add', 'uses'=>'User\LinkController@add']);
+        Route::get('/link/cancel', ['as' => 'user.link.cancel', 'uses'=>'User\LinkController@cancel']);
+    });
+
+    //Admin Stuff
+    Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
+        //Contract DB
+        Route::group(['prefix' => 'stats'], function () {
+            Route::get('', ['as' => 'admin.stats.index', 'uses'=>'Admin\StatsController@index']);
         });
     });
 });

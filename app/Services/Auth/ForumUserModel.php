@@ -37,7 +37,6 @@ class ForumUserModel extends Model implements AuthenticateableContract
     protected $enable_remember_me = false;
     protected $remember_token_name = "remember_me";
 
-
     public function __construct()
     {
         $this->enable_remember_me = config('aurora.enable_remember_me');
