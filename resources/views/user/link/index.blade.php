@@ -23,7 +23,7 @@
                             {{-- Check if a linking is in progress, If so, then show info panel --}}
                             <div class="alert alert-warning">
                                 <strong>Linking in Progress!</strong><br>
-                                You have already initiated a linking request.
+                                You have already initiated a linking request with the following byond account: <i><b>{{$byond_key}}</b></i><br>
                                 The next time you join the server, you should see a linking request.
                             </div>
                             <p><a href="{{route('user.link.cancel')}}" class="btn btn-danger" role="button">Cancel Linking Request</a></p>
