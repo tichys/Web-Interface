@@ -76,7 +76,7 @@
                                 <li><a href="{{route('user.dashboard')}}"><i class="fa fa-btn"></i>User Dashboard</a></li>
                                 <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Show / Edit / Add Characters</a></li>
                                 <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>
-                                <li><a href="#"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>
+                                <li><a href="{{route('user.warnings')}}"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>
                                 @else
                                     <li><a href="{{route('user.link')}}"><i class="fa fa-btn"></i>Link Byond</a></li>
                                     @endcan
@@ -146,7 +146,7 @@
 
     <footer>
         <div class="footer navbar-fixed-bottom">
-            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.0.1-alpha.5</p></small>
+            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.0.1-alpha.6</p></small>
         </div>
     </footer>
 

@@ -12,6 +12,8 @@ class LinkController extends Controller
 {
     public function index(Request $request)
     {
+        $byond_key = null;
+
         //Check if a linking request already exists (where the deleted_at date is not set)
         $linking_in_progress = DB::connection('server')->table('player_linking')
                 ->where('forum_id', '=', $request->user()->user_id)->where('deleted_at','=',NULL)->count() != 0;
@@ -22,6 +24,8 @@ class LinkController extends Controller
             //get the linking request
             $linking_request = DB::connection('server')->table('player_linking')
                 ->where('forum_id', '=', $request->user()->user_id)->where('deleted_at','=',NULL)->first();
+
+            $byond_key = $linking_request->player_ckey;
 
             //Check if the linking request is set to something other than new
             if ($linking_request->status == "confirmed") {
@@ -43,7 +47,7 @@ class LinkController extends Controller
         }
 
 
-        return view('user.link.index', array("linking_in_progress" => $linking_in_progress));
+        return view('user.link.index', array("linking_in_progress" => $linking_in_progress,'byond_key'=>$byond_key));
     }
 
     /**
