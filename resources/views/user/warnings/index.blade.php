@@ -6,7 +6,7 @@
         <div class="col-md-10 col-md-offset-1">
             @foreach($warnings as $warning)
                 <div class="panel panel-default @if($warning->severity == 1)panel-danger @else panel-warning @endif">
-                    <div class="panel-heading">Warning received by <b>{{$warning->a_ckey}}</b>  {{$warning->diff}}</div>
+                    <div class="panel-heading">Warning issued by <b>{{$warning->a_ckey}}</b>  {{$warning->diff}}</div>
 
                     <div class="panel-body">
                         {{$warning->reason}}
