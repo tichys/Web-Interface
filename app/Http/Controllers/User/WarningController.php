@@ -1,10 +1,27 @@
 <?php
+/**
+ * Copyright (c) 2016 "Werner Maisl"
+ *
+ * This file is part of Aurorastation-Wi
+ * Aurorastation-Wi is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
-use DB;
-use Carbon\Carbon;
+use App\Services\Server\PlayerWarning;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -21,16 +38,9 @@ class WarningController extends Controller
             abort(403, 'Byond Account not linked');
         }
 
-        //Get the users warnings from the Database
-        $warnings = DB::connection('server')->table('warnings')->where('ckey', '=', $request->user()->user_byond)->where('visible', '=', '1')->get();
-
-        //Transform the timestamps to Ago strings
-        foreach ($warnings as $warning) {
-            $carbon = new Carbon($warning->time);
-            $warning->diff = $carbon->diffForHumans();
-        }
+        $warnings = new PlayerWarning($request->user()->user_byond);
 
         //Display the View
-        return view('user/warnings/index', ["warnings" => $warnings]);
+        return view('user/warnings/index', ["warnings" => $warnings->get_warnings_object()]);
     }
 }
