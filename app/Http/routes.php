@@ -74,9 +74,13 @@ Route::group(['middleware' => 'web'], function () {
         //User Dashboard
         Route::get('/', ['as' => 'user.dashboard', 'uses'=>'User\DashboardController@index']);
         //User Linking
-        Route::get('/link/', ['as' => 'user.link', 'uses'=>'User\LinkController@index']);
-        Route::post('/link/add', ['as' => 'user.link.add', 'uses'=>'User\LinkController@add']);
-        Route::get('/link/cancel', ['as' => 'user.link.cancel', 'uses'=>'User\LinkController@cancel']);
+        Route::group(['prefix' => 'link'], function () {
+            Route::get('/', ['as' => 'user.link', 'uses'=>'User\LinkController@index']);
+            Route::post('/add', ['as' => 'user.link.add', 'uses'=>'User\LinkController@add']);
+            Route::get('/cancel', ['as' => 'user.link.cancel', 'uses'=>'User\LinkController@cancel']);
+        });
+        Route::get('/warnings', ['as' => 'user.warnings', 'uses'=>'User\WarningController@index']);
+
     });
 
     //Admin Stuff
