@@ -17,37 +17,49 @@
 
 @extends('layouts.app')
 
+@section('styles')
+    <link href="{{ asset('/assets/css/datatables.bootstrap.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Contract Overview</div>
+                    <div class="panel-heading">Whitelist Overview</div>
 
                     <div class="panel-body">
-                        <table class="table table-striped">
+                        <table id="users-table" class="table table-condensed">
                             <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Title</th>
-                                    <th>Contractee Name</th>
-                                    <th>Status</th>
-                                </tr>
+                            <tr>
+                                <th>ID</th>
+                                <th>Byond Key</th>
+                                <th>Whitelists</th>
+                            </tr>
                             </thead>
-                            <tbody>
-                                @foreach($contracts as $contract)
-                                    <tr>
-                                        <td width="10px">{{$contract->contract_id}}</td>
-                                        <td><a href="{{route('syndie.contracts.show',['contract'=>$contract->contract_id])}}"><b>{{$contract->title}}</b></a></td>
-                                        <td><i>{{$contract->contractee_name}}</i></td>
-                                        <td>@include("components.syndiecontractstatus")</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('javascripts')
+    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+    <script>
+        $(function() {
+            $('#users-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('admin.whitelist.data') }}',
+                columns: [
+                    {data: 0, name: 'id'},
+                    {data: 1, name: 'byond key'},
+                    {data: 2, name: 'whitelists'}
+                ]
+            });
+        });
+    </script>
 @endsection

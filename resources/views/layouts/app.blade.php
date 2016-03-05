@@ -102,7 +102,7 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                @can('admin_whitelists_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>WhiteLists</a></li>@endcan
+                                @can('admin_whitelists_show')<li><a href="{{route('admin.whitelist.index')}}"><i class="fa fa-btn"></i>WhiteLists</a></li>@endcan
                                 @can('admin_server_permissions_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Server Permissions</a></li>@endcan
                                 @can('admin_staff_roster_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Staff Roster</a></li>@endcan
                                 @can('admin_character_records_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Character Records</a></li>@endcan
@@ -146,7 +146,7 @@
 
     <footer>
         <div class="footer navbar-fixed-bottom">
-            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.0.1-alpha.6</p></small>
+            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.0.1-alpha.7</p></small>
         </div>
     </footer>
 
