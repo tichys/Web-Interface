@@ -15,20 +15,17 @@
 {{--You should have received a copy of the GNU Affero General Public License--}}
 {{--along with this program. If not, see <http://www.gnu.org/licenses/>.<!DOCTYPE html>--}}
 
-@extends('layouts.app')
-
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <div class="panel-heading">Server Stats</div>
-
-                <div class="panel-body">
-                    One day in the future, there will be some stats here.
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+<table class="table table-bordered">
+    <tbody>
+    @foreach($whitelists as $whitelist=>$status)
+        <tr>
+            <td>{{$whitelist}}</td>
+            @if($status == TRUE)
+                <td><span class="label label-success"><span class="glyphicon glyphicon-ok"></span></span></td>
+            @else
+                <td><span class="label label-danger"><span class="glyphicon glyphicon-remove"></span></span></td>
+            @endif
+        </tr>
+    @endforeach
+    </tbody>
+</table>

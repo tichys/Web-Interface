@@ -85,9 +85,17 @@ Route::group(['middleware' => 'web'], function () {
 
     //Admin Stuff
     Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
-        //Contract DB
+
         Route::group(['prefix' => 'stats'], function () {
             Route::get('', ['as' => 'admin.stats.index', 'uses'=>'Admin\StatsController@index']);
+        });
+
+        Route::group(['prefix' => 'whitelist'], function () {
+            Route::get('', ['as' => 'admin.whitelist.index', 'uses'=>'Admin\WhitelistController@index']);
+            Route::get('/{player_id}/show', ['as' => 'admin.whitelist.show', 'uses'=>'Admin\WhitelistController@show']);
+            Route::get('/{player_id}/add/{whitelist}', ['as' => 'admin.whitelist.add', 'uses'=>'Admin\WhitelistController@add']);
+            Route::get('/{player_id}/remove/{whitelist}', ['as' => 'admin.whitelist.remove', 'uses'=>'Admin\WhitelistController@remove']);
+            Route::get('/data', ['as' => 'admin.whitelist.data', 'uses'=>'Admin\WhitelistController@getWhitelistData']);
         });
     });
 });
