@@ -53,12 +53,7 @@
             $('#users-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.whitelist.data') }}',
-                columns: [
-                    {data: 0, name: 'id'},
-                    {data: 1, name: 'byond key'},
-                    {data: 2, name: 'whitelists'}
-                ]
+                ajax: '{{ route('admin.whitelist.data') }}'
             });
         });
     </script>
