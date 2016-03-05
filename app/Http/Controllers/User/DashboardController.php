@@ -21,8 +21,8 @@
 namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
-use App\Services\Server\WhiteListStatus;
 use App\Services\Server\PlayerWarning;
+use App\Models\ServerPlayer;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -36,11 +36,11 @@ class DashboardController extends Controller
             abort(403, 'Byond Account not linked');
         }
 
-        $whiteliststatus = new WhiteListStatus($request->user()->user_byond);
+        $player = ServerPlayer::where('ckey',$request->user()->user_byond)->first();
 
         //Get player warning data
         $playerwarning = new PlayerWarning($request->user()->user_byond);
 
-        return view('user.dashboard.index',array("whitelists"=>$whiteliststatus->get_whitelist_array() , "warnings" => $playerwarning));
+        return view('user.dashboard.index',array("whitelists"=> $player->get_player_whitelists() , "warnings" => $playerwarning));
     }
 }

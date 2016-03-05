@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.2.20 on 2016-02-20.
+ * Generated for Laravel 5.2.20 on 2016-03-05.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -11248,6 +11248,11 @@ namespace {
         public static function componentCall($method, $parameters){
             return \Collective\Html\HtmlBuilder::componentCall($method, $parameters);
         }
+        
+    }
+
+
+    class Datatables extends \Yajra\Datatables\Datatables{
         
     }
 

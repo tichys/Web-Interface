@@ -53,20 +53,7 @@
                     <div class="panel-heading">Whitelist Status</div>
 
                     <div class="panel-body">
-                        <table class="table table-bordered">
-                            <tbody>
-                            @foreach($whitelists as $whitelist=>$status)
-                                <tr>
-                                    <td>{{$whitelist}}</td>
-                                    @if($status == TRUE)
-                                        <td><span class="label label-success"><span class="glyphicon glyphicon-ok"></span></span></td>
-                                    @else
-                                        <td><span class="label label-danger"><span class="glyphicon glyphicon-remove"></span></span></td>
-                                    @endif
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                        @include('components.whiteliststatustable')
                     </div>
                 </div>
             </div>
