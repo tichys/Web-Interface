@@ -24,7 +24,6 @@ use Illuminate\Http\Request;
 use MongoDB\Driver\Server;
 use Yajra\Datatables\Datatables;
 use App\Models\ServerPlayer;
-use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -32,9 +31,9 @@ use App\Http\Controllers\Controller;
 class WhitelistController extends Controller
 {
 
-    public function __construct()
+    public function __construct(Request $request)
     {
-        if(Auth::user()->cannot('admin_whitelists_show'))
+        if($request->user()->cannot('admin_whitelists_show'))
         {
             abort('403','You do not have the required permission');
         }
@@ -65,7 +64,7 @@ class WhitelistController extends Controller
 
     public function add($player_id, $whitelist, Request $request)
     {
-        if(Auth::user()->cannot('admin_whitelists_edit'))
+        if($request->user()->cannot('admin_whitelists_edit'))
         {
             abort('403','You do not have the required permission');
         }
@@ -73,14 +72,14 @@ class WhitelistController extends Controller
         //Get Server Player
         $player = ServerPlayer::findOrFail($player_id);
 
-        $player->add_player_whitelist_flag($whitelist);
+        $player->add_player_whitelist_flag($whitelist,$request->user()->username_clean);
 
         return redirect()->route('admin.whitelist.show', ['player_id' => $player_id]);
     }
 
     public function remove($player_id, $whitelist, Request $request)
     {
-        if(Auth::user()->cannot('admin_whitelists_edit'))
+        if($request->user()->cannot('admin_whitelists_edit'))
         {
             abort('403','You do not have the required permission');
         }
@@ -88,7 +87,7 @@ class WhitelistController extends Controller
         //Get Server Player
         $player = ServerPlayer::findOrFail($player_id);
 
-        $player->strip_player_whitelist_flag($whitelist);
+        $player->strip_player_whitelist_flag($whitelist,$request->user()->username_clean);
 
         return redirect()->route('admin.whitelist.show', ['player_id' => $player_id]);
     }
