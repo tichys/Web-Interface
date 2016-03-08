@@ -73,18 +73,18 @@
                     {{--</div>--}}
                 </div>
             </div>
-            @if(Auth::user()->cannot('contract_moderate'))<div class="col-md-8">@else() <div class="col-md-4"> @endif()
+            @if(Auth::user()->cannot('contract_moderate'))<div class="col-md-8">@else() <div class="col-md-6"> @endif()
                 <div class="panel panel-default">
                     <div class="panel-heading">Contract Description:</div>
 
                     <div class="panel-body">
-                        <p>{!! nl2br(e($contract->description)) !!}</p>
+                        <p>@parsedown($contract->description)</p>
                     </div>
                 </div>
             </div>
             {{-- Management Panel--}}
             @if(Auth::user()->can('contract_moderate'))
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">Actions</div>
                     <div class="panel-body">

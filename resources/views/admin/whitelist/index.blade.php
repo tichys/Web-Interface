@@ -34,7 +34,6 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Byond Key</th>
-                                <th>Whitelists</th>
                             </tr>
                             </thead>
                         </table>

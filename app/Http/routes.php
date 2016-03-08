@@ -48,6 +48,9 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::auth(); //Auth Routes
 
+    //Route for SSO
+    Route::get('/login/sso_server/', ['as' => 'login.sso', 'uses'=>'Auth\AuthController@sso_server']);
+
     Route::get('/home', 'HomeController@index'); //Home Page
 
     //Syndie Stuff
@@ -96,6 +99,15 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/{player_id}/add/{whitelist}', ['as' => 'admin.whitelist.add', 'uses'=>'Admin\WhitelistController@add']);
             Route::get('/{player_id}/remove/{whitelist}', ['as' => 'admin.whitelist.remove', 'uses'=>'Admin\WhitelistController@remove']);
             Route::get('/data', ['as' => 'admin.whitelist.data', 'uses'=>'Admin\WhitelistController@getWhitelistData']);
+        });
+
+        Route::group(['prefix' => 'forms'], function () {
+            Route::get('', ['as' => 'admin.forms.index', 'uses'=>'Admin\FormController@index']);
+            Route::get('/{form_id}/show', ['as' => 'admin.forms.show', 'uses'=>'Admin\FormController@show']);
+            Route::get('/{form_id}/edit', ['as' => 'admin.forms.edit.get', 'uses'=>'Admin\FormController@getEdit']);
+            Route::post('/{form_id}/edit', ['as' => 'admin.forms.edit.post', 'uses'=>'Admin\FormController@getEdit']);
+            Route::get('/{form_id}/add', ['as' => 'admin.forms.add.get', 'uses'=>'Admin\FormController@getAdd']);
+            Route::post('/{form_id}/add', ['as' => 'admin.forms.add.post', 'uses'=>'Admin\FormController@getAdd']);
         });
     });
 });

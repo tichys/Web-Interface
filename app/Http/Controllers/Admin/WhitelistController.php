@@ -95,7 +95,7 @@ class WhitelistController extends Controller
 
     public function getWhitelistData()
     {
-        $players = ServerPlayer::select(['id','ckey','whitelist_status']);
+        $players = ServerPlayer::select(['id','ckey']);
 
         return Datatables::of($players)
             ->editColumn('ckey','<a href="{{route(\'admin.whitelist.show\',[\'player_id\'=>$id])}}">{{$ckey}}</a>')
