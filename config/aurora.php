@@ -55,4 +55,13 @@ return [
     "hash_password" => env('AURORA_HASH_PASSWORD', false),
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Token Expire Time
+    |--------------------------------------------------------------------------
+    |
+    | The time in hours after which a sso login token should no longer be valid.
+    |
+    */
+    "token_valid_time" => env('AURORA_TOKEN_VALID_TIME', 24),
 ];
