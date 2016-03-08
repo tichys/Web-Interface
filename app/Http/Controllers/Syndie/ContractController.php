@@ -27,7 +27,6 @@ use App\Http\Controllers\Controller;
 
 use App\Models\SyndieContract;
 use App\Models\SyndieContractComment;
-use App\Models\SyndieContractImage;
 
 class ContractController extends Controller
 {
@@ -60,10 +59,13 @@ class ContractController extends Controller
             'reward' => 'required'
         ]);
 
-        $contract = new SyndieContract($request->all());
+        $contract = new SyndieContract();
         $contract->contractee_id = $user->user_id;
         $contract->status = "new";
         $contract->reward_other = $request->input('reward');
+        $contract->contractee_name = strip_tags($request->input('contractee_name'));
+        $contract->title = strip_tags($request->input('title'));
+        $contract->description = strip_tags($request->input('description'));
         $contract->save();
 
         //Add a info that the contract has been confirmed as completed.
@@ -148,7 +150,7 @@ class ContractController extends Controller
         if ($request->user()->can('contract_moderate') || $request->user()->user_id == $SyndieContract->contractee_id) {
             $SyndieContract->status = "closed";
             $SyndieContract->completer_id = $SyndieComment->commentor_id;
-            $SyndieContract->completer_name = $SyndieComment->commentor_name;
+            $SyndieContract->completer_name = strip_tags($SyndieComment->commentor_name);
             $SyndieContract->save();
         } else {
             abort(403, 'Unauthorized action.');
@@ -226,16 +228,18 @@ class ContractController extends Controller
         $comment = $request->input('comment');
 
         //Check if the user is contractee, mod or just user and allow them to use the various pm types
-        if ($request->user()->can('contract_moderate')) {  //User can use every message type and specify name. Just check that all fields are filled out
-            //No validation required
-        } elseif ($request->user()->user_id == $SyndieContract->contractee_id) { //User can not specify a name and can use the following message types: 'ic'=>'IC Comment','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM'
+        if ($request->user()->can('contract_moderate')) { //User is a contract moderator
+            //User can use every message type and specify name. Just check that all fields are filled out
+        } elseif ($request->user()->user_id == $SyndieContract->contractee_id) { //Use is contract author
+            //User can not specify a name and can use only the following message types: 'ic'=>'IC Comment','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM'
             $commentor_name = $SyndieContract->contractee_name;
 
             $useable = array('ic', 'ic-cancel','ooc', 'mod-author');
             if (!in_array($type, $useable)) {
                 return redirect()->route('syndie.contracts.show', ['contract' => $contract])->withErrors(array('You are not authorized to use this message type'));
             }
-        } else { // user can only use the following message types: 'ic'=>'IC Comment','ic-failrep'=> 'IC Failure Report','ic-comprep'=>'IC Completion Report','ooc' => 'OOC Comment'
+        } else { // User is not a contract mod or the author
+            // user can only use the following message types: 'ic'=>'IC Comment','ic-failrep'=> 'IC Failure Report','ic-comprep'=>'IC Completion Report','ooc' => 'OOC Comment'
             $useable = array('ic', 'ic-failrep', 'ic-comprep', 'ooc');
             if (!in_array($type, $useable)) {
                 return redirect()->route('syndie.contracts.show', ['contract' => $contract])->withErrors(array('You are not authorized to use this message type'));
@@ -246,10 +250,10 @@ class ContractController extends Controller
         $SyndieContractComment = new SyndieContractComment();
         $SyndieContractComment->contract_id = $SyndieContract->contract_id;
         $SyndieContractComment->commentor_id = $request->user()->user_id;
-        $SyndieContractComment->commentor_name = $commentor_name;
+        $SyndieContractComment->commentor_name = strip_tags($commentor_name);
         $SyndieContractComment->type = $type;
-        $SyndieContractComment->title = $title;
-        $SyndieContractComment->comment = $comment;
+        $SyndieContractComment->title = strip_tags($title);
+        $SyndieContractComment->comment = strip_tags($comment);
         $SyndieContractComment->save();
 
         //Check if the comment is a completion report -> if so update contract status to completed

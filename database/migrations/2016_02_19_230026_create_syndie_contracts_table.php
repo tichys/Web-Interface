@@ -45,7 +45,7 @@ class CreateSyndieContractsTable extends Migration
              * canceled -> The contract has been canceled by the contractee
              */
             $table->string('title');
-            $table->string('description');
+            $table->text('description');
             $table->integer('reward_credits')->nullable();
             $table->text('reward_other')->nullable();
             $table->integer('completer_id')->nullable();
@@ -84,7 +84,7 @@ class CreateSyndieContractsTable extends Migration
      */
     public function down()
     {
-        Schema::connection('server')->drop('syndie_contracts');
         Schema::connection('server')->drop('syndie_contracts_comments');
+        Schema::connection('server')->drop('syndie_contracts');
     }
 }

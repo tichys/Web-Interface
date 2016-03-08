@@ -19,7 +19,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use DB;
+use App\Services\Auth\ForumUserModel;
+use Carbon\Carbon;
 use App\User;
+use Auth;
+use Illuminate\Http\Request;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -87,5 +92,59 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    /**
+     * Logs the user in by supplying a username and a login token
+     */
+    public function sso_server(Request $request)
+    {
+        $ckey_in = null;
+        $token_in = null;
+        $location = null;
+
+        //Get the token and the ckey from the request
+        $ckey_in = $request->input('ckey');
+        $token_in = $request->input('token');
+        $location = $request->input('location');
+        $user_ip = $_SERVER['REMOTE_ADDR'];
+        if($ckey_in == null | $token_in == null) abort(404);
+
+        //Check if a sso entry for the ckey and token exists
+        $valid_until = Carbon::now();
+        $valid_until->subHours(config('aurora.token_valid_time'));
+        $count = DB::connection('server')->table('web_sso')
+            ->where('ckey',$ckey_in)
+            ->where('token',$token_in)
+            ->where('ip',$user_ip)
+            ->where('created_at','>',$valid_until->toDateTimeString())
+            ->count();
+        if($count == 0) abort(404);
+
+        //Check if a user with a linked byond account exists in the forum db
+        $user = ForumUserModel::where('user_byond',$ckey_in)->firstOrFail();
+
+        //Auth the user
+        Auth::login($user);
+
+        //Delete the sso entry from the db
+        DB::connection('server')->table('web_sso')->where('ckey',$ckey_in)->delete();
+
+        //Redirect User to Destination
+        switch ($location)
+        {
+            case "user_dashboard":
+                return redirect()->route('user.dashboard');
+                break;
+            case "contract_overview":
+                return redirect()->route('syndie.contracts.index');
+                break;
+            case "contract_details":
+                return redirect()->route('syndie.contracts.show',['contract'=>$request->input('contract')]);
+                break;
+            default:
+                return redirect()->route('user.dashboard');
+                break;
+        }
     }
 }
