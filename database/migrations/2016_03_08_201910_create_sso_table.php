@@ -17,6 +17,7 @@ class CreateSsoTable extends Migration
             $table->string('ckey');
             $table->string('token');
             $table->string('ip');
+            $table->dateTime('created_at');
         });
     }
 

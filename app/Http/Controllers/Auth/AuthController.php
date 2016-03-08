@@ -120,7 +120,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         //Delete the sso entry from the db
-        DB::connection('server')->table('web_sso')->where('ckey',$ckey_in)->where('token',$token_in)->where('ip',$user_ip)->delete();
+        DB::connection('server')->table('web_sso')->where('ckey',$ckey_in)->delete();
 
         //Redirect User to Destination
         switch ($location)

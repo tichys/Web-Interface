@@ -84,7 +84,7 @@ class CreateSyndieContractsTable extends Migration
      */
     public function down()
     {
-        Schema::connection('server')->drop('syndie_contracts');
         Schema::connection('server')->drop('syndie_contracts_comments');
+        Schema::connection('server')->drop('syndie_contracts');
     }
 }
