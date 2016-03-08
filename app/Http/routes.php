@@ -48,6 +48,9 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::auth(); //Auth Routes
 
+    //Route for SSO
+    Route::get('/login/sso_server/', ['as' => 'login.sso', 'uses'=>'Auth\AuthController@sso_server']);
+
     Route::get('/home', 'HomeController@index'); //Home Page
 
     //Syndie Stuff
