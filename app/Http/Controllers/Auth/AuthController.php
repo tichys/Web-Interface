@@ -21,6 +21,7 @@ namespace App\Http\Controllers\Auth;
 
 use DB;
 use App\Services\Auth\ForumUserModel;
+use Carbon\Carbon;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
@@ -110,7 +111,14 @@ class AuthController extends Controller
         if($ckey_in == null | $token_in == null) abort(404);
 
         //Check if a sso entry for the ckey and token exists
-        $count = DB::connection('server')->table('web_sso')->where('ckey',$ckey_in)->where('token',$token_in)->where('ip',$user_ip)->count();
+        $valid_until = Carbon::now();
+        $valid_until->subHours(config('aurora.token_valid_time'));
+        $count = DB::connection('server')->table('web_sso')
+            ->where('ckey',$ckey_in)
+            ->where('token',$token_in)
+            ->where('ip',$user_ip)
+            ->where('created_at','>',$valid_until->toDateTimeString())
+            ->count();
         if($count == 0) abort(404);
 
         //Check if a user with a linked byond account exists in the forum db
@@ -120,7 +128,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         //Delete the sso entry from the db
-        DB::connection('server')->table('web_sso')->where('ckey',$ckey_in)->where('token',$token_in)->where('ip',$user_ip)->delete();
+        DB::connection('server')->table('web_sso')->where('ckey',$ckey_in)->delete();
 
         //Redirect User to Destination
         switch ($location)
