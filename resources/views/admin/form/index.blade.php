@@ -30,7 +30,7 @@
 
                     <div class="panel-body">
                         @can('admin_forms_edit')<p><a href="{{route('admin.form.add.post')}}" class="btn btn-info" role="button">Add new Form</a></p>@endcan()
-                        <table id="users-table" class="table table-condensed">
+                        <table id="forms-table" class="table table-condensed">
                             <thead>
                             <tr>
                                 <th>ID</th>
@@ -51,7 +51,7 @@
     <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
     <script>
         $(function() {
-            $('#users-table').DataTable({
+            $('#forms-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('admin.form.data') }}'

@@ -124,7 +124,7 @@
                                         <div class="timeline-heading">
                                             <h4 class="timeline-title"><b>Mod OOC: </b>{{$comment->title}}</h4>
                                             <p>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago  </small>
+                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
                                                 <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
                                             </p>
                                         </div>
@@ -140,7 +140,7 @@
                                         <div class="timeline-heading">
                                             <h4 class="timeline-title"><b>Private: </b>{{$comment->title}}</h4>
                                             <p>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago  </small>
+                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
                                                 <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
                                             </p>
                                         </div>
@@ -156,7 +156,7 @@
                                         <div class="timeline-heading">
                                             <h4 class="timeline-title"><b>Message: </b>{{$comment->title}}</h4>
                                             <p>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago  </small>
+                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
                                                 <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
                                             </p>
                                         </div>
@@ -172,7 +172,7 @@
                                         <div class="timeline-heading">
                                             <h4 class="timeline-title"><b>Completion Report: </b>{{$comment->title}}</h4>
                                             <p>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago  </small>
+                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
                                                 <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
                                             </p>
                                         </div>
@@ -194,7 +194,7 @@
                                             <div class="timeline-heading">
                                                 <h4 class="timeline-title"><b>Failure Report: </b>{{$comment->title}}</h4>
                                                 <p>
-                                                    <small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago  </small>
+                                                    <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
                                                     <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
                                                 </p>
                                             </div>
@@ -210,7 +210,7 @@
                                             <div class="timeline-heading">
                                                 <h4 class="timeline-title"><b>Contract Canceled: </b>{{$comment->title}}</h4>
                                                 <p>
-                                                    <small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago  </small>
+                                                    <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
                                                     <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
                                                 </p>
                                             </div>
@@ -226,7 +226,7 @@
                                         <div class="timeline-heading">
                                             <h4 class="timeline-title"><b>OOC Message: </b>{{$comment->title}}</h4>
                                             <p>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago  </small>
+                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
                                                 <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
                                             </p>
                                         </div>
@@ -248,6 +248,11 @@
                     <div class="panel-heading">New Message</div>
 
                     <div class="panel-body">
+                        <div class="alert alert-success">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            You can use Markdown to in the comment field
+                        </div>
+
                         {{ Form::open(array('route' => array('syndie.contracts.addmessage',$contract->contract_id),'method' => 'post')) }}
 
                         {{Form::token()}}

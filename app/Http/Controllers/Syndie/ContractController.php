@@ -27,20 +27,35 @@ use App\Http\Controllers\Controller;
 
 use App\Models\SyndieContract;
 use App\Models\SyndieContractComment;
+use Yajra\Datatables\Datatables;
 
 class ContractController extends Controller
 {
     public function index(Request $request)
     {
+
+
+        return view('syndie.contract.index');
+    }
+
+    public function getContractData(Request $request)
+    {
+//        $forms = ServerForm::select(['form_id','id', 'name', 'department']);
+        $contracts = SyndieContract::select(['contract_id','title','contractee_name','status']);
         //For contract mods: Show all contracts
         if ($request->user()->can('contract_moderate')) {
-            $contracts = SyndieContract::all();
+
         } else //For normal users: Show all contracts that have a status of open, assigned, completed, confirmed or that they own
         {
-            $contracts = SyndieContract::whereIn('status', ['open', 'assigned', 'completed', 'confirmed'])->OrWhere('contractee_id', '=', $request->user()->user_id)->get();
+            $contracts->whereIn('status', ['open', 'assigned', 'completed', 'confirmed'])->OrWhere('contractee_id', '=', $request->user()->user_id)->get();
         }
 
-        return view('syndie.contract.index', ['contracts' => $contracts]);
+
+
+        return Datatables::of($contracts)
+            ->editColumn('title', '<b><a href="{{route(\'syndie.contracts.show\',[\'contract\'=>$contract_id])}}">{{$title}}</a></b>')
+            ->editColumn('contractee_name','<i>{{$contractee_name}}</i>')
+            ->make();
     }
 
     public function getAdd()

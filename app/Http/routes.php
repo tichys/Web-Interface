@@ -69,6 +69,7 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/{comment}/reopen', ['as' => 'syndie.contracts.reopen', 'uses'=>'Syndie\ContractController@reopen']); // Reopen the contract
             Route::get('/{comment}/reopen', ['as' => 'syndie.contracts.reopen', 'uses'=>'Syndie\ContractController@reopen']); // Reopen the contract
             Route::get('/{comment}/delete',['as' => 'syndie.contracts.delete', 'uses'=>'Syndie\ContractController@deleteMessage']); //Delete a comment
+            Route::get('/data',['as' => 'syndie.contracts.data', 'uses'=>'Syndie\ContractController@getContractData']);
         });
     });
 

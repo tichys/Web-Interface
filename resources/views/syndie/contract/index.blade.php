@@ -17,6 +17,10 @@
 
 @extends('layouts.app')
 
+@section('styles')
+    <link href="{{ asset('/assets/css/datatables.bootstrap.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row">
@@ -25,29 +29,33 @@
                     <div class="panel-heading">Contract Overview</div>
 
                     <div class="panel-body">
-                        <table class="table table-striped">
+                        <table id="contract-table" class="table table-condensed">
                             <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Title</th>
-                                    <th>Contractee Name</th>
-                                    <th>Status</th>
-                                </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Contractee Name</th>
+                                <th>Status</th>
+                            </tr>
                             </thead>
-                            <tbody>
-                                @foreach($contracts as $contract)
-                                    <tr>
-                                        <td width="10px">{{$contract->contract_id}}</td>
-                                        <td><a href="{{route('syndie.contracts.show',['contract'=>$contract->contract_id])}}"><b>{{$contract->title}}</b></a></td>
-                                        <td><i>{{$contract->contractee_name}}</i></td>
-                                        <td>@include("components.syndiecontractstatus")</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('javascripts')
+    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+    <script>
+        $(function() {
+            $('#contract-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('syndie.contracts.data') }}'
+            });
+        });
+    </script>
 @endsection
