@@ -188,6 +188,18 @@ class CreatePermissionRolesTables extends Migration
         $admin_server_logs_show->label = "Show the server logs";
         $admin_server_logs_show->save();
 
+//        admin_forms_show -> Show the corporate Form Database
+        $admin_forms_show = new SitePermission();
+        $admin_forms_show->name = "admin_forms_show";
+        $admin_forms_show->label = "Show the corporate Form Database";
+        $admin_forms_show->save();
+
+//        admin_forms_edit -> Edit the corporate Form Database
+        $admin_forms_edit = new SitePermission();
+        $admin_forms_edit->name = "admin_forms_edit";
+        $admin_forms_edit->label = "Edit the corporate Form Database";
+        $admin_forms_edit->save();
+
 
         $administrators = new SiteRole();
         $administrators->name = "administrators";
@@ -213,6 +225,8 @@ class CreatePermissionRolesTables extends Migration
         $administrators->givePermissionTo($admin_site_permissions_edit);
         $administrators->givePermissionTo($admin_site_logs_show);
         $administrators->givePermissionTo($admin_server_logs_show);
+        $administrators->givePermissionTo($admin_forms_show);
+        $administrators->givePermissionTo($admin_forms_edit);
 
 
 
@@ -230,6 +244,7 @@ class CreatePermissionRolesTables extends Migration
         $moderators->givePermissionTo($admin_server_stats_show);
         $moderators->givePermissionTo($admin_site_roles_show);
         $moderators->givePermissionTo($admin_site_permissions_show);
+        $moderators->givePermissionTo($admin_forms_show);
 
         $duty_offiers = new SiteRole();
         $duty_offiers->name = "duty_officers";
@@ -242,6 +257,8 @@ class CreatePermissionRolesTables extends Migration
         $duty_offiers->givePermissionTo($admin_character_records_show);
         $duty_offiers->givePermissionTo($admin_character_records_edit);
         $duty_offiers->givePermissionTo($admin_do_recorder_logs_show);
+        $duty_offiers->givePermissionTo($admin_forms_show);
+        $duty_offiers->givePermissionTo($admin_forms_edit);
 
         $whitelist_managers = new SiteRole();
         $whitelist_managers->name = "whitelist_managers";
