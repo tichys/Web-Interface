@@ -57,7 +57,7 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Aurora Webinterface
+                    Aurora WI
                 </a>
             </div>
 

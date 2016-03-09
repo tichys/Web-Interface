@@ -46,7 +46,7 @@
         {{-- Contract Overview --}}
         <div class="row">
             {{-- Details about the contract--}}
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h4><b>{{$contract->title}}</b></h4></div>
 
@@ -73,7 +73,7 @@
                     {{--</div>--}}
                 </div>
             </div>
-            @if(Auth::user()->cannot('contract_moderate'))<div class="col-md-8">@else() <div class="col-md-6"> @endif()
+            @if(Auth::user()->cannot('contract_moderate'))<div class="col-lg-8">@else() <div class="col-lg-6"> @endif()
                 <div class="panel panel-default">
                     <div class="panel-heading">Contract Description:</div>
 
@@ -84,7 +84,7 @@
             </div>
             {{-- Management Panel--}}
             @if(Auth::user()->can('contract_moderate'))
-            <div class="col-md-2">
+            <div class="col-lg-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">Actions</div>
                     <div class="panel-body">
