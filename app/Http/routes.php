@@ -49,7 +49,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::auth(); //Auth Routes
 
     //Route for SSO
-    Route::get('/login/sso_server/', ['as' => 'login.sso', 'uses'=>'Auth\AuthController@sso_server']);
+    Route::any('/login/sso_server/', ['as' => 'login.sso', 'uses'=>'Auth\AuthController@sso_server']);
 
     Route::get('/home', 'HomeController@index'); //Home Page
 
@@ -101,13 +101,13 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/data', ['as' => 'admin.whitelist.data', 'uses'=>'Admin\WhitelistController@getWhitelistData']);
         });
 
-        Route::group(['prefix' => 'forms'], function () {
-            Route::get('', ['as' => 'admin.forms.index', 'uses'=>'Admin\FormController@index']);
-            Route::get('/{form_id}/show', ['as' => 'admin.forms.show', 'uses'=>'Admin\FormController@show']);
-            Route::get('/{form_id}/edit', ['as' => 'admin.forms.edit.get', 'uses'=>'Admin\FormController@getEdit']);
-            Route::post('/{form_id}/edit', ['as' => 'admin.forms.edit.post', 'uses'=>'Admin\FormController@getEdit']);
-            Route::get('/{form_id}/add', ['as' => 'admin.forms.add.get', 'uses'=>'Admin\FormController@getAdd']);
-            Route::post('/{form_id}/add', ['as' => 'admin.forms.add.post', 'uses'=>'Admin\FormController@getAdd']);
+        Route::group(['prefix' => 'form'], function () {
+            Route::get('', ['as' => 'admin.form.index', 'uses'=>'Admin\FormController@index']);
+            Route::get('/{form_id}/edit', ['as' => 'admin.form.edit.get', 'uses'=>'Admin\FormController@getEdit']);
+            Route::post('/{form_id}/edit', ['as' => 'admin.form.edit.post', 'uses'=>'Admin\FormController@postEdit']);
+            Route::get('/add', ['as' => 'admin.form.add.get', 'uses'=>'Admin\FormController@getAdd']);
+            Route::post('/add', ['as' => 'admin.form.add.post', 'uses'=>'Admin\FormController@postAdd']);
+            Route::get('/data', ['as' => 'admin.form.data', 'uses'=>'Admin\FormController@getFormData']);
         });
     });
 });
