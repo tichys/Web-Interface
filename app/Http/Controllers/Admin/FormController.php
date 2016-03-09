@@ -67,6 +67,18 @@ class FormController extends Controller
         return redirect()->route('admin.form.index');
     }
 
+    public function delete($form_id, Request $request)
+    {
+        if($request->user()->cannot('admin_forms_edit'))
+        {
+            abort('403','You do not have the required permission');
+        }
+        $form = ServerForm::findOrFail($form_id);
+        $form->delete();
+
+        return redirect()->route('admin.form.index');
+    }
+
     public function getAdd(Request $request)
     {
         if($request->user()->cannot('admin_forms_edit'))
@@ -101,6 +113,7 @@ class FormController extends Controller
         return Datatables::of($forms)
             ->removeColumn('form_id')
             ->editColumn('name', '<a href="{{route(\'admin.form.edit.get\',[\'form\'=>$form_id])}}">{{$name}}</a>')
+            ->addColumn('action','<p><a href="{{route(\'admin.form.edit.get\',[\'form\'=>$form_id])}}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'admin_forms_edit\')<a href="{{route(\'admin.form.delete\',[\'form\'=>$form_id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
             ->make();
     }
 }

@@ -106,6 +106,7 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('', ['as' => 'admin.form.index', 'uses'=>'Admin\FormController@index']);
             Route::get('/{form_id}/edit', ['as' => 'admin.form.edit.get', 'uses'=>'Admin\FormController@getEdit']);
             Route::post('/{form_id}/edit', ['as' => 'admin.form.edit.post', 'uses'=>'Admin\FormController@postEdit']);
+            Route::get('/{form_id}/delete', ['as' => 'admin.form.delete', 'uses'=>'Admin\FormController@delete']);
             Route::get('/add', ['as' => 'admin.form.add.get', 'uses'=>'Admin\FormController@getAdd']);
             Route::post('/add', ['as' => 'admin.form.add.post', 'uses'=>'Admin\FormController@postAdd']);
             Route::get('/data', ['as' => 'admin.form.data', 'uses'=>'Admin\FormController@getFormData']);
