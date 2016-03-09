@@ -109,7 +109,7 @@ class ContractController extends Controller
         $SyndieContract = SyndieContract::find($contract);
 
         //Check if the user is the contract owner or a moderator
-        if ($request->user()->cannot('contract_moderate' && $request->user()->user_id != $SyndieContract->contractee_id)) {
+        if ($request->user()->cannot('contract_moderate') && $request->user()->user_id != $SyndieContract->contractee_id) {
             abort(502,"You do not have the permission to edit the contract");
         }
 
@@ -121,7 +121,7 @@ class ContractController extends Controller
         $SyndieContract = SyndieContract::find($contract);
 
         //Check if the user is the contract owner or a moderator
-        if ($request->user()->cannot('contract_moderate' && $request->user()->user_id != $SyndieContract->contractee_id)) {
+        if ($request->user()->cannot('contract_moderate') && $request->user()->user_id != $SyndieContract->contractee_id) {
             abort(502,"You do not have the permission to edit the contract");
         }
 

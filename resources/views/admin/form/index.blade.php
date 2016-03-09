@@ -29,13 +29,14 @@
                     <div class="panel-heading">Form Overview</div>
 
                     <div class="panel-body">
-                        @can('admin_forms_edit')<p><a href="{{route('admin.form.add.post')}}" class="btn btn-info" role="button">Add new Form</a></p>@endcan()
+                        @can('admin_forms_edit')<p><a href="{{route('admin.form.add.post')}}" class="btn btn-success" role="button">Add new Form</a></p>@endcan()
                         <table id="forms-table" class="table table-condensed">
                             <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Department</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                         </table>
