@@ -40,13 +40,13 @@ class FormController extends Controller
 
     public function index()
     {
-        return view('admin.form.index');
+        return view('admin.forms.index');
     }
 
     public function getEdit($form_id)
     {
         $form = ServerForm::findOrFail($form_id);
-        return view('admin.form.edit', ['form' => $form]);
+        return view('admin.forms.edit', ['form' => $form]);
     }
 
     public function postEdit($form_id, Request $request)
@@ -55,6 +55,14 @@ class FormController extends Controller
         {
             abort('403','You do not have the required permission');
         }
+        $this->validate($request,[
+            'id' => 'required|max:9999|numeric',
+            'name' => 'required|max:50',
+            'department' => 'required|max:32',
+            'data' => 'required',
+            'info' => 'required'
+
+        ]);
 
         $form = ServerForm::findOrFail($form_id);
         $form->id = $request->input('id');
@@ -64,7 +72,7 @@ class FormController extends Controller
         $form->info = $request->input('info');
         $form->save();
 
-        return redirect()->route('admin.form.index');
+        return redirect()->route('admin.forms.index');
     }
 
     public function delete($form_id, Request $request)
@@ -76,7 +84,7 @@ class FormController extends Controller
         $form = ServerForm::findOrFail($form_id);
         $form->delete();
 
-        return redirect()->route('admin.form.index');
+        return redirect()->route('admin.forms.index');
     }
 
     public function getAdd(Request $request)
@@ -86,7 +94,7 @@ class FormController extends Controller
             abort('403','You do not have the required permission');
         }
 
-        return view('admin.form.add');
+        return view('admin.forms.add');
     }
 
     public function postAdd(Request $request)
@@ -95,6 +103,16 @@ class FormController extends Controller
         {
             abort('403','You do not have the required permission');
         }
+
+        $this->validate($request,[
+            'id' => 'required|max:9999|numeric',
+            'name' => 'required|max:50',
+            'department' => 'required|max:32',
+            'data' => 'required',
+            'info' => 'required'
+
+        ]);
+
         $form = new ServerForm();
         $form->id = $request->input('id');
         $form->name = $request->input('name');
@@ -103,7 +121,7 @@ class FormController extends Controller
         $form->info = $request->input('info');
         $form->save();
 
-        return redirect()->route('admin.form.index');
+        return redirect()->route('admin.forms.index');
     }
 
     public function getFormData()
@@ -112,8 +130,8 @@ class FormController extends Controller
 
         return Datatables::of($forms)
             ->removeColumn('form_id')
-            ->editColumn('name', '<a href="{{route(\'admin.form.edit.get\',[\'form\'=>$form_id])}}">{{$name}}</a>')
-            ->addColumn('action','<p><a href="{{route(\'admin.form.edit.get\',[\'form\'=>$form_id])}}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'admin_forms_edit\')<a href="{{route(\'admin.form.delete\',[\'form\'=>$form_id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->editColumn('name', '<a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}">{{$name}}</a>')
+            ->addColumn('action','<p><a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'admin_forms_edit\')<a href="{{route(\'admin.forms.delete\',[\'form\'=>$form_id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
             ->make();
     }
 }
