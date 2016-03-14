@@ -104,12 +104,12 @@
         {{-- Warnings and Notes Row--}}
         @can('admin_warnings_show')
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">User Warnings</div>
 
                     <div class="panel-body">
-                        <table id="user-warnings-table" class="table table-bordered">
+                        <table id="user-warnings-table" class="table table-condensed">
                             <thead>
                             <tr>
                                 <th width="5px">#</th>
@@ -128,12 +128,12 @@
         @endcan()
         @can('admin_notes_show')
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">User Notes</div>
 
                     <div class="panel-body">
-                        <table id="user-notes-table" class="table table-bordered">
+                        <table id="user-notes-table" class="table table-condensed">
                             <thead>
                             <tr>
                                 <th width="5px">#</th>
