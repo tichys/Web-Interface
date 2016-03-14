@@ -24,16 +24,17 @@ use Illuminate\Http\Request;
 use MongoDB\Driver\Server;
 use Yajra\Datatables\Datatables;
 use App\Models\ServerPlayer;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class WhitelistController extends Controller
+class PlayerController extends Controller
 {
 
     public function __construct(Request $request)
     {
-        if($request->user()->cannot('admin_whitelists_show'))
+        if($request->user()->cannot('admin_players_show'))
         {
             abort('403','You do not have the required permission');
         }
@@ -44,7 +45,7 @@ class WhitelistController extends Controller
      */
     public function index()
     {
-        return view('admin.whitelist.index');
+        return view('admin.player.index');
     }
 
     /**
@@ -58,11 +59,11 @@ class WhitelistController extends Controller
     {
         $player = ServerPlayer::findOrFail($player_id);
 
-        return view('admin.whitelist.show',['player'=>$player,'whitelists'=>$player->get_player_whitelists()]);
+        return view('admin.player.show',['player'=>$player,'whitelists'=>$player->get_player_whitelists()]);
     }
 
 
-    public function add($player_id, $whitelist, Request $request)
+    public function addWhitelist($player_id, $whitelist, Request $request)
     {
         if($request->user()->cannot('admin_whitelists_edit'))
         {
@@ -77,7 +78,7 @@ class WhitelistController extends Controller
         return redirect()->route('admin.whitelist.show', ['player_id' => $player_id]);
     }
 
-    public function remove($player_id, $whitelist, Request $request)
+    public function removeWhitelist($player_id, $whitelist, Request $request)
     {
         if($request->user()->cannot('admin_whitelists_edit'))
         {
@@ -89,16 +90,53 @@ class WhitelistController extends Controller
 
         $player->strip_player_whitelist_flag($whitelist,$request->user()->username_clean);
 
-        return redirect()->route('admin.whitelist.show', ['player_id' => $player_id]);
+        return redirect()->route('admin.player.show', ['player_id' => $player_id]);
     }
 
 
-    public function getWhitelistData()
+    public function getPlayerWarningsData($player_id, Request $request)
+    {
+        if($request->user()->cannot('admin_warnings_show'))
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        $player = ServerPlayer::findOrFail($player_id);
+
+        $warnings = DB::connection('server')
+            ->table('warnings')
+            ->where('ckey','=',$player->ckey)
+            ->select(['id','time','severity','acknowledged','a_ckey','reason']);
+
+        return Datatables::of($warnings)
+            ->make();
+    }
+
+    public function getPlayerNotesData($player_id, Request $request)
+    {
+        if($request->user()->cannot('admin_notes_show'))
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        $player = ServerPlayer::findOrFail($player_id);
+
+        $notes = DB::connection('server')
+            ->table('notes')
+            ->where('ckey','=',$player->ckey)
+            ->select(['id','adddate','a_ckey','content']);
+
+        return Datatables::of($notes)
+            ->make();
+
+    }
+
+    public function getPlayerData()
     {
         $players = ServerPlayer::select(['id','ckey']);
 
         return Datatables::of($players)
-            ->editColumn('ckey','<a href="{{route(\'admin.whitelist.show\',[\'player_id\'=>$id])}}">{{$ckey}}</a>')
+            ->editColumn('ckey','<a href="{{route(\'admin.players.show\',[\'player_id\'=>$id])}}">{{$ckey}}</a>')
             ->make();
     }
 }

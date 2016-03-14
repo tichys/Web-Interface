@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Whitelist Overview</div>
+                    <div class="panel-heading">Player Overview</div>
 
                     <div class="panel-body">
                         <table id="users-table" class="table table-condensed">
@@ -52,7 +52,7 @@
             $('#users-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.whitelist.data') }}'
+                ajax: '{{ route('admin.players.data') }}'
             });
         });
     </script>
