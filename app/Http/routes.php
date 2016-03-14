@@ -94,22 +94,22 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('', ['as' => 'admin.stats.index', 'uses'=>'Admin\StatsController@index']);
         });
 
-        Route::group(['prefix' => 'whitelist'], function () {
-            Route::get('', ['as' => 'admin.whitelist.index', 'uses'=>'Admin\WhitelistController@index']);
-            Route::get('/{player_id}/show', ['as' => 'admin.whitelist.show', 'uses'=>'Admin\WhitelistController@show']);
-            Route::get('/{player_id}/add/{whitelist}', ['as' => 'admin.whitelist.add', 'uses'=>'Admin\WhitelistController@add']);
-            Route::get('/{player_id}/remove/{whitelist}', ['as' => 'admin.whitelist.remove', 'uses'=>'Admin\WhitelistController@remove']);
-            Route::get('/data', ['as' => 'admin.whitelist.data', 'uses'=>'Admin\WhitelistController@getWhitelistData']);
+        Route::group(['prefix' => 'player'], function () {
+            Route::get('', ['as' => 'admin.players.index', 'uses'=>'Admin\PlayerController@index']);
+            Route::get('/{player_id}/show', ['as' => 'admin.players.show', 'uses'=>'Admin\PlayerController@show']);
+            Route::get('/{player_id}/add_whitelist/{whitelist}', ['as' => 'admin.players.whitelist.add', 'uses'=>'Admin\PlayerController@addWhitelist']);
+            Route::get('/{player_id}/remove_whitelist/{whitelist}', ['as' => 'admin.players.whitelist.remove', 'uses'=>'Admin\PlayerController@removeWhitelist']);
+            Route::get('/data', ['as' => 'admin.players.data', 'uses'=>'Admin\PlayerController@getPlayerData']);
         });
 
         Route::group(['prefix' => 'form'], function () {
-            Route::get('', ['as' => 'admin.form.index', 'uses'=>'Admin\FormController@index']);
-            Route::get('/{form_id}/edit', ['as' => 'admin.form.edit.get', 'uses'=>'Admin\FormController@getEdit']);
-            Route::post('/{form_id}/edit', ['as' => 'admin.form.edit.post', 'uses'=>'Admin\FormController@postEdit']);
-            Route::get('/{form_id}/delete', ['as' => 'admin.form.delete', 'uses'=>'Admin\FormController@delete']);
-            Route::get('/add', ['as' => 'admin.form.add.get', 'uses'=>'Admin\FormController@getAdd']);
-            Route::post('/add', ['as' => 'admin.form.add.post', 'uses'=>'Admin\FormController@postAdd']);
-            Route::get('/data', ['as' => 'admin.form.data', 'uses'=>'Admin\FormController@getFormData']);
+            Route::get('', ['as' => 'admin.forms.index', 'uses'=>'Admin\FormController@index']);
+            Route::get('/{form_id}/edit', ['as' => 'admin.forms.edit.get', 'uses'=>'Admin\FormController@getEdit']);
+            Route::post('/{form_id}/edit', ['as' => 'admin.forms.edit.post', 'uses'=>'Admin\FormController@postEdit']);
+            Route::get('/{form_id}/delete', ['as' => 'admin.forms.delete', 'uses'=>'Admin\FormController@delete']);
+            Route::get('/add', ['as' => 'admin.forms.add.get', 'uses'=>'Admin\FormController@getAdd']);
+            Route::post('/add', ['as' => 'admin.forms.add.post', 'uses'=>'Admin\FormController@postAdd']);
+            Route::get('/data', ['as' => 'admin.forms.data', 'uses'=>'Admin\FormController@getFormData']);
         });
     });
 });

@@ -1,7 +1,12 @@
+#
+# Contracts
+#
 contract_moderate -> Allows to moderate Syndicate Contracts
+
+#
+# Admin Menu
+#
 admin_menu_view -> Show the admin menu
-admin_whitelists_show -> Show the whitelists
-admin_whitelists_edit ->  Edit the whitelists
 admin_server_permissions_show -> Show the permissions on the server
 admin_server_permissions_edit -> Edit the permissions on the server
 admin_staff_roster_show -> Show the staff roster
@@ -18,3 +23,12 @@ admin_site_logs_show -> Show the site logs
 admin_server_logs_show -> Show the server logs
 admin_forms_show -> Show the corporate Form Database
 admin_forms_edit -> Edit the corporate Form Database
+
+#Player Overvew
+admin_players_show -> Show the player page (Alone Useless -> Needs some of the perms below)
+admin_whitelists_show -> Show the whitelists
+admin_whitelists_edit ->  Edit the whitelists
+admin_warnings_show -> Show a players warnings
+admin_warnings_edit -> Edit a players warnings
+admin_notes_show -> Show a players notes
+admin_notes_edit -> Edit a players notes

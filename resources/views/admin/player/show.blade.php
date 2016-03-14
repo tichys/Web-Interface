@@ -56,6 +56,7 @@
                     </div>
                 </div>
             </div>
+            @can('admin_whitelists_show')
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">User Whitelists</div>
@@ -74,7 +75,7 @@
                                         </td>
                                         @can('admin_whitelists_edit')
                                         <td>
-                                            <a href="{{route('admin.whitelist.remove',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
+                                            <a href="{{route('admin.players.whitelist.remove',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
                                                class="btn btn-danger" role="button">Remove Whitelist</a>
                                         </td>
                                         @endcan
@@ -86,7 +87,7 @@
                                         </td>
                                         @can('admin_whitelists_edit')
                                         <td>
-                                            <a href="{{route('admin.whitelist.add',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
+                                            <a href="{{route('admin.players.whitelist.add',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
                                                class="btn btn-success" role="button">Add Whitelist</a>
                                         </td>
                                         @endcan
@@ -98,6 +99,7 @@
                     </div>
                 </div>
             </div>
+            @endcan()
         </div>
     </div>
 @endsection

@@ -102,8 +102,8 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                @can('admin_whitelists_show')<li><a href="{{route('admin.whitelist.index')}}"><i class="fa fa-btn"></i>WhiteLists</a></li>@endcan
-                                @can('admin_forms_show')<li><a href="{{route('admin.form.index')}}"><i class="fa fa-btn"></i>Forms</a></li>@endcan
+                                @can('admin_players_show')<li><a href="{{route('admin.players.index')}}"><i class="fa fa-btn"></i>Players</a></li>@endcan
+                                @can('admin_forms_show')<li><a href="{{route('admin.forms.index')}}"><i class="fa fa-btn"></i>Forms</a></li>@endcan
                                 @can('admin_server_permissions_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Server Permissions</a></li>@endcan
                                 @can('admin_staff_roster_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Staff Roster</a></li>@endcan
                                 @can('admin_character_records_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Character Records</a></li>@endcan
