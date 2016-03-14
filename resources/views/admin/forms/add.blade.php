@@ -21,11 +21,12 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
+                @include('components.formerrors')
                 <div class="panel panel-default">
                     <div class="panel-heading">Add a new Form</div>
 
                     <div class="panel-body">
-                        {{Form::open(array('route' => 'admin.form.add.post','method' => 'post')) }}
+                        {{Form::open(array('route' => 'admin.forms.add.post','method' => 'post')) }}
                         {{Form::token()}}
 
                         {{Form::bsText('id')}}
