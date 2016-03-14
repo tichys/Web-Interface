@@ -56,6 +56,7 @@
                     </div>
                 </div>
             </div>
+            @can('admin_whitelists_show')
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">User Whitelists</div>
@@ -74,7 +75,7 @@
                                         </td>
                                         @can('admin_whitelists_edit')
                                         <td>
-                                            <a href="{{route('admin.whitelist.remove',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
+                                            <a href="{{route('admin.players.whitelist.remove',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
                                                class="btn btn-danger" role="button">Remove Whitelist</a>
                                         </td>
                                         @endcan
@@ -86,7 +87,7 @@
                                         </td>
                                         @can('admin_whitelists_edit')
                                         <td>
-                                            <a href="{{route('admin.whitelist.add',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
+                                            <a href="{{route('admin.players.whitelist.add',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
                                                class="btn btn-success" role="button">Add Whitelist</a>
                                         </td>
                                         @endcan
@@ -98,6 +99,77 @@
                     </div>
                 </div>
             </div>
+            @endcan()
         </div>
+        {{-- Warnings and Notes Row--}}
+        @can('admin_warnings_show')
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">User Warnings</div>
+
+                    <div class="panel-body">
+                        <table id="user-warnings-table" class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th width="5px">#</th>
+                                <th>Date</th>
+                                <th width="30px">Srv</th>
+                                <th width="30px" >Ack</th>
+                                <th>Admin</th>
+                                <th>Reason</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endcan()
+        @can('admin_notes_show')
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">User Notes</div>
+
+                    <div class="panel-body">
+                        <table id="user-notes-table" class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th width="5px">#</th>
+                                <th>Date</th>
+                                <th>Admin</th>
+                                <th>Content</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endcan()
     </div>
+@endsection
+
+@section('javascripts')
+    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+    <script>
+        $(function() {
+            @can('admin_warnings_show')
+            $('#user-warnings-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('admin.players.warnings.data',["player_id"=>$player->id]) }}'
+            });
+            @endcan()
+            @can('admin_notes_show')
+            $('#user-notes-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('admin.players.notes.data',["player_id"=>$player->id]) }}'
+            });
+            @endcan()
+        });
+    </script>
 @endsection

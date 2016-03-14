@@ -200,6 +200,35 @@ class CreatePermissionRolesTables extends Migration
         $admin_forms_edit->label = "Edit the corporate Form Database";
         $admin_forms_edit->save();
 
+//        admin_players_show -> Show the player page (Alone Useless -> Needs some of the perms below)
+        $admin_players_show = new SitePermission();
+        $admin_players_show->name = "admin_players_show";
+        $admin_players_show->label = "Show the player page";
+        $admin_players_show->save();
+
+//        admin_warnings_show -> Show a players warnings
+        $admin_warnings_show = new SitePermission();
+        $admin_warnings_show->name = "admin_warnings_show";
+        $admin_warnings_show->label = "Show a players warnings";
+        $admin_warnings_show->save();
+
+//        admin_warnings_edit -> Edit a players warnings
+        $admin_warnings_edit = new SitePermission();
+        $admin_warnings_edit->name = "admin_warnings_edit";
+        $admin_warnings_edit->label = "Edit a players warnings";
+        $admin_warnings_edit->save();
+
+//        admin_notes_show -> Show a players notes
+        $admin_notes_show = new SitePermission();
+        $admin_notes_show->name = "admin_notes_show";
+        $admin_notes_show->label = "Show a players notes";
+        $admin_notes_show->save();
+
+//        admin_notes_edit -> Edit a players notes
+        $admin_notes_edit = new SitePermission();
+        $admin_notes_edit->name = "admin_notes_edit";
+        $admin_notes_edit->label = "Edit a players notes";
+        $admin_notes_edit->save();
 
         $administrators = new SiteRole();
         $administrators->name = "administrators";
@@ -209,8 +238,6 @@ class CreatePermissionRolesTables extends Migration
 
         $administrators->givePermissionTo($contract_moderate);
         $administrators->givePermissionTo($admin_menu_view);
-        $administrators->givePermissionTo($admin_whitelists_show);
-        $administrators->givePermissionTo($admin_whitelists_edit);
         $administrators->givePermissionTo($admin_server_permissions_show);
         $administrators->givePermissionTo($admin_server_permissions_edit);
         $administrators->givePermissionTo($admin_staff_roster_show);
@@ -227,8 +254,13 @@ class CreatePermissionRolesTables extends Migration
         $administrators->givePermissionTo($admin_server_logs_show);
         $administrators->givePermissionTo($admin_forms_show);
         $administrators->givePermissionTo($admin_forms_edit);
-
-
+        $administrators->givePermissionTo($admin_players_show);
+        $administrators->givePermissionTo($admin_whitelists_show);
+        $administrators->givePermissionTo($admin_whitelists_edit);
+        $administrators->givePermissionTo($admin_warnings_show);
+        $administrators->givePermissionTo($admin_warnings_edit);
+        $administrators->givePermissionTo($admin_notes_show);
+        $administrators->givePermissionTo($admin_notes_edit);
 
         $moderators = new SiteRole();
         $moderators->name = "moderators";
@@ -238,13 +270,18 @@ class CreatePermissionRolesTables extends Migration
 
         $moderators->givePermissionTo($contract_moderate);
         $moderators->givePermissionTo($admin_menu_view);
-        $moderators->givePermissionTo($admin_whitelists_show);
         $moderators->givePermissionTo($admin_staff_roster_show);
         $moderators->givePermissionTo($admin_character_records_show);
         $moderators->givePermissionTo($admin_server_stats_show);
         $moderators->givePermissionTo($admin_site_roles_show);
         $moderators->givePermissionTo($admin_site_permissions_show);
         $moderators->givePermissionTo($admin_forms_show);
+        $moderators->givePermissionTo($admin_players_show);
+        $moderators->givePermissionTo($admin_whitelists_show);
+        $moderators->givePermissionTo($admin_warnings_show);
+        $moderators->givePermissionTo($admin_warnings_edit);
+        $moderators->givePermissionTo($admin_notes_show);
+        $moderators->givePermissionTo($admin_notes_edit);
 
         $duty_offiers = new SiteRole();
         $duty_offiers->name = "duty_officers";
@@ -253,12 +290,13 @@ class CreatePermissionRolesTables extends Migration
         $duty_offiers->save();
 
         $duty_offiers->givePermissionTo($admin_menu_view);
-        $duty_offiers->givePermissionTo($admin_whitelists_show);
         $duty_offiers->givePermissionTo($admin_character_records_show);
         $duty_offiers->givePermissionTo($admin_character_records_edit);
         $duty_offiers->givePermissionTo($admin_do_recorder_logs_show);
         $duty_offiers->givePermissionTo($admin_forms_show);
         $duty_offiers->givePermissionTo($admin_forms_edit);
+        $duty_offiers->givePermissionTo($admin_players_show);
+        $duty_offiers->givePermissionTo($admin_whitelists_show);
 
         $whitelist_managers = new SiteRole();
         $whitelist_managers->name = "whitelist_managers";
@@ -267,6 +305,7 @@ class CreatePermissionRolesTables extends Migration
         $whitelist_managers->save();
 
         $whitelist_managers->givePermissionTo($admin_menu_view);
+        $whitelist_managers->givePermissionTo($admin_players_show);
         $whitelist_managers->givePermissionTo($admin_whitelists_show);
         $whitelist_managers->givePermissionTo($admin_whitelists_edit);
 
