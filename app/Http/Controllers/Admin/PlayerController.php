@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use MongoDB\Driver\Server;
 use Yajra\Datatables\Datatables;
 use App\Models\ServerPlayer;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -92,6 +93,43 @@ class PlayerController extends Controller
         return redirect()->route('admin.player.show', ['player_id' => $player_id]);
     }
 
+
+    public function getPlayerWarningsData($player_id, Request $request)
+    {
+        if($request->user()->cannot('admin_warnings_show'))
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        $player = ServerPlayer::findOrFail($player_id);
+
+        $warnings = DB::connection('server')
+            ->table('warnings')
+            ->where('ckey','=',$player->ckey)
+            ->select(['id','time','severity','acknowledged','a_ckey','reason']);
+
+        return Datatables::of($warnings)
+            ->make();
+    }
+
+    public function getPlayerNotesData($player_id, Request $request)
+    {
+        if($request->user()->cannot('admin_notes_show'))
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        $player = ServerPlayer::findOrFail($player_id);
+
+        $notes = DB::connection('server')
+            ->table('notes')
+            ->where('ckey','=',$player->ckey)
+            ->select(['id','adddate','a_ckey','content']);
+
+        return Datatables::of($notes)
+            ->make();
+
+    }
 
     public function getPlayerData()
     {

@@ -99,6 +99,8 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/{player_id}/show', ['as' => 'admin.players.show', 'uses'=>'Admin\PlayerController@show']);
             Route::get('/{player_id}/add_whitelist/{whitelist}', ['as' => 'admin.players.whitelist.add', 'uses'=>'Admin\PlayerController@addWhitelist']);
             Route::get('/{player_id}/remove_whitelist/{whitelist}', ['as' => 'admin.players.whitelist.remove', 'uses'=>'Admin\PlayerController@removeWhitelist']);
+            Route::get('/{player_id}/warnings_data', ['as' => 'admin.players.warnings.data', 'uses'=>'Admin\PlayerController@getPlayerWarningsData']);
+            Route::get('/{player_id}/notes_data', ['as' => 'admin.players.notes.data', 'uses'=>'Admin\PlayerController@getPlayerNotesData']);
             Route::get('/data', ['as' => 'admin.players.data', 'uses'=>'Admin\PlayerController@getPlayerData']);
         });
 
