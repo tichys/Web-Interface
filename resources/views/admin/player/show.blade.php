@@ -24,36 +24,34 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">User Details</div>
 
-                    <div class="panel-body">
-                        <table class="table table-bordered">
-                            <tbody>
-                            <tr>
-                                <td>ID</td>
-                                <td>{{$player->id}}</td>
-                            </tr>
-                            <tr>
-                                <td>Username</td>
-                                <td>{{$player->ckey}}</td>
-                            </tr>
-                            <tr>
-                                <td>First Seen</td>
-                                <td>{{$player->firstseen}}</td>
-                            </tr>
-                            <tr>
-                                <td>Last Seen</td>
-                                <td>{{$player->lastseen}}</td>
-                            </tr>
-                            <tr>
-                                <td>IP</td>
-                                <td>{{$player->ip}}</td>
-                            </tr>
-                            <tr>
-                                <td>Rank</td>
-                                <td>{{$player->lastadminrank}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <td>ID</td>
+                            <td>{{$player->id}}</td>
+                        </tr>
+                        <tr>
+                            <td>Username</td>
+                            <td>{{$player->ckey}}</td>
+                        </tr>
+                        <tr>
+                            <td>First Seen</td>
+                            <td>{{$player->firstseen}}</td>
+                        </tr>
+                        <tr>
+                            <td>Last Seen</td>
+                            <td>{{$player->lastseen}}</td>
+                        </tr>
+                        <tr>
+                            <td>IP</td>
+                            <td>{{$player->ip}}</td>
+                        </tr>
+                        <tr>
+                            <td>Rank</td>
+                            <td>{{$player->lastadminrank}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             @can('admin_whitelists_show')
@@ -61,42 +59,40 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">User Whitelists</div>
 
-                    <div class="panel-body">
-                        <table class="table table-bordered">
-                            <tbody>
-                            @foreach($whitelists as $whitelist=>$status)
-                                <tr>
-                                    <td>{{$whitelist}}</td>
-                                    @if($status == TRUE)
-                                        <td>
-                                            <span class="label label-success">
-                                                <span class="glyphicon glyphicon-ok"></span>
-                                            </span>
-                                        </td>
-                                        @can('admin_whitelists_edit')
-                                        <td>
-                                            <a href="{{route('admin.players.whitelist.remove',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
-                                               class="btn btn-danger" role="button">Remove Whitelist</a>
-                                        </td>
-                                        @endcan
-                                    @else
-                                        <td>
-                                            <span class="label label-danger">
-                                                <span class="glyphicon glyphicon-remove"></span>
-                                            </span>
-                                        </td>
-                                        @can('admin_whitelists_edit')
-                                        <td>
-                                            <a href="{{route('admin.players.whitelist.add',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
-                                               class="btn btn-success" role="button">Add Whitelist</a>
-                                        </td>
-                                        @endcan
-                                    @endif
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                    <table class="table table-bordered">
+                        <tbody>
+                        @foreach($whitelists as $whitelist=>$status)
+                            <tr>
+                                <td>{{$whitelist}}</td>
+                                @if($status == TRUE)
+                                    <td>
+                                        <span class="label label-success">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </span>
+                                    </td>
+                                    @can('admin_whitelists_edit')
+                                    <td>
+                                        <a href="{{route('admin.players.whitelist.remove',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
+                                           class="btn btn-danger" role="button">Remove Whitelist</a>
+                                    </td>
+                                    @endcan
+                                @else
+                                    <td>
+                                        <span class="label label-danger">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </span>
+                                    </td>
+                                    @can('admin_whitelists_edit')
+                                    <td>
+                                        <a href="{{route('admin.players.whitelist.add',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
+                                           class="btn btn-success" role="button">Add Whitelist</a>
+                                    </td>
+                                    @endcan
+                                @endif
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
             @endcan()

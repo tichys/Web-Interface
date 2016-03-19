@@ -28,24 +28,22 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Warning Status</div>
 
-                    <div class="panel-body">
-                        <table class="table table-bordered">
-                            <tbody>
-                            <tr>
-                                <td>Total Warnings</td>
-                                <td><span class="label label-default">{{$warnings->get_total_count()}}</span></td>
-                            </tr>
-                            <tr>
-                                <td>Major Warnings</td>
-                                <td><span class="label label-warning">{{$warnings->get_major_count()}}</span></td>
-                            </tr>
-                            <tr>
-                                <td>Unacknowledged Warnings</td>
-                                <td><span class="label label-danger">{{$warnings->get_unack_count()}}</span></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <td>Total Warnings</td>
+                            <td><span class="label label-default">{{$warnings->get_total_count()}}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Major Warnings</td>
+                            <td><span class="label label-warning">{{$warnings->get_major_count()}}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Unacknowledged Warnings</td>
+                            <td><span class="label label-danger">{{$warnings->get_unack_count()}}</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="col-md-4">

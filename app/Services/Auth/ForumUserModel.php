@@ -139,23 +139,4 @@ class ForumUserModel extends Model implements AuthenticateableContract
 
         return !! $role->intersect($this->roles)->count();
     }
-
-    /**
-     * Assigns a Role to a User
-     *
-     * @param $role
-     *
-     * @return Model
-     */
-    public function assignRole($role)
-    {
-        if(is_string($role))
-        {
-            return $this->roles()->save(
-                SiteRole::whereName($role)->firstOrfail
-            );
-        }
-
-        return $this->roles()->save($role);
-    }
 }
