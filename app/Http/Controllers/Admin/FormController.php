@@ -61,7 +61,6 @@ class FormController extends Controller
             'department' => 'required|max:32',
             'data' => 'required',
             'info' => 'required'
-
         ]);
 
         $form = ServerForm::findOrFail($form_id);

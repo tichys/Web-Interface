@@ -113,5 +113,18 @@ Route::group(['middleware' => 'web'], function () {
             Route::post('/add', ['as' => 'admin.forms.add.post', 'uses'=>'Admin\FormController@postAdd']);
             Route::get('/data', ['as' => 'admin.forms.data', 'uses'=>'Admin\FormController@getFormData']);
         });
+
+        Route::group(['prefix' => 'role'], function () {
+            Route::get('', ['as' => 'admin.roles.index', 'uses'=>'Admin\RoleController@index']);
+            Route::get('/add', ['as' => 'admin.roles.add.get', 'uses'=>'Admin\RoleController@getAdd']);
+            Route::post('/add', ['as' => 'admin.roles.add.post', 'uses'=>'Admin\RoleController@postAdd']);
+            Route::get('{role_id}/edit', ['as' => 'admin.roles.edit.get', 'uses'=>'Admin\RoleController@getEdit']);
+            Route::post('{role_id}/edit', ['as' => 'admin.roles.edit.post', 'uses'=>'Admin\RoleController@postEdit']);
+            Route::get('{role_id}/delete', ['as' => 'admin.roles.delete', 'uses'=>'Admin\RoleController@delete']);
+            Route::post('{role_id}/addperm', ['as' => 'admin.roles.addperm', 'uses'=>'Admin\RoleController@addPermission']);
+            Route::post('{role_id}/remperm', ['as' => 'admin.roles.remperm', 'uses'=>'Admin\RoleController@removePermission']);
+            Route::post('{role_id}/adduser', ['as' => 'admin.roles.adduser', 'uses'=>'Admin\RoleController@addUser']);
+            Route::post('{role_id}/remuser', ['as' => 'admin.roles.remuser', 'uses'=>'Admin\RoleController@removeUser']);
+        });
     });
 });
