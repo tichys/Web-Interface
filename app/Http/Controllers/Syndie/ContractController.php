@@ -88,8 +88,10 @@ class ContractController extends Controller
         $SystemComment->commentor_name = "System";
         $SystemComment->title = "Contract Added";
         $SystemComment->comment = "The has been added to our database.
-        A contract moderator will review this contract shortly.
-        Thank you for your patience.";
+
+A contract moderator will review this contract shortly.
+
+Thank you for your patience.";
         $SystemComment->type = 'ic';
         $SystemComment->save();
 
@@ -315,6 +317,20 @@ The contractee is expected to provide a explanation, why the completion report i
             $SyndieContract->status = "canceled";
             $SyndieContract->save();
         }
+
+        return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
+    }
+
+    public function deleteMessage($comment, Request $request)
+    {
+        if($request->user()->cannot('contract_moderate'))
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        $SyndieContractComment = SyndieContractComment::findOrfail($comment);
+        $contract = $SyndieContractComment->contract_id;
+        $SyndieContractComment->delete();
 
         return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
     }

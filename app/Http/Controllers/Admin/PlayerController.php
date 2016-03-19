@@ -75,7 +75,7 @@ class PlayerController extends Controller
 
         $player->add_player_whitelist_flag($whitelist,$request->user()->username_clean);
 
-        return redirect()->route('admin.whitelist.show', ['player_id' => $player_id]);
+        return redirect()->route('admin.players.show', ['player_id' => $player_id]);
     }
 
     public function removeWhitelist($player_id, $whitelist, Request $request)
@@ -90,7 +90,7 @@ class PlayerController extends Controller
 
         $player->strip_player_whitelist_flag($whitelist,$request->user()->username_clean);
 
-        return redirect()->route('admin.player.show', ['player_id' => $player_id]);
+        return redirect()->route('admin.players.show', ['player_id' => $player_id]);
     }
 
 

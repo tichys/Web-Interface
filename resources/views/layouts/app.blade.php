@@ -109,7 +109,7 @@
                                 @can('admin_character_records_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Character Records</a></li>@endcan
                                 @can('admin_do_recorder_logs_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>DO Recorder Logs</a></li>@endcan
                                 @can('admin_server_stats_show')<li><a href="{{route('admin.stats.index')}}"><i class="fa fa-btn"></i>Statistics</a></li>@endcan
-                                @can('admin_site_roles_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Site Roles</a></li>@endcan
+                                @can('admin_site_roles_show')<li><a href="{{route('admin.roles.index')}}"><i class="fa fa-btn"></i>Site Roles</a></li>@endcan
                                 @can('admin_site_permissions_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Site Permissions</a></li>@endcan
                                 @can('admin_site_logs_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>WebSite Logs</a></li>@endcan
                                 @can('admin_server_logs_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Server Logs</a></li>@endcan
@@ -147,7 +147,7 @@
 
     <footer>
         <div class="footer navbar-fixed-bottom">
-            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.0.7</p></small>
+            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.0.8</p></small>
         </div>
     </footer>
 
