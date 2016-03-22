@@ -87,7 +87,7 @@ class ContractController extends Controller
         $SystemComment->commentor_id = 0;
         $SystemComment->commentor_name = "System";
         $SystemComment->title = "Contract Added";
-        $SystemComment->comment = "The has been added to our database.
+        $SystemComment->comment = "The contract has been added to our database.
 
 A contract moderator will review this contract shortly.
 

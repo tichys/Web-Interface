@@ -28,6 +28,7 @@
 
     <!-- Styles -->
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/css/dropdown-submenu.css')}}" rel="stylesheet">
     {{--<link href="{{asset('assets/css/fixed-footer.css')}}" rel="stylesheet">--}}
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
     @yield('styles')
@@ -102,17 +103,62 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                @can('admin_players_show')<li><a href="{{route('admin.players.index')}}"><i class="fa fa-btn"></i>Players</a></li>@endcan
-                                @can('admin_forms_show')<li><a href="{{route('admin.forms.index')}}"><i class="fa fa-btn"></i>Forms</a></li>@endcan
-                                @can('admin_server_permissions_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Server Permissions</a></li>@endcan
-                                @can('admin_staff_roster_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Staff Roster</a></li>@endcan
-                                @can('admin_character_records_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Character Records</a></li>@endcan
-                                @can('admin_do_recorder_logs_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>DO Recorder Logs</a></li>@endcan
-                                @can('admin_server_stats_show')<li><a href="{{route('admin.stats.index')}}"><i class="fa fa-btn"></i>Statistics</a></li>@endcan
-                                @can('admin_site_roles_show')<li><a href="{{route('admin.roles.index')}}"><i class="fa fa-btn"></i>Site Roles</a></li>@endcan
-                                @can('admin_site_permissions_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Site Permissions</a></li>@endcan
-                                @can('admin_site_logs_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>WebSite Logs</a></li>@endcan
-                                @can('admin_server_logs_show')<li class="disabled"><a href="#"><i class="fa fa-btn"></i>Server Logs</a></li>@endcan
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Player</a>
+                                    <ul class="dropdown-menu">
+                                        <li @cannot('admin_players_show')class="disabled"@endcannot>
+                                            <a href="{{route('admin.players.index')}}"><i class="fa fa-btn"></i>Players</a>
+                                        </li>
+                                        <li @cannot('admin_character_records_show')class="disabled"@endcannot>
+                                            <a href="#"><i class="fa fa-btn"></i>Character Records <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">DO</a>
+                                    <ul class="dropdown-menu">
+                                        <li @cannot('admin_do_recorder_logs_show')class="disabled"@endcannot>
+                                            <a href="#"><i class="fa fa-btn"></i>DO Recorder Logs <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                        </li>
+                                        <li @cannot('admin_do_actions_show')class="disabled"@endcannot>
+                                            <a href="#"><i class="fa fa-btn"></i>DO Actions <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Site</a>
+                                    <ul class="dropdown-menu">
+                                        <li @cannot('admin_site_roles_show')class="disabled"@endcannot>
+                                            <a href="{{route('admin.roles.index')}}"><i class="fa fa-btn"></i>Site Roles</a>
+                                        </li>
+                                        <li @cannot('admin_site_permissions_show')class="disabled"@endcannot>
+                                            <a href="#"><i class="fa fa-btn"></i>Site Permissions <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                        </li>
+                                        <li @cannot('admin_site_logs_show')class="disabled"@endcannot>
+                                            <a href="#"><i class="fa fa-btn"></i>WebSite Logs <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                        </li>
+                                        <li @cannot('admin_staff_roster_show')class="disabled"@endcannot>
+                                            <a href="#"><i class="fa fa-btn"></i>Staff Roster <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Server</a>
+                                    <ul class="dropdown-menu">
+                                        <li @cannot('admin_forms_show')class="disabled"@endcannot>
+                                            <a href="{{route('admin.forms.index')}}"><i class="fa fa-btn"></i>Forms</a>
+                                        </li>
+                                        <li @cannot('admin_server_permissions_show')class="disabled"@endcannot>
+                                            <a href="#"><i class="fa fa-btn"></i>Server Permissions <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                        </li>
+                                        <li @cannot('admin_server_stats_show')class="disabled"@endcannot>
+                                            <a href="{{route('admin.stats.index')}}"><i class="fa fa-btn"></i>Statistics <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                        </li>
+                                        <li @cannot('admin_server_logs_show')class="disabled"@endcannot>
+                                            <a href="#"><i class="fa fa-btn"></i>Server Logs <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         @endcan
@@ -147,7 +193,7 @@
 
     <footer>
         <div class="footer navbar-fixed-bottom">
-            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.0.8</p></small>
+            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.0.9</p></small>
         </div>
     </footer>
 
