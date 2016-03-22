@@ -283,7 +283,7 @@
 
                         <div class="alert alert-success">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            You can use Markdown to in the comment field
+                            You can use Markdown in the comment field
                         </div>
                         {{Form::bsTextArea('comment')}}
 
