@@ -193,7 +193,7 @@
 
     <footer>
         <div class="footer navbar-fixed-bottom">
-            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.0.8</p></small>
+            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.0.9</p></small>
         </div>
     </footer>
 
