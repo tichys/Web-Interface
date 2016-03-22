@@ -31,7 +31,7 @@
                     <div class="panel-body">
                         <div class="alert alert-success">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            You can use Markdown to in the description field
+                            You can use Markdown in the description field
                         </div>
                         {{ Form::open(array('route' => 'syndie.contracts.add.post','method' => 'post')) }}
 

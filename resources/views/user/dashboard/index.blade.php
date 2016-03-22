@@ -50,9 +50,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Whitelist Status</div>
 
-                    <div class="panel-body">
-                        @include('components.whiteliststatustable')
-                    </div>
+                    @include('components.whiteliststatustable')
                 </div>
             </div>
         </div>
