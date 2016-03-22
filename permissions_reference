@@ -23,6 +23,8 @@ admin_site_logs_show -> Show the site logs
 admin_server_logs_show -> Show the server logs
 admin_forms_show -> Show the corporate Form Database
 admin_forms_edit -> Edit the corporate Form Database
+admin_do_actions_show -> Show the DO Actions
+admin_do_actions_edit -> Edit the DO Actions
 
 #Player Overvew
 admin_players_show -> Show the player page (Alone Useless -> Needs some of the perms below)

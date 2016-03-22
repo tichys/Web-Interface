@@ -230,6 +230,19 @@ class CreatePermissionRolesTables extends Migration
         $admin_notes_edit->label = "Edit a players notes";
         $admin_notes_edit->save();
 
+//        admin_do_actions_show -> Show the DO Actions
+        $admin_do_actions_show = new SitePermission();
+        $admin_do_actions_show->name = "admin_do_actions_show";
+        $admin_do_actions_show->label = "Show the current DO Actions";
+        $admin_do_actions_show->save();
+
+//        admin_do_actions_edit -> Edit the DO Actions
+        $admin_do_actions_edit = new SitePermission();
+        $admin_do_actions_edit->name = "admin_do_actions_edit";
+        $admin_do_actions_edit->label = "Edit the DO Actions";
+        $admin_do_actions_edit->save();
+
+
         $administrators = new SiteRole();
         $administrators->name = "administrators";
         $administrators->label = "Administrators";
@@ -261,6 +274,8 @@ class CreatePermissionRolesTables extends Migration
         $administrators->givePermissionTo($admin_warnings_edit);
         $administrators->givePermissionTo($admin_notes_show);
         $administrators->givePermissionTo($admin_notes_edit);
+        $administrators->givePermissionTo($admin_do_actions_show);
+        $administrators->givePermissionTo($admin_do_actions_edit);
 
         $moderators = new SiteRole();
         $moderators->name = "moderators";
@@ -297,6 +312,8 @@ class CreatePermissionRolesTables extends Migration
         $duty_offiers->givePermissionTo($admin_forms_edit);
         $duty_offiers->givePermissionTo($admin_players_show);
         $duty_offiers->givePermissionTo($admin_whitelists_show);
+        $duty_offiers->givePermissionTo($admin_do_actions_show);
+        $duty_offiers->givePermissionTo($admin_do_actions_edit);
 
         $whitelist_managers = new SiteRole();
         $whitelist_managers->name = "whitelist_managers";
