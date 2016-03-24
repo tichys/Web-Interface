@@ -100,7 +100,7 @@ Thank you for your patience.";
 
     public function show($contract)
     {
-        $contract = SyndieContract::find($contract);
+        $contract = SyndieContract::findOrFail($contract);
         $comments = SyndieContractComment::where('contract_id', '=', $contract->contract_id)->get();
 
         return view('syndie.contract.view', ['contract' => $contract, 'comments' => $comments]);

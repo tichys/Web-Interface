@@ -25,6 +25,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Services\Server\Helpers;
 
 class LinkController extends Controller
 {
@@ -47,9 +48,11 @@ class LinkController extends Controller
 
             //Check if the linking request is set to something other than new
             if ($linking_request->status == "confirmed") {
+                $helpers = new Helpers();
+
                 //If its confirmed write it to the forum db
                 $request->user()->user_byond_linked = 1;
-                $request->user()->user_byond = $linking_request->player_ckey;
+                $request->user()->user_byond = $helpers->sanitize_ckey($linking_request->player_ckey);
                 $request->user()->save();
 
                 //Set the status of the linking request to linked and set the deleted_at date
@@ -80,6 +83,8 @@ class LinkController extends Controller
             'Byond_Username' => 'required'
         ]);
 
+        $helpers = new Helpers();
+        $ckey = $helpers->sanitize_ckey($request->input("Byond_Username"));
 
         //Only add a new linking request if there is no existing one (where the deleted_at date is not set)
         if (DB::connection('server')->table('player_linking')->where('forum_id', '=', $request->user()->user_id)->where('deleted_at','=',NULL)->count() == 0) {
@@ -89,7 +94,7 @@ class LinkController extends Controller
                     ['forum_id' => $request->user()->user_id,
                         'forum_username_short' => $request->user()->username_clean,
                         'forum_username' => $request->user()->username,
-                        'player_ckey' => $request->input("Byond_Username"),
+                        'player_ckey' => $ckey,
                         'status' => 'new',
                         'created_at' => date('Y-m-d H:i:s',time()),
                         'updated_at' => date('Y-m-d H:i:s',time())
