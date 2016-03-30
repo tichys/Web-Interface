@@ -40,7 +40,6 @@ class ContractController extends Controller
 
     public function getContractData(Request $request)
     {
-//        $forms = ServerForm::select(['form_id','id', 'name', 'department']);
         $contracts = SyndieContract::select(['contract_id', 'title', 'contractee_name', 'status']);
         //For contract mods: Show all contracts
         if ($request->user()->can('contract_moderate')) {
@@ -80,20 +79,6 @@ class ContractController extends Controller
         $contract->title = strip_tags($request->input('title'));
         $contract->description = strip_tags($request->input('description'));
         $contract->save();
-
-        //Add a info that the contract has been confirmed as completed.
-        $SystemComment = new SyndieContractComment;
-        $SystemComment->contract_id = $contract->contract_id;
-        $SystemComment->commentor_id = 0;
-        $SystemComment->commentor_name = "System";
-        $SystemComment->title = "Contract Added";
-        $SystemComment->comment = "The contract has been added to our database.
-
-A contract moderator will review this contract shortly.
-
-Thank you for your patience.";
-        $SystemComment->type = 'ic';
-        $SystemComment->save();
 
         return redirect()->route('syndie.contracts.index');
     }
@@ -142,19 +127,6 @@ Thank you for your patience.";
             $SyndieContract = SyndieContract::find($contract);
             $SyndieContract->status = "open";
             $SyndieContract->save();
-
-            //Add a info that the contract has been confirmed as completed.
-            $SystemComment = new SyndieContractComment;
-            $SystemComment->contract_id = $SyndieContract->contract_id;
-            $SystemComment->commentor_id = 0;
-            $SystemComment->commentor_name = "System";
-            $SystemComment->title = "Contract Approved";
-            $SystemComment->comment =
-"The contract has been approved by a contract moderator.
-
-Contractors are now able to see it in the contract overview.";
-            $SystemComment->type = 'ic';
-            $SystemComment->save();
 
             return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
         } else {
