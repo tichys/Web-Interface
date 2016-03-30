@@ -306,4 +306,16 @@ The contractee is expected to provide a explanation, why the completion report i
 
         return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
     }
+
+    public function deleteContract($contract , Request $request)
+    {
+        if($request->user()->cannot('contract_moderate'))
+        {
+            abort('403','You do not have the required permission');
+        }
+        $SyndieContract = SyndieContract::findOrfail($contract);
+        $SyndieContract->delete();
+
+        return redirect()->route('syndie.contracts.index');
+    }
 }

@@ -89,16 +89,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Actions</div>
                     <div class="panel-body">
-                        {{-- Check if the user is the contractee --}}
-                        @if(Auth::user()->user_id == $contract->contractee_id && Auth::user()->cannot('contract_moderate'))
-                        <p><b>Contractee Actions</b></p>
-                        <p><a href="{{route('syndie.contracts.cancel',['contract'=>$contract->contract_id])}}" class="btn btn-danger" role="button">Cancel Contract</a></p>
-                        @endif()
                         {{-- Check if user is a contract mod--}}
                         @can('contract_moderate')
                         <p><b>Mod Actions</b></p>
                         <p><a href="{{route('syndie.contracts.approve',['contract'=>$contract->contract_id])}}" class="btn btn-info @if(!in_array($contract->status,['new','mod-nok'])) disabled @endif" role="button">Approve Contract</a></p>
                         <p><a href="{{route('syndie.contracts.reject',['contract'=>$contract->contract_id])}}" class="btn btn-warning @if($contract->status != 'new') disabled @endif" role="button">Reject Contract</a></p>
+                        <p><a href="{{route('syndie.contracts.deletecontract',['contract'=>$contract->contract_id])}}" class="btn btn-danger" role="button">Delete Contract</a></p>
                         @endcan('')
                     </div>
                 </div>
