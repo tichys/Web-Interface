@@ -65,11 +65,15 @@ Route::group(['middleware' => 'web'], function () {
             Route::post('/{contract}/edit', ['as' => 'syndie.contracts.edit.post', 'uses'=>'Syndie\ContractController@postEdit']);
             Route::get('/{contract}/approve', ['as' => 'syndie.contracts.approve', 'uses'=>'Syndie\ContractController@approve']); //Mod Approve the contract
             Route::get('/{contract}/reject', ['as' => 'syndie.contracts.reject', 'uses'=>'Syndie\ContractController@reject']); //Mod Reject the contract
+            Route::get('/{contract}/delete', ['as' => 'syndie.contracts.deletecontract', 'uses'=>'Syndie\ContractController@deleteContract']);
             Route::post('/{contract}/addmessage',['as' => 'syndie.contracts.addmessage', 'uses'=>'Syndie\ContractController@addMessage']); //Add message to contract
+            Route::get('/data',['as' => 'syndie.contracts.data', 'uses'=>'Syndie\ContractController@getContractData']);
+        });
+
+        Route::group(['prefix' => 'comments'],function(){
             Route::get('/{comment}/confirm', ['as' => 'syndie.contracts.confirm', 'uses'=>'Syndie\ContractController@confirm']); //Confirm Completion of the Contract
             Route::get('/{comment}/reopen', ['as' => 'syndie.contracts.reopen', 'uses'=>'Syndie\ContractController@reopen']); // Reopen the contract
             Route::get('/{comment}/delete',['as' => 'syndie.contracts.deletemessage', 'uses'=>'Syndie\ContractController@deleteMessage']); //Delete a comment
-            Route::get('/data',['as' => 'syndie.contracts.data', 'uses'=>'Syndie\ContractController@getContractData']);
         });
     });
 
