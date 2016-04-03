@@ -36,14 +36,14 @@ class Mailer
         $from_address = config('aurora.syndie_contract_from_address');
 
         //Get user E-Mail
-        Mail::send('emails.contract_notification', ['forum_user' => $forum_user, 'contract' => $contract], function ($m) use ($forum_user, $contract, $from_name, $from_address) {
+        Mail::send('emails.contract_notification', ['forum_user' => $forum_user, 'contract' => $contract, 'type' => $type], function ($m) use ($forum_user, $contract, $from_name, $from_address) {
             $m->from($from_address, $from_name);
             $m->to($forum_user->user_email, $forum_user->username);
             $m->subject('Contract Update - ' . $contract->title);
         });
     }
 
-    public function send_contract_mod_notification($forum_user_id, $contract_id, $type)
+    public function send_contract_new_mod($forum_user_id, $contract_id)
     {
         $contract = SyndieContract::find($contract_id);
         $forum_user = ForumUserModel::find($forum_user_id);

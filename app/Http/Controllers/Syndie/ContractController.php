@@ -303,6 +303,12 @@ The contractee is expected to provide a explanation, why the completion report i
             $SyndieContract->status = "canceled";
             $SyndieContract->save();
         }
+        
+        //Check if the posting user is subscribed to the contract. If not subscribe him
+        if(!$SyndieContract->is_subscribed($request->user()->user_id))
+        {
+            $SyndieContract->add_subscribers($request->user()->user_id);
+        }
 
         $this->dispatch(new SendContractNotificationEmail($SyndieContract, $type));
         return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
@@ -332,5 +338,21 @@ The contractee is expected to provide a explanation, why the completion report i
         $SyndieContract->delete();
 
         return redirect()->route('syndie.contracts.index');
+    }
+
+    public function subscribe($contract, Request $request)
+    {
+        $SyndieContract = SyndieContract::findOrfail($contract);
+        $SyndieContract->add_subscribers($request->user()->user_id);
+
+        return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
+    }
+
+    public function unsubscribe($contract, Request $request)
+    {
+        $SyndieContract = SyndieContract::findOrfail($contract);
+        $SyndieContract->remove_subscribers($request->user()->user_id);
+
+        return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
     }
 }

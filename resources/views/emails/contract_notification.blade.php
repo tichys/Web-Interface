@@ -2,6 +2,8 @@ Hello {{$forum_user->username}},<br>
 <br>
 Contract ID {{$contract->contract_id}} with the title {{$contract->title}} has been updated.<br>
 <br>
+Update type {{$type}}
+<br>
 You can view the update on the following page:<br>
 <a href="{{route('syndie.contracts.show',['contract'=>$contract->contract_id])}}">{{route('syndie.contracts.show',['contract'=>$contract->contract_id])}}</a><br>
 <br>

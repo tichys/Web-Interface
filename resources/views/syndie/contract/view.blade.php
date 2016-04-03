@@ -52,24 +52,32 @@
 
                     <table class="table">
                         <tbody>
-                        <tr>
-                            <td><b>Contractee:</b></td>
-                            <td>{{$contract->contractee_name}}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Status:</b></td>
-                            <td>@include("components.syndiecontractstatus")</td>
-                        </tr>
-                        <tr>
-                            <td><b>Reward:</b></td>
-                            <td>{{$contract->reward_other}}</td>
-                        </tr>
-                        @if(Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('contract_moderate') )
                             <tr>
-                                <td><a href="{{route('syndie.contracts.edit.get',['contract'=>$contract->contract_id])}}" class="btn btn-info" role="button">Edit the Contract</a></td>
+                                <td><b>Contractee:</b></td>
+                                <td>{{$contract->contractee_name}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Status:</b></td>
+                                <td>@include("components.syndiecontractstatus")</td>
+                            </tr>
+                            <tr>
+                                <td><b>Reward:</b></td>
+                                <td>{{$contract->reward_other}}</td>
+                            </tr>
+                            @if(Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('contract_moderate') )
+                                <tr>
+                                    <td><a href="{{route('syndie.contracts.edit.get',['contract'=>$contract->contract_id])}}" class="btn btn-info" role="button">Edit the Contract</a></td>
+                                    <td></td>
+                                </tr>
+                            @endif
+                            <tr>
+                                @if(!$contract->is_subscribed(Auth::user()->user_id))
+                                    <td><a href="{{route('syndie.contracts.subscribe',['contract'=>$contract->contract_id])}}" class="btn btn-success" role="button">Subscribe to Updates</a></td>
+                                @else()
+                                    <td><a href="{{route('syndie.contracts.unsubscribe',['contract'=>$contract->contract_id])}}" class="btn btn-warning" role="button">Unsubscribe from Updates</a></td>
+                                @endif()
                                 <td></td>
                             </tr>
-                        @endif
                         </tbody>
                     </table>
                 </div>

@@ -5,6 +5,6 @@ Contract ID {{$contract->contract_id}} with the title {{$contract->title}} has b
 You can view the update on the following page:<br>
 <a href="{{route('syndie.contracts.show',['contract'=>$contract->contract_id])}}">{{route('syndie.contracts.show',['contract'=>$contract->contract_id])}}</a><br>
 <br>
-Please review and approve or reject that contract
+Please review and approve or reject the contract<br>
 <br>
 You receive this mail because you are a contract moderator
