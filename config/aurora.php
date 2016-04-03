@@ -64,4 +64,26 @@ return [
     |
     */
     "token_valid_time" => env('AURORA_TOKEN_VALID_TIME', 24),
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Contract Update From-Name / From-Address
+    |--------------------------------------------------------------------------
+    |
+    | The From Adress and Name that is shown in syndie contract updates
+    |
+    */
+    "syndie_contract_from_name" => env('SYNDIE_CONTRACT_FROM_NAME', 'Aurora Station - Syndie Contracts'),
+    "syndie_contract_from_address" => env('SYNDIE_CONTRACT_FROM_ADDRESS', 'syndiecontracts@aurorastation.org'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Contract Moderator ID
+    |--------------------------------------------------------------------------
+    |
+    | The id of the contract mod group
+    |
+    */
+    "syndie_contract_mods_id" => env('SYNDIE_CONTRACT_MODS_ID', 5),
 ];
