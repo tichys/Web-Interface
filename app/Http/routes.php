@@ -68,6 +68,8 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/{contract}/delete', ['as' => 'syndie.contracts.deletecontract', 'uses'=>'Syndie\ContractController@deleteContract']);
             Route::post('/{contract}/addmessage',['as' => 'syndie.contracts.addmessage', 'uses'=>'Syndie\ContractController@addMessage']); //Add message to contract
             Route::get('/data',['as' => 'syndie.contracts.data', 'uses'=>'Syndie\ContractController@getContractData']);
+            Route::get('/{contract}/subscribe', ['as' => 'syndie.contracts.subscribe', 'uses'=>'Syndie\ContractController@subscribe']);
+            Route::get('/{contract}/unsubscribe', ['as' => 'syndie.contracts.unsubscribe', 'uses'=>'Syndie\ContractController@unsubscribe']);
         });
 
         Route::group(['prefix' => 'comments'],function(){
