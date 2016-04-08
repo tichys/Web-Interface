@@ -1,6 +1,6 @@
 <?php
 
-//Copyright (c) 2016 "Werner Maisl"
+//Copyright (c) 2016 "Werner Maisl", "Sierra Brown"
 //
 //This file is part of the Aurora Webinterface
 //
@@ -131,6 +131,18 @@ Route::group(['middleware' => 'web'], function () {
             Route::post('{role_id}/remperm', ['as' => 'admin.roles.remperm', 'uses'=>'Admin\RoleController@removePermission']);
             Route::post('{role_id}/adduser', ['as' => 'admin.roles.adduser', 'uses'=>'Admin\RoleController@addUser']);
             Route::post('{role_id}/remuser', ['as' => 'admin.roles.remuser', 'uses'=>'Admin\RoleController@removeUser']);
+        });
+    
+        // CCIA Stuff
+        Route::group(['prefix' => 'ccia', 'middleware' => 'auth'], function () {
+            Route::group(['prefix' => 'generalnotice'], function () {
+                Route::get('', ['as' => 'ccia.generalnotice.show', 'uses' => 'CCIA\GeneralNotice@show']);
+                Route::get('/{generalnotice_id}/edit', ['as' => 'ccia.generalnotice.edit.get', 'uses' => 'CCIA\GeneralNoticeController@getEdit']);
+                Route::post('/{generalnotice_id}/edit', ['as' => 'ccia.generalnotice.edit.post', 'uses' => 'CCIA\GeneralNoticeController@postEdit']);
+                Route::get('/{generalnotice_id}/delete', ['as' => 'ccia.generalnotice.delete', 'uses' => 'CCIA\GeneralNoticeController@delete']);
+                Route::get('/add', ['as' => 'ccia.generalnotice.add.get', 'uses' => 'CCIA\GeneralNoticeController@getAdd']);
+                Route::post('/add', ['as' => 'ccia.generalnotice.add.post', 'uses' => 'CCIA\GeneralNoticeController@postAdd']);
+            });
         });
     });
 });
