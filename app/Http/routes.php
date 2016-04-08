@@ -142,7 +142,7 @@ Route::group(['middleware' => 'web'], function () {
                 Route::get('/{generalnotice_id}/delete', ['as' => 'ccia.generalnotice.delete', 'uses' => 'CCIA\GeneralNoticeController@delete']);
                 Route::get('/add', ['as' => 'ccia.generalnotice.add.get', 'uses' => 'CCIA\GeneralNoticeController@getAdd']);
                 Route::post('/add', ['as' => 'ccia.generalnotice.add.post', 'uses' => 'CCIA\GeneralNoticeController@postAdd']);
-                Route::get('/data', ['as' => 'ccia_generalnotice.data', 'uses'=>'CCIA\GeneralNoticeController@getData']);
+                Route::get('/data', ['as' => 'ccia.generalnotice.data', 'uses'=>'CCIA\GeneralNoticeController@getData']);
             });
         });
     });
