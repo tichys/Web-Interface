@@ -136,12 +136,13 @@ Route::group(['middleware' => 'web'], function () {
         // CCIA Stuff
         Route::group(['prefix' => 'ccia', 'middleware' => 'auth'], function () {
             Route::group(['prefix' => 'generalnotice'], function () {
-                Route::get('', ['as' => 'ccia.generalnotice.show', 'uses' => 'CCIA\GeneralNotice@show']);
+                Route::get('', ['as' => 'ccia.generalnotice.index', 'uses' => 'CCIA\GeneralNoticeController@index']);
                 Route::get('/{generalnotice_id}/edit', ['as' => 'ccia.generalnotice.edit.get', 'uses' => 'CCIA\GeneralNoticeController@getEdit']);
                 Route::post('/{generalnotice_id}/edit', ['as' => 'ccia.generalnotice.edit.post', 'uses' => 'CCIA\GeneralNoticeController@postEdit']);
                 Route::get('/{generalnotice_id}/delete', ['as' => 'ccia.generalnotice.delete', 'uses' => 'CCIA\GeneralNoticeController@delete']);
                 Route::get('/add', ['as' => 'ccia.generalnotice.add.get', 'uses' => 'CCIA\GeneralNoticeController@getAdd']);
                 Route::post('/add', ['as' => 'ccia.generalnotice.add.post', 'uses' => 'CCIA\GeneralNoticeController@postAdd']);
+                Route::get('/data', ['as' => 'ccia_generalnotice.data', 'uses'=>'CCIA\GeneralNoticeController@getData']);
             });
         });
     });
