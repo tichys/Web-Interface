@@ -23,10 +23,10 @@
     
     use Illuminate\Database\Eloquent\Model;
     
-    class GeneralNotice extends Model
+    class CCIAGeneralNotice extends Model
     {
         protected $connection = 'server';
-        protected $table = 'ccia_general_notices';
-        protected $fillable = [];
+        protected $table      = 'ccia_general_notice_list';
+        protected $fillable   = ['title', 'message'];
         protected $primaryKey = 'id';
     }

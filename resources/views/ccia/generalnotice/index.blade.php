@@ -35,7 +35,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Title</th>
-                                <th>Message</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                         </table>

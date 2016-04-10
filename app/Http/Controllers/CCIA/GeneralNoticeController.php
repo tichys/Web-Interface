@@ -26,6 +26,8 @@
     use App\Http\Controllers\Controller;
     use Yajra\Datatables\Datatables;
     
+    use App\Models\CCIAGeneralNotice;
+    
     class GeneralNoticeController extends Controller
     {
         public function __construct(Request $request)
@@ -40,11 +42,6 @@
         
         public function getEdit(Request $request)
         {
-            if ($request->user()
-                        ->cannot('ccia_general_notices_edit')
-            ) {
-                abort('403', 'You do not have permission to edit CCIA General Notices.');
-            }
             
             // TODO Code that processes getEdit
             
@@ -54,7 +51,7 @@
         public function postEdit(Request $request)
         {
             if ($request->user()
-                        ->cannot('ccia_general_notices_edit')
+                        ->cannot('ccia_general_notice_edit')
             ) {
                 abort('403', 'You do not have permission to edit CCIA General Notices.');
             }
@@ -67,7 +64,7 @@
         public function getAdd(Request $request)
         {
             if ($request->user()
-                        ->cannot('ccia_general_notices_edit')
+                        ->cannot('ccia_general_notice_edit')
             ) {
                 abort('403', 'You do not have permission to edit CCIA General Notices.');
             }
@@ -80,7 +77,7 @@
         public function postAdd(Request $request)
         {
             if ($request->user()
-                        ->cannot('ccia_general_notices_edit')
+                        ->cannot('ccia_general_notice_edit')
             ) {
                 abort('403', 'You do not have permission to edit CCIA General Notices.');
             }
@@ -93,7 +90,7 @@
         public function delete(Request $request)
         {
             if ($request->user()
-                        ->cannot('ccia_general_notices_edit')
+                        ->cannot('ccia_general_notice_edit')
             ) {
                 abort('403', 'You do not have permission to edit CCIA General Notices.');
             }
@@ -105,10 +102,11 @@
         
         public function getData(Request $request)
         {
-            $data = GeneralNotice::select(['id', 'title', 'message']);
+            $data = CCIAGeneralNotice::select(['id', 'title']);
             
             return Datatables::of($data)
-                             ->editColumn('title', '<a href="{{route{\'ccia.generalnotices.edit.get\', [\'id\' -> $id)}}">{{$name}}</a>')
+                             ->editColumn('title', '<a href="{{ route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}">{{$title}}</a>')
+                             ->addColumn('action', '<p><a href="{{ route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'ccia_general_notice_edit\')<a href="{{route(\'ccia.generalnotice.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
                              ->make();
             
         }
