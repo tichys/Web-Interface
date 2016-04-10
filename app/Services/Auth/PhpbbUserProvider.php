@@ -27,6 +27,7 @@ use Carbon\Carbon;
 use Illuminate\Auth\GenericUser;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
+use Hash;
 
 class PhpbbUserProvider implements UserProvider
 {
@@ -51,7 +52,7 @@ class PhpbbUserProvider implements UserProvider
     {
         $qry = ForumUser::where('user_id', '=', $identifier);
         if ($qry->count() > 0) {
-            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email','user_new_privmsg','user_unread_privmsg','user_byond','user_byond_linked')->first();
+            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_new_privmsg', 'user_unread_privmsg', 'user_byond', 'user_byond_linked')->first();
             return $user;
         }
         return NULL;
@@ -70,7 +71,7 @@ class PhpbbUserProvider implements UserProvider
         if ($this->use_remember_me == TRUE) {
             $qry = ForumUserModel::where('username_clean', '=', strtolower($identifier))->where('remember_token', '=', $token);
             if ($qry->count() > 0) {
-                $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email','user_new_privmsg','user_unread_privmsg','user_byond','user_byond_linked')->first();
+                $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_new_privmsg', 'user_unread_privmsg', 'user_byond', 'user_byond_linked')->first();
                 return $user;
             }
         }
@@ -98,7 +99,7 @@ class PhpbbUserProvider implements UserProvider
         // TODO: Implement retrieveByCredentials() method.
         $qry = ForumUser::where('username_clean', '=', strtolower($credentials['username']));
         if ($qry->count() > 0) {
-            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email','user_new_privmsg','user_unread_privmsg','user_byond','user_byond_linked')->first();
+            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_new_privmsg', 'user_unread_privmsg', 'user_byond', 'user_byond_linked')->first();
             return $user;
         }
         return NULL;
@@ -114,11 +115,18 @@ class PhpbbUserProvider implements UserProvider
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
+        $pwmatch = FALSE;
+        $hash = $user->getAuthPassword();
         if ($this->hash_password) {
-            $passwordhash = new PasswordHash;
-            $pwmatch = $passwordhash->phpbb_check_hash($credentials['password'], $user->getAuthPassword());
+            //Check if hash is a bcryp 2 hash, then use bcrypt2
+            if (strncmp($hash, '$2y$10$', 7) == 0) {
+                $pwmatch = Hash::check($credentials['password'],$hash);
+            } else {
+                $passwordhash = new PasswordHash;
+                $pwmatch = $passwordhash->phpbb_check_hash($credentials['password'], $user->getAuthPassword());
+            }
         } else {
-            $pwmatch = $credentials['password'] == $user->getAuthPassword();
+            $pwmatch = $credentials['password'] == $hash;
         }
 
 
