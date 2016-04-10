@@ -19,7 +19,18 @@
 
 @section('styles')
     <link href="{{asset('assets/css/timeline.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/css/ekko-lightbox.min.css')}}" rel="stylesheet">
 @endsection
+
+@section('javascripts')
+    <script src="{{asset('assets/js/ekko-lightbox.min.js')}}"></script>
+    <script>
+        $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+            event.preventDefault();
+            $(this).ekkoLightbox();
+        });
+    </script>
+@endsection()
 
 
 @section('content')
@@ -128,13 +139,11 @@
                                     <div class="timeline-panel">
                                         <div class="timeline-heading">
                                             <h4 class="timeline-title"><b>Mod OOC: </b>{{$comment->title}}</h4>
-                                            <p>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
-                                            </p>
+                                            @include('components.syndiecomment.subtitle')
                                         </div>
                                         <div class="timeline-body">
                                             <p>@parsedown($comment->comment)</p>
+                                            @include('components.syndiecomment.image')
                                             @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                         </div>
                                     </div>
@@ -145,13 +154,11 @@
                                     <div class="timeline-panel">
                                         <div class="timeline-heading">
                                             <h4 class="timeline-title"><b>Private: </b>{{$comment->title}}</h4>
-                                            <p>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
-                                            </p>
+                                            @include('components.syndiecomment.subtitle')
                                         </div>
                                         <div class="timeline-body">
                                             <p>@parsedown($comment->comment)</p>
+                                            @include('components.syndiecomment.image')
                                             @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                         </div>
                                     </div>
@@ -162,13 +169,11 @@
                                     <div class="timeline-panel">
                                         <div class="timeline-heading">
                                             <h4 class="timeline-title"><b>Message: </b>{{$comment->title}}</h4>
-                                            <p>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
-                                            </p>
+                                            @include('components.syndiecomment.subtitle')
                                         </div>
                                         <div class="timeline-body">
                                             <p>@parsedown($comment->comment)</p>
+                                            @include('components.syndiecomment.image')
                                             @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                         </div>
                                     </div>
@@ -179,13 +184,11 @@
                                     <div class="timeline-panel">
                                         <div class="timeline-heading">
                                             <h4 class="timeline-title"><b>Completion Report: </b>{{$comment->title}}</h4>
-                                            <p>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
-                                            </p>
+                                            @include('components.syndiecomment.subtitle')
                                         </div>
                                         <div class="timeline-body">
                                             <p>@parsedown($comment->comment)</p>
+                                            @include('components.syndiecomment.image')
                                             @if($contract->status == "completed" && (Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('contract_moderate')))
                                             <p>
                                                 <a href="{{route('syndie.contracts.confirm',['comment'=>$comment->comment_id])}}" class="btn btn-success" role="button">Confirm Completion</a>
@@ -202,13 +205,11 @@
                                         <div class="timeline-panel">
                                             <div class="timeline-heading">
                                                 <h4 class="timeline-title"><b>Failure Report: </b>{{$comment->title}}</h4>
-                                                <p>
-                                                    <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
-                                                    <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
-                                                </p>
+                                                @include('components.syndiecomment.subtitle')
                                             </div>
                                             <div class="timeline-body">
                                                 <p>@parsedown($comment->comment)</p>
+                                                @include('components.syndiecomment.image')
                                                 @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                             </div>
                                         </div>
@@ -219,13 +220,11 @@
                                         <div class="timeline-panel">
                                             <div class="timeline-heading">
                                                 <h4 class="timeline-title"><b>Contract Canceled: </b>{{$comment->title}}</h4>
-                                                <p>
-                                                    <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
-                                                    <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
-                                                </p>
+                                                @include('components.syndiecomment.subtitle')
                                             </div>
                                             <div class="timeline-body">
                                                 <p>@parsedown($comment->comment)</p>
+                                                @include('components.syndiecomment.image')
                                                 @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                             </div>
                                         </div>
@@ -236,13 +235,11 @@
                                     <div class="timeline-panel">
                                         <div class="timeline-heading">
                                             <h4 class="timeline-title"><b>OOC Message: </b>{{$comment->title}}</h4>
-                                            <p>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ $comment->created_at->diffForHumans() }}  </small>
-                                                <small class="text-muted"><i class="glyphicon glyphicon-user"></i> Made by: <b>{{$comment->commentor_name}}</b></small>
-                                            </p>
+                                            @include('components.syndiecomment.subtitle')
                                         </div>
                                         <div class="timeline-body">
                                             <p>@parsedown($comment->comment)</p>
+                                            @include('components.syndiecomment.image')
                                             @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                         </div>
                                     </div>
@@ -260,7 +257,7 @@
                     <div class="panel-heading">New Message</div>
 
                     <div class="panel-body">
-                        {{ Form::open(array('route' => array('syndie.contracts.addmessage',$contract->contract_id),'method' => 'post')) }}
+                        {{ Form::open(array('route' => array('syndie.contracts.addmessage',$contract->contract_id),'method' => 'post', 'files' => true)) }}
 
                         {{Form::token()}}
 
@@ -290,6 +287,13 @@
                             You can use Markdown in the comment field
                         </div>
                         {{Form::bsTextArea('comment')}}
+
+                        <div class="alert alert-success">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            Uploading a image is optional. You can only upload one image at a time.<br>
+                            It is recommened to provide a description for each image you upload and then post a contract report
+                        </div>
+                        {{Form::bsFile('image')}}
 
                         {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
 
