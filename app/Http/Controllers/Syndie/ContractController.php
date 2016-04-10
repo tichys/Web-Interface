@@ -29,6 +29,8 @@ use App\Models\SyndieContract;
 use App\Models\SyndieContractComment;
 use Yajra\Datatables\Datatables;
 use App\Jobs\SendContractNotificationEmail;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ContractController extends Controller
 {
@@ -250,7 +252,8 @@ The contractee is expected to provide a explanation, why the completion report i
             'commentor_name' => 'required',
             'type' => 'required',
             'title' => 'required',
-            'comment' => 'required'
+            'comment' => 'required',
+            'image' => 'image'
         ]);
 
         $commentor_name = $request->input('commentor_name');
@@ -292,6 +295,19 @@ The contractee is expected to provide a explanation, why the completion report i
         $SyndieContractComment->comment = strip_tags($comment);
         $SyndieContractComment->save();
 
+
+        //Check for files
+        if($request->hasFile('image'))
+        {
+            $file = $request->file('image');
+            //Check if file uploaded successfully
+            $extension = $file->getClientOriginalExtension();
+            $name = $SyndieContractComment->comment_id.'-'.time().'-'.rand(0,9999).'.'.$extension;
+            Storage::disk('contractimages')->put($name,  File::get($file));
+            $SyndieContractComment->image_name = $name;
+            $SyndieContractComment->save();
+        }
+        
         //Check if the comment is a completion report -> if so update contract status to completed
         if ($type == 'ic-comprep') {
             $SyndieContract->status = "completed";
