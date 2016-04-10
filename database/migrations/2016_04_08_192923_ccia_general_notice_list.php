@@ -47,6 +47,6 @@ class CciaGeneralNoticeList extends Migration
      */
     public function down()
     {
-        Schema::connection('sever')->drop('ccia_general_notice_list');
+        Schema::connection('server')->drop('ccia_general_notice_list');
     }
 }
