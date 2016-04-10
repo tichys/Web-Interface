@@ -28,6 +28,9 @@ use App\Http\Controllers\Controller;
 use App\Models\SyndieContract;
 use App\Models\SyndieContractComment;
 use Yajra\Datatables\Datatables;
+use App\Jobs\SendContractNotificationEmail;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ContractController extends Controller
 {
@@ -80,6 +83,10 @@ class ContractController extends Controller
         $contract->description = strip_tags($request->input('description'));
         $contract->save();
 
+        $contract->add_subscribers($contract->contractee_id);
+
+        $this->dispatch(new SendContractNotificationEmail($contract, 'new'));
+
         return redirect()->route('syndie.contracts.index');
     }
 
@@ -128,6 +135,8 @@ class ContractController extends Controller
             $SyndieContract->status = "open";
             $SyndieContract->save();
 
+            $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'approve'));
+
             return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
         } else {
             abort(403, 'Unauthorized action.');
@@ -142,6 +151,9 @@ class ContractController extends Controller
             $SyndieContract = SyndieContract::find($contract);
             $SyndieContract->status = "mod-nok";
             $SyndieContract->save();
+
+            $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'reject'));
+
             return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
         } else {
             abort(403, 'Unauthorized action.');
@@ -183,6 +195,8 @@ Thank you for choosing our Contract Service.";
         $SystemComment->type = 'ic';
         $SystemComment->save();
 
+        $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'confirm'));
+
         //Return the player to the page
         return redirect()->route('syndie.contracts.show', ['contract' => $SyndieComment->contract_id]);
     }
@@ -221,6 +235,8 @@ The contract has been reopened.
 The contractee is expected to provide a explanation, why the completion report is not satisfying";
         $SystemComment->type = 'ic';
         $SystemComment->save();
+
+        $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'reopen'));
     }
 
     public function cancel(Request $request, $contract)
@@ -236,7 +252,8 @@ The contractee is expected to provide a explanation, why the completion report i
             'commentor_name' => 'required',
             'type' => 'required',
             'title' => 'required',
-            'comment' => 'required'
+            'comment' => 'required',
+            'image' => 'image'
         ]);
 
         $commentor_name = $request->input('commentor_name');
@@ -278,6 +295,19 @@ The contractee is expected to provide a explanation, why the completion report i
         $SyndieContractComment->comment = strip_tags($comment);
         $SyndieContractComment->save();
 
+
+        //Check for files
+        if($request->hasFile('image'))
+        {
+            $file = $request->file('image');
+            //Check if file uploaded successfully
+            $extension = $file->getClientOriginalExtension();
+            $name = $SyndieContractComment->comment_id.'-'.time().'-'.rand(0,9999).'.'.$extension;
+            Storage::disk('contractimages')->put($name,  File::get($file));
+            $SyndieContractComment->image_name = $name;
+            $SyndieContractComment->save();
+        }
+        
         //Check if the comment is a completion report -> if so update contract status to completed
         if ($type == 'ic-comprep') {
             $SyndieContract->status = "completed";
@@ -289,7 +319,14 @@ The contractee is expected to provide a explanation, why the completion report i
             $SyndieContract->status = "canceled";
             $SyndieContract->save();
         }
+        
+        //Check if the posting user is subscribed to the contract. If not subscribe him
+        if(!$SyndieContract->is_subscribed($request->user()->user_id))
+        {
+            $SyndieContract->add_subscribers($request->user()->user_id);
+        }
 
+        $this->dispatch(new SendContractNotificationEmail($SyndieContract, $type));
         return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
     }
 
@@ -317,5 +354,21 @@ The contractee is expected to provide a explanation, why the completion report i
         $SyndieContract->delete();
 
         return redirect()->route('syndie.contracts.index');
+    }
+
+    public function subscribe($contract, Request $request)
+    {
+        $SyndieContract = SyndieContract::findOrfail($contract);
+        $SyndieContract->add_subscribers($request->user()->user_id);
+
+        return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
+    }
+
+    public function unsubscribe($contract, Request $request)
+    {
+        $SyndieContract = SyndieContract::findOrfail($contract);
+        $SyndieContract->remove_subscribers($request->user()->user_id);
+
+        return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
     }
 }
