@@ -31,13 +31,12 @@ use Yajra\Datatables\Datatables;
 use App\Jobs\SendContractNotificationEmail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Log;
 
 class ContractController extends Controller
 {
     public function index(Request $request)
     {
-
-
         return view('syndie.contract.index');
     }
 
@@ -74,18 +73,20 @@ class ContractController extends Controller
             'reward' => 'required'
         ]);
 
-        $contract = new SyndieContract();
-        $contract->contractee_id = $user->user_id;
-        $contract->status = "new";
-        $contract->reward_other = $request->input('reward');
-        $contract->contractee_name = strip_tags($request->input('contractee_name'));
-        $contract->title = strip_tags($request->input('title'));
-        $contract->description = strip_tags($request->input('description'));
-        $contract->save();
+        $SyndieContract = new SyndieContract();
+        $SyndieContract->contractee_id = $user->user_id;
+        $SyndieContract->status = "new";
+        $SyndieContract->reward_other = $request->input('reward');
+        $SyndieContract->contractee_name = strip_tags($request->input('contractee_name'));
+        $SyndieContract->title = strip_tags($request->input('title'));
+        $SyndieContract->description = strip_tags($request->input('description'));
+        $SyndieContract->save();
 
-        $contract->add_subscribers($contract->contractee_id);
+        $SyndieContract->add_subscribers($SyndieContract->contractee_id);
 
-        $this->dispatch(new SendContractNotificationEmail($contract, 'new'));
+        $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'new'));
+
+        Log::notice('perm.contracts.add - Contract has been added',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
 
         return redirect()->route('syndie.contracts.index');
     }
@@ -123,6 +124,8 @@ class ContractController extends Controller
         $SyndieContract->description = $request->input('description');
         $SyndieContract->save();
 
+        Log::notice('perm.contracts.edit - Contract has been edited',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
+
         return redirect()->route('syndie.contracts.show',['contract'=>$SyndieContract->contract_id]);
 
     }
@@ -136,6 +139,8 @@ class ContractController extends Controller
             $SyndieContract->save();
 
             $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'approve'));
+
+            Log::notice('perm.contracts.approve - Contract has been approved',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
 
             return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
         } else {
@@ -153,6 +158,8 @@ class ContractController extends Controller
             $SyndieContract->save();
 
             $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'reject'));
+
+            Log::notice('perm.contracts.reject - Contract has been rejected',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
 
             return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
         } else {
@@ -197,6 +204,8 @@ Thank you for choosing our Contract Service.";
 
         $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'confirm'));
 
+        Log::notice('perm.contracts.confirm - Contract has been confirmed',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
+
         //Return the player to the page
         return redirect()->route('syndie.contracts.show', ['contract' => $SyndieComment->contract_id]);
     }
@@ -235,6 +244,8 @@ The contract has been reopened.
 The contractee is expected to provide a explanation, why the completion report is not satisfying";
         $SystemComment->type = 'ic';
         $SystemComment->save();
+
+        Log::notice('perm.contracts.reopen - Contract has been reopened',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
 
         $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'reopen'));
     }
@@ -327,6 +338,9 @@ The contractee is expected to provide a explanation, why the completion report i
         }
 
         $this->dispatch(new SendContractNotificationEmail($SyndieContract, $type));
+
+        Log::notice('perm.contracts.comment.add - Contract Comment has been added',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id, 'comment_id' => $SyndieContractComment->comment_id]);
+
         return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
     }
 
@@ -339,6 +353,9 @@ The contractee is expected to provide a explanation, why the completion report i
 
         $SyndieContractComment = SyndieContractComment::findOrfail($comment);
         $contract = $SyndieContractComment->contract_id;
+
+        Log::notice('perm.contracts.comment.delete - Contract Comment has been deleted',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContractComment->contract_id, 'comment_id' => $SyndieContractComment->comment_id]);
+
         $SyndieContractComment->delete();
 
         return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
@@ -353,6 +370,8 @@ The contractee is expected to provide a explanation, why the completion report i
         $SyndieContract = SyndieContract::findOrfail($contract);
         $SyndieContract->delete();
 
+        Log::notice('perm.contracts.delete - Contract has been deleted',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
+
         return redirect()->route('syndie.contracts.index');
     }
 
@@ -361,6 +380,8 @@ The contractee is expected to provide a explanation, why the completion report i
         $SyndieContract = SyndieContract::findOrfail($contract);
         $SyndieContract->add_subscribers($request->user()->user_id);
 
+        Log::notice('perm.contracts.subscribe - User Subscribed to Contract',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
+
         return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
     }
 
@@ -368,6 +389,8 @@ The contractee is expected to provide a explanation, why the completion report i
     {
         $SyndieContract = SyndieContract::findOrfail($contract);
         $SyndieContract->remove_subscribers($request->user()->user_id);
+
+        Log::notice('perm.contracts.unsubscribe - User Unsubscribed from Contract',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
 
         return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
     }
