@@ -134,7 +134,7 @@ Route::group(['middleware' => 'web'], function () {
         });
 
         Route::group(['prefix' => 'log','middleware' => 'permission.site:admin_site_logs_show'],function(){
-            Route::get('web', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+            Route::get('web', ['as'=>'admin.site.log.index', 'uses'=>'Admin\SiteLogViewerController@index']);
         });
     });
 });
