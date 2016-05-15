@@ -132,5 +132,9 @@ Route::group(['middleware' => 'web'], function () {
             Route::post('{role_id}/adduser', ['as' => 'admin.roles.adduser', 'uses'=>'Admin\RoleController@addUser']);
             Route::post('{role_id}/remuser', ['as' => 'admin.roles.remuser', 'uses'=>'Admin\RoleController@removeUser']);
         });
+
+        Route::group(['prefix' => 'log','middleware' => 'permission.site:admin_site_logs_show'],function(){
+            Route::get('web', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+        });
     });
 });
