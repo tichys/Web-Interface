@@ -10,7 +10,8 @@
         "laravelcollective/html": "5.2.*",
         "barryvdh/laravel-ide-helper": "^2.1",
         "yajra/laravel-datatables-oracle": "~6.0",
-        "erusev/parsedown": "^1.6"
+        "erusev/parsedown": "^1.6",
+        "rap2hpoutre/laravel-log-viewer": "^0.6.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
