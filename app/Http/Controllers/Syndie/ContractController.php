@@ -167,201 +167,201 @@ class ContractController extends Controller
         }
     }
 
-    public function confirm(Request $request, $comment)
-    {
-        $SyndieComment = SyndieContractComment::find($comment);
+//    public function confirm(Request $request, $comment)
+//    {
+//        $SyndieComment = SyndieContractComment::find($comment);
+//
+//        $SyndieContract = SyndieContract::find($SyndieComment->contract_id);
+//        //Check if contract is completed
+//        if ($SyndieContract->status !== "completed") {
+//            return redirect()->route('syndie.contracts.show', ['contract' => $SyndieComment->contract_id])->withErrors(array('You can not confirm a contract as complented when no completion report has been posted'));
+//        }
+//
+//        //Check if player is mod or contract owner
+//        if ($request->user()->can('contract_moderate') || $request->user()->user_id == $SyndieContract->contractee_id) {
+//            $SyndieContract->status = "closed";
+//            $SyndieContract->completer_id = $SyndieComment->commentor_id;
+//            $SyndieContract->completer_name = strip_tags($SyndieComment->commentor_name);
+//            $SyndieContract->save();
+//        } else {
+//            abort(403, 'Unauthorized action.');
+//        }
+//
+//        //Add a info that the contract has been confirmed as completed.
+//        $SystemComment = new SyndieContractComment;
+//        $SystemComment->contract_id = $SyndieContract->contract_id;
+//        $SystemComment->commentor_id = 0;
+//        $SystemComment->commentor_name = "System";
+//        $SystemComment->title = "Contract Confirmed as Completed";
+//        $SystemComment->comment =
+//"The contractee has confirmed that the contract has been completed by the contractor.
+//
+//The funds have been transfered to the contractor.
+//
+//Thank you for choosing our Contract Service.";
+//        $SystemComment->type = 'ic';
+//        $SystemComment->save();
+//
+//        $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'confirm'));
+//
+//        Log::notice('perm.contracts.confirm - Contract has been confirmed',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
+//
+//        //Return the player to the page
+//        return redirect()->route('syndie.contracts.show', ['contract' => $SyndieComment->contract_id]);
+//    }
 
-        $SyndieContract = SyndieContract::find($SyndieComment->contract_id);
-        //Check if contract is completed
-        if ($SyndieContract->status !== "completed") {
-            return redirect()->route('syndie.contracts.show', ['contract' => $SyndieComment->contract_id])->withErrors(array('You can not confirm a contract as complented when no completion report has been posted'));
-        }
+//    public function reopen(Request $request, $comment)
+//    {
+//        $SyndieComment = SyndieContractComment::find($comment);
+//        $SyndieContract = SyndieContract::find($SyndieComment->contract_id);
+//
+//        //Check if contract is completed
+//        if ($SyndieContract->status !== "completed") {
+//            return redirect()->route('syndie.contracts.show', ['contract' => $SyndieComment->contract_id])->withErrors(array('You can not reopen a contract when no completion report has been posted'));
+//        }
+//
+//        //Check if player is mod or contract owner
+//        if ($request->user()->can('contract_moderate') || $request->user()->user_id == $SyndieContract->contractee_id) {
+//            $contr = SyndieContract::find($SyndieComment->contract_id);
+//            $contr->status = "open";
+//            $contr->save();
+//            return redirect()->route('syndie.contracts.show', ['contract' => $SyndieComment->contract_id]);
+//        } else {
+//            abort(403, 'Unauthorized action.');
+//        }
+//
+//        //Add a info that the contract has been confirmed as completed.
+//        $SystemComment = new SyndieContractComment;
+//        $SystemComment->contract_id = $SyndieContract->contract_id;
+//        $SystemComment->commentor_id = 0;
+//        $SystemComment->commentor_name = "System";
+//        $SystemComment->title = "Contract Reopened";
+//        $SystemComment->comment =
+//"The contractee has rejected the completion report.
+//
+//The contract has been reopened.
+//
+//The contractee is expected to provide a explanation, why the completion report is not satisfying";
+//        $SystemComment->type = 'ic';
+//        $SystemComment->save();
+//
+//        Log::notice('perm.contracts.reopen - Contract has been reopened',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
+//
+//        $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'reopen'));
+//    }
 
-        //Check if player is mod or contract owner
-        if ($request->user()->can('contract_moderate') || $request->user()->user_id == $SyndieContract->contractee_id) {
-            $SyndieContract->status = "closed";
-            $SyndieContract->completer_id = $SyndieComment->commentor_id;
-            $SyndieContract->completer_name = strip_tags($SyndieComment->commentor_name);
-            $SyndieContract->save();
-        } else {
-            abort(403, 'Unauthorized action.');
-        }
+//    public function cancel(Request $request, $contract)
+//    {
+//
+//    }
 
-        //Add a info that the contract has been confirmed as completed.
-        $SystemComment = new SyndieContractComment;
-        $SystemComment->contract_id = $SyndieContract->contract_id;
-        $SystemComment->commentor_id = 0;
-        $SystemComment->commentor_name = "System";
-        $SystemComment->title = "Contract Confirmed as Completed";
-        $SystemComment->comment =
-"The contractee has confirmed that the contract has been completed by the contractor.
+//    public function addMessage($contract, Request $request)
+//    {
+//        $SyndieContract = SyndieContract::find($contract);
+//
+//        $this->validate($request, [
+//            'commentor_name' => 'required',
+//            'type' => 'required',
+//            'title' => 'required',
+//            'comment' => 'required',
+//            'image' => 'image'
+//        ]);
+//
+//        $commentor_name = $request->input('commentor_name');
+//        $type = $request->input('type');
+//        $title = $request->input('title');
+//        $comment = $request->input('comment');
+//
+//        //Check if the user is contractee, mod or just user and allow them to use the various pm types
+//        if ($request->user()->can('contract_moderate')) { //User is a contract moderator
+//            //User can use every message type and specify name. Just check that all fields are filled out
+//        } elseif ($request->user()->user_id == $SyndieContract->contractee_id) { //Use is contract author
+//            //User can not specify a name and can use only the following message types: 'ic'=>'IC Comment','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM'
+//            $commentor_name = $SyndieContract->contractee_name;
+//
+//            $useable = array('ic', 'ic-cancel', 'ooc', 'mod-author');
+//            if (!in_array($type, $useable)) {
+//                return redirect()->route('syndie.contracts.show', ['contract' => $contract])->withErrors(array('You are not authorized to use this message type'));
+//            }
+//        } else { // User is not a contract mod or the author
+//            // user can only use the following message types: 'ic'=>'IC Comment','ic-failrep'=> 'IC Failure Report','ic-comprep'=>'IC Completion Report','ooc' => 'OOC Comment'
+//            $useable = array('ic', 'ic-failrep', 'ic-comprep', 'ooc');
+//            if (!in_array($type, $useable)) {
+//                return redirect()->route('syndie.contracts.show', ['contract' => $contract])->withErrors(array('You are not authorized to use this message type'));
+//            }
+//        }
+//
+//        //Check if the message type is ooc or mod-author or mod-ooc, then set the author name to the users form username
+//        if (in_array($type, array('ooc', 'mod-author', 'mod-ooc'))) {
+//            $commentor_name = $request->user()->username;
+//        }
+//
+//        // Post the comment
+//        $SyndieContractComment = new SyndieContractComment();
+//        $SyndieContractComment->contract_id = $SyndieContract->contract_id;
+//        $SyndieContractComment->commentor_id = $request->user()->user_id;
+//        $SyndieContractComment->commentor_name = strip_tags($commentor_name);
+//        $SyndieContractComment->type = $type;
+//        $SyndieContractComment->title = strip_tags($title);
+//        $SyndieContractComment->comment = strip_tags($comment);
+//        $SyndieContractComment->save();
+//
+//
+//        //Check for files
+//        if($request->hasFile('image'))
+//        {
+//            $file = $request->file('image');
+//            //Check if file uploaded successfully
+//            $extension = $file->getClientOriginalExtension();
+//            $name = $SyndieContractComment->comment_id.'-'.time().'-'.rand(0,9999).'.'.$extension;
+//            Storage::disk('contractimages')->put($name,  File::get($file));
+//            $SyndieContractComment->image_name = $name;
+//            $SyndieContractComment->save();
+//        }
+//
+//        //Check if the comment is a completion report -> if so update contract status to completed
+//        if ($type == 'ic-comprep') {
+//            $SyndieContract->status = "completed";
+//            $SyndieContract->save();
+//        }
+//
+//        //Check if cancel message
+//        if ($type == 'ic-cancel') {
+//            $SyndieContract->status = "canceled";
+//            $SyndieContract->save();
+//        }
+//
+//        //Check if the posting user is subscribed to the contract. If not subscribe him
+//        if(!$SyndieContract->is_subscribed($request->user()->user_id))
+//        {
+//            $SyndieContract->add_subscribers($request->user()->user_id);
+//        }
+//
+//        $this->dispatch(new SendContractNotificationEmail($SyndieContract, $type));
+//
+//        Log::notice('perm.contracts.comment.add - Contract Comment has been added',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id, 'comment_id' => $SyndieContractComment->comment_id]);
+//
+//        return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
+//    }
 
-The funds have been transfered to the contractor.
+//    public function deleteMessage($comment, Request $request)
+//    {
+//        if($request->user()->cannot('contract_moderate'))
+//        {
+//            abort('403','You do not have the required permission');
+//        }
+//
+//        $SyndieContractComment = SyndieContractComment::findOrfail($comment);
+//        $contract = $SyndieContractComment->contract_id;
+//
+//        Log::notice('perm.contracts.comment.delete - Contract Comment has been deleted',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContractComment->contract_id, 'comment_id' => $SyndieContractComment->comment_id]);
+//
+//        $SyndieContractComment->delete();
+//
+//        return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
+//    }
 
-Thank you for choosing our Contract Service.";
-        $SystemComment->type = 'ic';
-        $SystemComment->save();
-
-        $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'confirm'));
-
-        Log::notice('perm.contracts.confirm - Contract has been confirmed',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
-
-        //Return the player to the page
-        return redirect()->route('syndie.contracts.show', ['contract' => $SyndieComment->contract_id]);
-    }
-
-    public function reopen(Request $request, $comment)
-    {
-        $SyndieComment = SyndieContractComment::find($comment);
-        $SyndieContract = SyndieContract::find($SyndieComment->contract_id);
-
-        //Check if contract is completed
-        if ($SyndieContract->status !== "completed") {
-            return redirect()->route('syndie.contracts.show', ['contract' => $SyndieComment->contract_id])->withErrors(array('You can not reopen a contract when no completion report has been posted'));
-        }
-
-        //Check if player is mod or contract owner
-        if ($request->user()->can('contract_moderate') || $request->user()->user_id == $SyndieContract->contractee_id) {
-            $contr = SyndieContract::find($SyndieComment->contract_id);
-            $contr->status = "open";
-            $contr->save();
-            return redirect()->route('syndie.contracts.show', ['contract' => $SyndieComment->contract_id]);
-        } else {
-            abort(403, 'Unauthorized action.');
-        }
-
-        //Add a info that the contract has been confirmed as completed.
-        $SystemComment = new SyndieContractComment;
-        $SystemComment->contract_id = $SyndieContract->contract_id;
-        $SystemComment->commentor_id = 0;
-        $SystemComment->commentor_name = "System";
-        $SystemComment->title = "Contract Reopened";
-        $SystemComment->comment =
-"The contractee has rejected the completion report.
-
-The contract has been reopened.
-
-The contractee is expected to provide a explanation, why the completion report is not satisfying";
-        $SystemComment->type = 'ic';
-        $SystemComment->save();
-
-        Log::notice('perm.contracts.reopen - Contract has been reopened',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
-
-        $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'reopen'));
-    }
-
-    public function cancel(Request $request, $contract)
-    {
-
-    }
-
-    public function addMessage($contract, Request $request)
-    {
-        $SyndieContract = SyndieContract::find($contract);
-
-        $this->validate($request, [
-            'commentor_name' => 'required',
-            'type' => 'required',
-            'title' => 'required',
-            'comment' => 'required',
-            'image' => 'image'
-        ]);
-
-        $commentor_name = $request->input('commentor_name');
-        $type = $request->input('type');
-        $title = $request->input('title');
-        $comment = $request->input('comment');
-
-        //Check if the user is contractee, mod or just user and allow them to use the various pm types
-        if ($request->user()->can('contract_moderate')) { //User is a contract moderator
-            //User can use every message type and specify name. Just check that all fields are filled out
-        } elseif ($request->user()->user_id == $SyndieContract->contractee_id) { //Use is contract author
-            //User can not specify a name and can use only the following message types: 'ic'=>'IC Comment','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM'
-            $commentor_name = $SyndieContract->contractee_name;
-
-            $useable = array('ic', 'ic-cancel', 'ooc', 'mod-author');
-            if (!in_array($type, $useable)) {
-                return redirect()->route('syndie.contracts.show', ['contract' => $contract])->withErrors(array('You are not authorized to use this message type'));
-            }
-        } else { // User is not a contract mod or the author
-            // user can only use the following message types: 'ic'=>'IC Comment','ic-failrep'=> 'IC Failure Report','ic-comprep'=>'IC Completion Report','ooc' => 'OOC Comment'
-            $useable = array('ic', 'ic-failrep', 'ic-comprep', 'ooc');
-            if (!in_array($type, $useable)) {
-                return redirect()->route('syndie.contracts.show', ['contract' => $contract])->withErrors(array('You are not authorized to use this message type'));
-            }
-        }
-
-        //Check if the message type is ooc or mod-author or mod-ooc, then set the author name to the users form username
-        if (in_array($type, array('ooc', 'mod-author', 'mod-ooc'))) {
-            $commentor_name = $request->user()->username;
-        }
-
-        // Post the comment
-        $SyndieContractComment = new SyndieContractComment();
-        $SyndieContractComment->contract_id = $SyndieContract->contract_id;
-        $SyndieContractComment->commentor_id = $request->user()->user_id;
-        $SyndieContractComment->commentor_name = strip_tags($commentor_name);
-        $SyndieContractComment->type = $type;
-        $SyndieContractComment->title = strip_tags($title);
-        $SyndieContractComment->comment = strip_tags($comment);
-        $SyndieContractComment->save();
-
-
-        //Check for files
-        if($request->hasFile('image'))
-        {
-            $file = $request->file('image');
-            //Check if file uploaded successfully
-            $extension = $file->getClientOriginalExtension();
-            $name = $SyndieContractComment->comment_id.'-'.time().'-'.rand(0,9999).'.'.$extension;
-            Storage::disk('contractimages')->put($name,  File::get($file));
-            $SyndieContractComment->image_name = $name;
-            $SyndieContractComment->save();
-        }
-        
-        //Check if the comment is a completion report -> if so update contract status to completed
-        if ($type == 'ic-comprep') {
-            $SyndieContract->status = "completed";
-            $SyndieContract->save();
-        }
-
-        //Check if cancel message
-        if ($type == 'ic-cancel') {
-            $SyndieContract->status = "canceled";
-            $SyndieContract->save();
-        }
-        
-        //Check if the posting user is subscribed to the contract. If not subscribe him
-        if(!$SyndieContract->is_subscribed($request->user()->user_id))
-        {
-            $SyndieContract->add_subscribers($request->user()->user_id);
-        }
-
-        $this->dispatch(new SendContractNotificationEmail($SyndieContract, $type));
-
-        Log::notice('perm.contracts.comment.add - Contract Comment has been added',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id, 'comment_id' => $SyndieContractComment->comment_id]);
-
-        return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
-    }
-
-    public function deleteMessage($comment, Request $request)
-    {
-        if($request->user()->cannot('contract_moderate'))
-        {
-            abort('403','You do not have the required permission');
-        }
-
-        $SyndieContractComment = SyndieContractComment::findOrfail($comment);
-        $contract = $SyndieContractComment->contract_id;
-
-        Log::notice('perm.contracts.comment.delete - Contract Comment has been deleted',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContractComment->contract_id, 'comment_id' => $SyndieContractComment->comment_id]);
-
-        $SyndieContractComment->delete();
-
-        return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
-    }
-
-    public function deleteContract($contract , Request $request)
+    public function delete($contract , Request $request)
     {
         if($request->user()->cannot('contract_moderate'))
         {
