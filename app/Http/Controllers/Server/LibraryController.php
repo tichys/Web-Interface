@@ -27,8 +27,18 @@ class LibraryController extends Controller
         return view('server.library.index');
     }
 
-    public function getEdit($book_id)
+    public function getShow($book_id)
     {
+        $book = ServerLibrary::findOrFail($book_id);
+        return view('server.library.show', ['book' => $book]);
+    }
+
+    public function getEdit($book_id, Request $request)
+    {
+        if($request->user()->cannot('server_library_edit'))
+        {
+            abort('403','You do not have the required permission');
+        }
         $book = ServerLibrary::findOrFail($book_id);
         return view('server.library.edit', ['book' => $book]);
     }
@@ -115,8 +125,8 @@ class LibraryController extends Controller
 
         return Datatables::of($books)
             ->removeColumn('id')
-            ->editColumn('title', '<a href="{{route(\'server.library.edit.get\',[\'book\'=>$id])}}">{{$title}}</a>')
-            ->addColumn('action','<p><a href="{{route(\'server.library.edit.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'server_library_edit\')<a href="{{route(\'server.library.delete\',[\'book\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->editColumn('title', '<a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}">{{$title}}</a>')
+            ->addColumn('action','<p><a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}" class="btn btn-success" role="button">Show</a>  @can(\'server_library_edit\')<a href="{{route(\'server.library.edit.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'server.library.delete\',[\'book\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
             ->make();
     }
 }

@@ -83,6 +83,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::group(['prefix' => 'server','middleware' => 'auth'],function(){
         Route::group(['prefix' => 'library'], function () {
             Route::get('', ['as' => 'server.library.index', 'uses'=>'Server\LibraryController@index']);
+            Route::get('/{book_id}/show', ['as' => 'server.library.show.get', 'uses'=>'Server\LibraryController@getShow']);
             Route::get('/{book_id}/edit', ['as' => 'server.library.edit.get', 'uses'=>'Server\LibraryController@getEdit']);
             Route::post('/{book_id}/edit', ['as' => 'server.library.edit.post', 'uses'=>'Server\LibraryController@postEdit']);
             Route::get('/{book_id}/delete', ['as' => 'server.library.delete', 'uses'=>'Server\LibraryController@delete']);
