@@ -29,7 +29,7 @@
                     <div class="panel-heading">CCIA General Notices Overview</div>
 
                     <div class="panel-body">
-                        @can('ccia_general_notices_edit')<p><a href="{{route('ccia.generalnotice.add.post')}}" class="btn btn-success" role="button">Add new Notice</a></p>@endcan()
+                        @can('ccia_general_notice_edit')<p><a href="{{route('ccia.generalnotice.add.post')}}" class="btn btn-success" role="button">Add new Notice</a></p>@endcan()
                         <table id="general-notices-table" class="table table-condensed">
                             <thead>
                             <tr>

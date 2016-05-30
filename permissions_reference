@@ -13,7 +13,7 @@ admin_staff_roster_show -> Show the staff roster
 admin_staff_roster_edit -> Edit the staff roster
 admin_character_records_show -> Show the Character Records
 admin_character_records_edit -> Edit the Character Records
-admin_do_recorder_logs_show -> Show the DO recorder logs
+
 admin_server_stats_show -> Show the admin stats
 admin_site_roles_show -> Show the site roles
 admin_site_roles_edit -> Edit the site roles
@@ -25,6 +25,10 @@ admin_forms_show -> Show the corporate Form Database
 admin_forms_edit -> Edit the corporate Form Database
 admin_do_actions_show -> Show the DO Actions
 admin_do_actions_edit -> Edit the DO Actions
+
+#CCIA Stuff
+ccia_general_notice_edit -> Edit DO Notices
+ccia_recorder_logs_show -> Show the DO recorder logs
 
 #Player Overvew
 admin_players_show -> Show the player page (Alone Useless -> Needs some of the perms below)

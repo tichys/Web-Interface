@@ -25,6 +25,7 @@
     use App\Http\Requests;
     use App\Http\Controllers\Controller;
     use Yajra\Datatables\Datatables;
+    Use Illuminate\Support\Facades\Log;
     
     use App\Models\CCIAGeneralNotice;
     
@@ -32,70 +33,92 @@
     {
         public function __construct(Request $request)
         {
-            
+
         }
         
         public function index()
         {
             return view('ccia.generalnotice.index');
         }
-        
-        public function getEdit(Request $request)
+
+        public function getShow(Request $request, $generalnotice_id)
         {
-            
-            // TODO Code that processes getEdit
-            
-            return redirect()->route('ccia.generalnotice.index');
+            $notice = CCIAGeneralNotice::findOrFail($generalnotice_id);
+            return view('ccia.generalnotice.show', ['notice' => $notice]);
         }
-        
-        public function postEdit(Request $request)
+
+        public function getEdit(Request $request,$generalnotice_id)
         {
-            if ($request->user()
-                        ->cannot('ccia_general_notice_edit')
-            ) {
+            if ($request->user()->cannot('ccia_general_notice_edit')) {
                 abort('403', 'You do not have permission to edit CCIA General Notices.');
             }
-            
-            // TODO Code that processes postEdit
-            
+
+            $notice = CCIAGeneralNotice::findOrFail($generalnotice_id);
+            return view('ccia.generalnotice.edit', ['notice' => $notice]);
+        }
+        
+        public function postEdit(Request $request,$generalnotice_id)
+        {
+            if ($request->user()->cannot('ccia_general_notice_edit')) {
+                abort('403', 'You do not have permission to edit CCIA General Notices.');
+            }
+
+            if ($request->user()->cannot('ccia_general_notice_edit')) {
+                abort('403', 'You do not have permission to edit CCIA General Notices.');
+            }
+            $this->validate($request,[
+                'title' => 'required',
+                'message' => 'required'
+            ]);
+
+            $notice = CCIAGeneralNotice::findOrFail($generalnotice_id);
+            $notice->title = $request->input('title');
+            $notice->message = $request->input('message');
+            $notice->save();
+
+            Log::notice('perm.cciageneralnotice.edit - CCIA General Notice has been edited',['user_id' => $request->user()->user_id, 'notice_id' => $notice->id]);
+
             return redirect()->route('ccia.generalnotice.index');
         }
         
         public function getAdd(Request $request)
         {
-            if ($request->user()
-                        ->cannot('ccia_general_notice_edit')
-            ) {
+            if ($request->user()->cannot('ccia_general_notice_edit')) {
                 abort('403', 'You do not have permission to edit CCIA General Notices.');
             }
-            
-            // TODO Code that processes getAdd
-            
-            return redirect()->route('ccia.generalnotice.index');
+
+            return view('ccia.generalnotice.add');
         }
         
         public function postAdd(Request $request)
         {
-            if ($request->user()
-                        ->cannot('ccia_general_notice_edit')
-            ) {
+            if ($request->user()->cannot('ccia_general_notice_edit')) {
                 abort('403', 'You do not have permission to edit CCIA General Notices.');
             }
-            
-            // TODO Code that processes postAdd
-            
+
+            $this->validate($request,[
+                'title' => 'required',
+                'message' => 'required'
+            ]);
+
+            $notice = new CCIAGeneralNotice();
+            $notice->title = $request->input('title');
+            $notice->message = $request->input('message');
+            $notice->save();
+
+            Log::notice('perm.cciageneralnotice.add - CCIA General Notice has been added',['user_id' => $request->user()->user_id, 'notice_id' => $notice->id]);
+
             return redirect()->route('ccia.generalnotice.index');
         }
         
-        public function delete(Request $request)
+        public function delete(Request $request,$generalnotice_id)
         {
-            if ($request->user()
-                        ->cannot('ccia_general_notice_edit')
-            ) {
+            if ($request->user()->cannot('ccia_general_notice_edit')) {
                 abort('403', 'You do not have permission to edit CCIA General Notices.');
             }
-            
-            // TODO Code that processes delete
+
+            $notice = CCIAGeneralNotice::findOrFail($generalnotice_id);
+            $notice->delete();
             
             return redirect()->route('ccia.generalnotice.index');
         }
@@ -106,7 +129,7 @@
             
             return Datatables::of($data)
                              ->editColumn('title', '<a href="{{ route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}">{{$title}}</a>')
-                             ->addColumn('action', '<p><a href="{{ route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'ccia_general_notice_edit\')<a href="{{route(\'ccia.generalnotice.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+                             ->addColumn('action', '<p><a href="{{ route(\'ccia.generalnotice.show.get\', [\'id\' => $id]) }}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_general_notice_edit\')<a href="{{route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.generalnotice.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
                              ->make();
             
         }

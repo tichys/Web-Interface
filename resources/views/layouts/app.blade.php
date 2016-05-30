@@ -124,6 +124,9 @@
                                         <li @cannot('admin_do_actions_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>DO Actions <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                         </li>
+                                        <li>
+                                            <a href="{{route('ccia.generalnotice.index')}}"><i class="fa fa-btn"></i>CCIA General Notice </a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
