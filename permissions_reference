@@ -34,3 +34,6 @@ admin_warnings_show -> Show a players warnings
 admin_warnings_edit -> Edit a players warnings
 admin_notes_show -> Show a players notes
 admin_notes_edit -> Edit a players notes
+
+#Server Stuff
+server_library_edit -> Edit the contents of the Server Library

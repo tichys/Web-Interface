@@ -22,6 +22,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Services\Auth\ForumUserModel;
 use Illuminate\Http\Request;
+Use Illuminate\Support\Facades\Log;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -66,6 +67,8 @@ class RoleController extends Controller
         $role = new SiteRole($request->all());
         $role->save();
 
+        Log::notice('perm.site_role.add - Site Role has been added',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
+
         return redirect()->route('admin.roles.index');
     }
 
@@ -100,6 +103,8 @@ class RoleController extends Controller
         $role->description = $request->input('description');
         $role->save();
 
+        Log::notice('perm.site_role.edit - Site Role has been edited',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
+
         return redirect()->route('admin.roles.index');
     }
 
@@ -110,6 +115,9 @@ class RoleController extends Controller
         }
 
         $role = SiteRole::findOrFail($role_id);
+
+        Log::notice('perm.site_role.delete - Site Role has been deleted',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
+
         $role->delete();
 
         return redirect()->route('admin.roles.index');
@@ -124,6 +132,8 @@ class RoleController extends Controller
         $permission = SitePermission::findOrFail($request->input('permission'));
         $role->permissions()->attach($permission);
 
+        Log::notice('perm.site_role.attach_permission - Site Role Permission attached',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'permission_id' => $permission->id, 'permission_name' => $permission->name]);
+
         return redirect()->route('admin.roles.edit.get',['role_id' => $role_id]);
     }
 
@@ -135,6 +145,9 @@ class RoleController extends Controller
         $role = SiteRole::findOrFail($role_id);
         $permission = SitePermission::findOrFail($request->input('permission'));
         $role->permissions()->detach($permission);
+
+        Log::notice('perm.site_role.detach_permission - Site Role Permission detached',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'permission_id' => $permission->id, 'permission_name' => $permission->name]);
+
 
         return redirect()->route('admin.roles.edit.get',['role_id' => $role_id]);
     }
@@ -151,6 +164,9 @@ class RoleController extends Controller
         $user = ForumUserModel::findOrFail($request->input('user_id'));
 
         $user->roles()->attach($role);
+
+        Log::notice('perm.site_role.add_user - Site Role User added',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->username_clean]);
+
         return redirect()->route('admin.roles.edit.get',['role_id' => $role_id]);
     }
 
@@ -163,6 +179,9 @@ class RoleController extends Controller
         $user = ForumUserModel::findOrFail($request->input('user'));
 
         $user->roles()->detach($role);
+
+        Log::notice('perm.site_role.remove_user - Site Role User removed',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->username_clean]);
+
         return redirect()->route('admin.roles.edit.get',['role_id' => $role_id]);
     }
 }

@@ -25,6 +25,7 @@ use MongoDB\Driver\Server;
 use Yajra\Datatables\Datatables;
 use App\Models\ServerPlayer;
 use Illuminate\Support\Facades\DB;
+Use Illuminate\Support\Facades\Log;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -75,6 +76,8 @@ class PlayerController extends Controller
 
         $player->add_player_whitelist_flag($whitelist,$request->user()->username_clean);
 
+        Log::notice('perm.whitelist.add - Whitelist has been added',['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
+
         return redirect()->route('admin.players.show', ['player_id' => $player_id]);
     }
 
@@ -89,6 +92,8 @@ class PlayerController extends Controller
         $player = ServerPlayer::findOrFail($player_id);
 
         $player->strip_player_whitelist_flag($whitelist,$request->user()->username_clean);
+
+        Log::notice('perm.whitelist.remove - Whitelist has been removed',['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
 
         return redirect()->route('admin.players.show', ['player_id' => $player_id]);
     }

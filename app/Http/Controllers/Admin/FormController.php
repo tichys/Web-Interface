@@ -25,8 +25,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\ServerForm;
-use MongoDB\Driver\Server;
 use Yajra\Datatables\Datatables;
+Use Illuminate\Support\Facades\Log;
 
 class FormController extends Controller
 {
@@ -71,6 +71,8 @@ class FormController extends Controller
         $form->info = $request->input('info');
         $form->save();
 
+        Log::notice('perm.forms.edit - Form has been edited',['user_id' => $request->user()->user_id, 'form_id' => $form->form_id]);
+
         return redirect()->route('admin.forms.index');
     }
 
@@ -81,6 +83,9 @@ class FormController extends Controller
             abort('403','You do not have the required permission');
         }
         $form = ServerForm::findOrFail($form_id);
+
+        Log::notice('perm.forms.delete - Form has been deleted',['user_id' => $request->user()->user_id, 'form_id' => $form->form_id, 'form_ingameid' => $form->id, 'form_name' => $form->name]);
+
         $form->delete();
 
         return redirect()->route('admin.forms.index');
@@ -119,6 +124,8 @@ class FormController extends Controller
         $form->data = $request->input('data');
         $form->info = $request->input('info');
         $form->save();
+
+        Log::notice('perm.forms.add - Form has been added',['user_id' => $request->user()->user_id, 'form_id' => $form->form_id]);
 
         return redirect()->route('admin.forms.index');
     }
