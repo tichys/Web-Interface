@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2016 'Werner Maisl'
+ * Copyright (c) 2016 'Werner Maisl', 'Sierra Brown'
  *
  * This file is part of Aurorastation-Wi
  * Aurorastation-Wi is free software: you can redistribute it and/or modify
@@ -241,6 +241,12 @@ class CreatePermissionRolesTables extends Migration
         $admin_do_actions_edit->name = "admin_do_actions_edit";
         $admin_do_actions_edit->label = "Edit the DO Actions";
         $admin_do_actions_edit->save();
+        
+        // ccia_general_notice_edit -> Edit the CCIA General Notice list
+        $ccia_general_notice_edit = new SitePermission();
+        $ccia_general_notice_edit->name = "ccia_general_notice_edit";
+        $ccia_general_notice_edit->label = "Edit the CCIA General Notice list";
+        $ccia_general_notice_edit->save();
 
 
         $administrators = new SiteRole();
@@ -276,6 +282,7 @@ class CreatePermissionRolesTables extends Migration
         $administrators->givePermissionTo($admin_notes_edit);
         $administrators->givePermissionTo($admin_do_actions_show);
         $administrators->givePermissionTo($admin_do_actions_edit);
+        $administrators->givePermissionTo($ccia_general_notice_edit);
 
         $moderators = new SiteRole();
         $moderators->name = "moderators";
@@ -314,6 +321,7 @@ class CreatePermissionRolesTables extends Migration
         $duty_offiers->givePermissionTo($admin_whitelists_show);
         $duty_offiers->givePermissionTo($admin_do_actions_show);
         $duty_offiers->givePermissionTo($admin_do_actions_edit);
+        $duty_offiers->givePermissionTo($ccia_general_notice_edit);
 
         $whitelist_managers = new SiteRole();
         $whitelist_managers->name = "whitelist_managers";

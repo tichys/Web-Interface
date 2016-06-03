@@ -74,13 +74,14 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 @can("byond_linked")
-                                <li><a href="{{route('user.dashboard')}}"><i class="fa fa-btn"></i>User Dashboard</a></li>
-                                <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Show / Edit / Add Characters</a></li>
-                                <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>
-                                <li><a href="{{route('user.warnings')}}"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>
+                                    <li><a href="{{route('user.dashboard')}}"><i class="fa fa-btn"></i>User Dashboard</a></li>
+                                    <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Show / Edit / Add Characters</a></li>
+                                    <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>
+                                    <li><a href="{{route('user.warnings')}}"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>
+                                    <li><a href="{{route('server.library.index')}}"><i class="fa fa-btn"></i>Library</a></li>
                                 @else
                                     <li><a href="{{route('user.link')}}"><i class="fa fa-btn"></i>Link Byond</a></li>
-                                    @endcan
+                                @endcan
                             </ul>
                         </li>
 
@@ -123,6 +124,9 @@
                                         <li @cannot('admin_do_actions_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>DO Actions <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                         </li>
+                                        <li>
+                                            <a href="{{route('ccia.generalnotice.index')}}"><i class="fa fa-btn"></i>CCIA General Notice </a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
@@ -147,6 +151,9 @@
                                     <ul class="dropdown-menu">
                                         <li @cannot('admin_forms_show')class="disabled"@endcannot>
                                             <a href="{{route('admin.forms.index')}}"><i class="fa fa-btn"></i>Forms</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('server.library.index')}}"><i class="fa fa-btn"></i>Library</a>
                                         </li>
                                         <li @cannot('admin_server_permissions_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>Server Permissions <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>

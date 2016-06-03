@@ -1,6 +1,6 @@
 <?php
 
-//Copyright (c) 2016 "Werner Maisl"
+//Copyright (c) 2016 "Werner Maisl", "Sierra Brown"
 //
 //This file is part of the Aurora Webinterface
 //
@@ -95,6 +95,20 @@ Route::group(['middleware' => 'web'], function () {
         });
     });
 
+    //Stuff that interferes with ingame objects
+    Route::group(['prefix' => 'server','middleware' => 'auth'],function(){
+        Route::group(['prefix' => 'library'], function () {
+            Route::get('', ['as' => 'server.library.index', 'uses'=>'Server\LibraryController@index']);
+            Route::get('/{book_id}/show', ['as' => 'server.library.show.get', 'uses'=>'Server\LibraryController@getShow']);
+            Route::get('/{book_id}/edit', ['as' => 'server.library.edit.get', 'uses'=>'Server\LibraryController@getEdit']);
+            Route::post('/{book_id}/edit', ['as' => 'server.library.edit.post', 'uses'=>'Server\LibraryController@postEdit']);
+            Route::get('/{book_id}/delete', ['as' => 'server.library.delete', 'uses'=>'Server\LibraryController@delete']);
+            Route::get('/add', ['as' => 'server.library.add.get', 'uses'=>'Server\LibraryController@getAdd']);
+            Route::post('/add', ['as' => 'server.library.add.post', 'uses'=>'Server\LibraryController@postAdd']);
+            Route::get('/data', ['as' => 'server.library.data', 'uses'=>'Server\LibraryController@getFormData']);
+        });
+    });
+
     //User Stuff
     Route::group(['prefix' => 'user','middleware' => 'auth'], function () {
         //User Dashboard
@@ -151,6 +165,20 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::group(['prefix' => 'log','middleware' => 'permission.site:admin_site_logs_show'],function(){
             Route::get('web', ['as'=>'admin.site.log.index', 'uses'=>'Admin\SiteLogViewerController@index']);
+        });
+    });
+
+    // CCIA Stuff
+    Route::group(['prefix' => 'ccia', 'middleware' => 'auth'], function () {
+        Route::group(['prefix' => 'generalnotice'], function () {
+            Route::get('', ['as' => 'ccia.generalnotice.index', 'uses' => 'CCIA\GeneralNoticeController@index']);
+            Route::get('/{generalnotice_id}/show', ['as' => 'ccia.generalnotice.show.get', 'uses' => 'CCIA\GeneralNoticeController@getShow']);
+            Route::get('/{generalnotice_id}/edit', ['as' => 'ccia.generalnotice.edit.get', 'uses' => 'CCIA\GeneralNoticeController@getEdit']);
+            Route::post('/{generalnotice_id}/edit', ['as' => 'ccia.generalnotice.edit.post', 'uses' => 'CCIA\GeneralNoticeController@postEdit']);
+            Route::get('/{generalnotice_id}/delete', ['as' => 'ccia.generalnotice.delete', 'uses' => 'CCIA\GeneralNoticeController@delete']);
+            Route::get('/add', ['as' => 'ccia.generalnotice.add.get', 'uses' => 'CCIA\GeneralNoticeController@getAdd']);
+            Route::post('/add', ['as' => 'ccia.generalnotice.add.post', 'uses' => 'CCIA\GeneralNoticeController@postAdd']);
+            Route::get('/data', ['as' => 'ccia.generalnotice.data', 'uses'=>'CCIA\GeneralNoticeController@getData']);
         });
     });
 });
