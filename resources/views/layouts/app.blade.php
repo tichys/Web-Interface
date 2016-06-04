@@ -201,7 +201,7 @@
 
     <footer>
         <div class="footer navbar-fixed-bottom">
-            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl, Sierra Brown - Licensed under the AGPL - Version 0.3.0</p></small>
+            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.4.0</p></small>
         </div>
     </footer>
 
