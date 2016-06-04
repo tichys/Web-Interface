@@ -89,7 +89,13 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/{book_id}/delete', ['as' => 'server.library.delete', 'uses'=>'Server\LibraryController@delete']);
             Route::get('/add', ['as' => 'server.library.add.get', 'uses'=>'Server\LibraryController@getAdd']);
             Route::post('/add', ['as' => 'server.library.add.post', 'uses'=>'Server\LibraryController@postAdd']);
-            Route::get('/data', ['as' => 'server.library.data', 'uses'=>'Server\LibraryController@getFormData']);
+            Route::get('/data', ['as' => 'server.library.data', 'uses'=>'Server\LibraryController@getBookData']);
+        });
+
+        Route::group(['prefix' => 'chars'], function () {
+            Route::get('', ['as' => 'server.chars.index', 'uses'=>'Server\CharController@index']);
+            Route::get('/{char_id}/show', ['as' => 'server.chars.show.get', 'uses'=>'Server\CharController@getShow']);
+            Route::get('/data', ['as' => 'server.chars.data', 'uses'=>'Server\CharController@getCharData']);
         });
     });
 
