@@ -26,7 +26,9 @@ class ContractChanges extends Migration
             $table->string('title');
             $table->text('description');
             $table->integer('reward_credits')->nullable();
+            $table->integer('reward_credits_update')->nullable();
             $table->text('reward_other')->nullable();
+            $table->text('reward_other_update')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
