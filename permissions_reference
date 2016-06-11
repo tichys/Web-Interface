@@ -29,7 +29,7 @@ admin_do_actions_edit -> Edit the DO Actions
 
 #CCIA Stuff
 D - ccia_general_notice_edit -> Edit DO Notices
-D - ccia_recorder_logs_show -> Show the DO recorder logs
+ccia_recorder_logs_show -> Show the DO recorder logs
 
 #Player Overvew
 D - admin_players_show -> Show the player page (Alone Useless -> Needs some of the perms below)

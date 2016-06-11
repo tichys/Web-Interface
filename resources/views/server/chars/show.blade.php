@@ -157,7 +157,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Employment Records</div>
-                <div class="panel-body">@parsedown($char_flavour->records_employment)</div>
+                <div class="panel-body">@striptags($char_flavour->records_employment)</div>
             </div>
         </div>
     </div>
@@ -165,7 +165,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Medical Records</div>
-                <div class="panel-body">@parsedown($char_flavour->records_medical)</div>
+                <div class="panel-body">@striptags($char_flavour->records_medical)</div>
             </div>
         </div>
     </div>
@@ -173,7 +173,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Security Records</div>
-                <div class="panel-body">@parsedown($char_flavour->records_security)</div>
+                <div class="panel-body">@striptags($char_flavour->records_security)</div>
             </div>
         </div>
     </div>
@@ -181,7 +181,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Exploitable Information</div>
-                <div class="panel-body">@parsedown($char_flavour->records_exploit)</div>
+                <div class="panel-body">@striptags($char_flavour->records_exploit)</div>
             </div>
         </div>
     </div>
