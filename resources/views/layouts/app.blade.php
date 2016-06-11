@@ -75,10 +75,11 @@
                             <ul class="dropdown-menu" role="menu">
                                 @can("byond_linked")
                                     <li><a href="{{route('user.dashboard')}}"><i class="fa fa-btn"></i>User Dashboard</a></li>
-                                    <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Show / Edit / Add Characters</a></li>
+                                    <li><a href="{{route('server.chars.index')}}"><i class="fa fa-btn"></i>Show Characters</a></li>
                                     <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>
                                     <li><a href="{{route('user.warnings')}}"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>
                                     <li><a href="{{route('server.library.index')}}"><i class="fa fa-btn"></i>Library</a></li>
+                                    <li><a href="{{route('ccia.generalnotice.index')}}"><i class="fa fa-btn"></i>CCIA General Notices</a></li>
                                 @else
                                     <li><a href="{{route('user.link')}}"><i class="fa fa-btn"></i>Link Byond</a></li>
                                 @endcan
@@ -110,8 +111,8 @@
                                         <li @cannot('admin_players_show')class="disabled"@endcannot>
                                             <a href="{{route('admin.players.index')}}"><i class="fa fa-btn"></i>Players</a>
                                         </li>
-                                        <li @cannot('admin_character_records_show')class="disabled"@endcannot>
-                                            <a href="#"><i class="fa fa-btn"></i>Character Records <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                        <li @cannot('admin_char_show')class="disabled"@endcannot>
+                                            <a href="{{route('server.chars.index')}}"><i class="fa fa-btn"></i>Character Records</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -200,7 +201,7 @@
 
     <footer>
         <div class="footer navbar-fixed-bottom">
-            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl, Sierra Brown - Licensed under the AGPL - Version 0.3.0</p></small>
+            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.4.0</p></small>
         </div>
     </footer>
 

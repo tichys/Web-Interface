@@ -119,7 +119,7 @@ class LibraryController extends Controller
         return redirect()->route('server.library.index');
     }
 
-    public function getFormData()
+    public function getBookData()
     {
         $books = ServerLibrary::select(['id','title','author','category']);
 
