@@ -55,7 +55,7 @@ class PhpbbUserProvider implements UserProvider
     {
         $qry = ForumUser::where('user_id', '=', $identifier);
         if ($qry->count() > 0) {
-            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_new_privmsg', 'user_unread_privmsg', 'user_byond', 'user_byond_linked', ForumUser::getRememberTokenName() )->first();
+            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_new_privmsg', 'user_unread_privmsg', 'user_byond', 'user_byond_linked', 'wi_remember_token' )->first();
             if($this->log_logins)
                 Log::debug('login.retrievebyid.success',['user_id' => $identifier]);
             return $user;
