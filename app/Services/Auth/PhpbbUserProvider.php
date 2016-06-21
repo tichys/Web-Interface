@@ -27,6 +27,7 @@ use Carbon\Carbon;
 use Illuminate\Auth\GenericUser;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Support\Facades\Log;
 use Hash;
 
 class PhpbbUserProvider implements UserProvider
@@ -52,7 +53,7 @@ class PhpbbUserProvider implements UserProvider
     {
         $qry = ForumUser::where('user_id', '=', $identifier);
         if ($qry->count() > 0) {
-            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_new_privmsg', 'user_unread_privmsg', 'user_byond', 'user_byond_linked')->first();
+            $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_new_privmsg', 'user_unread_privmsg', 'user_byond', 'user_byond_linked', ForumUser::getRememberTokenName() )->first();
             return $user;
         }
         return NULL;
@@ -69,34 +70,18 @@ class PhpbbUserProvider implements UserProvider
     public function retrieveByToken($identifier, $token)
     {
         if ($this->use_remember_me == TRUE) {
-            $qry = ForumUserModel::where('username_clean', '=', strtolower($identifier))->where('remember_token', '=', $token);
+            $qry = ForumUserModel::where('username_clean', '=', strtolower($identifier))->where(ForumUserModel::getRememberTokenName(), '=', $token);
             if ($qry->count() > 0) {
-                $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_new_privmsg', 'user_unread_privmsg', 'user_byond', 'user_byond_linked')->first();
+                $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_byond', 'user_byond_linked')->first();
                 return $user;
             }
         }
         return NULL;
     }
 
-    /**
-     * Update the "remember me" token for the given user in storage.
-     *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable $user
-     * @param  string                                     $token
-     *
-     * @return void
-     */
-    public function updateRememberToken(Authenticatable $user, $token)
-    {
-        if ($this->use_remember_me == TRUE) {
-            $user->setRememberToken($token);
-            $user->save();
-        }
-    }
 
     public function retrieveByCredentials(array $credentials)
     {
-        // TODO: Implement retrieveByCredentials() method.
         $qry = ForumUser::where('username_clean', '=', strtolower($credentials['username']));
         if ($qry->count() > 0) {
             $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_new_privmsg', 'user_unread_privmsg', 'user_byond', 'user_byond_linked')->first();
@@ -134,5 +119,21 @@ class PhpbbUserProvider implements UserProvider
             return TRUE;
         }
         return FALSE;
+    }
+
+    /**
+     * Update the "remember me" token for the given user in storage.
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param  string                                     $token
+     *
+     * @return void
+     */
+    public function updateRememberToken(Authenticatable $user, $token)
+    {
+        if ($this->use_remember_me == TRUE) {
+            $user->setRememberToken($token);
+            $user->save();
+        }
     }
 }
