@@ -83,7 +83,7 @@ class ForumUserModel extends Model implements AuthenticateableContract
     {
         if($this->enable_remember_me)
         {
-            return $this->{$this->getRememberTokenName()};
+            return $this->wi_remember_token;
         }
         else
         {
@@ -101,7 +101,7 @@ class ForumUserModel extends Model implements AuthenticateableContract
     {
         if($this->enable_remember_me)
         {
-            $this->{$this->getRememberTokenName()} = $value;
+            $this->wi_remember_token = $value;
             $this->save();
         }
     }
