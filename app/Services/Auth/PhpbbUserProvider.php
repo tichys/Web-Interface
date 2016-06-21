@@ -35,11 +35,13 @@ class PhpbbUserProvider implements UserProvider
 
     private $use_remember_me = FALSE;
     private $hash_password = TRUE;
+    private $log_logins = FALSE;
 
     public function __construct()
     {
         $this->hash_password = config('aurora.hash_password');
         $this->use_remember_me = config('aurora.enable_remember_me');
+        $this->log_logins = config('aurora.log_logins');
     }
 
     /**
@@ -54,8 +56,12 @@ class PhpbbUserProvider implements UserProvider
         $qry = ForumUser::where('user_id', '=', $identifier);
         if ($qry->count() > 0) {
             $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_new_privmsg', 'user_unread_privmsg', 'user_byond', 'user_byond_linked', ForumUser::getRememberTokenName() )->first();
+            if($this->log_logins)
+                Log::debug('login.retrievebyid.success',['user_id' => $identifier]);
             return $user;
         }
+        if($this->log_logins)
+            Log::debug('login.retrievebyid.fail',['user_id' => $identifier]);
         return NULL;
     }
 
@@ -73,9 +79,15 @@ class PhpbbUserProvider implements UserProvider
             $qry = ForumUserModel::where('username_clean', '=', strtolower($identifier))->where(ForumUserModel::getRememberTokenName(), '=', $token);
             if ($qry->count() > 0) {
                 $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_byond', 'user_byond_linked')->first();
+                if($this->log_logins)
+                    Log::debug('login.retrievebytoken.success',['username_clean' => strtolower($identifier)]);
                 return $user;
             }
+            if($this->log_logins)
+                Log::debug('login.retrievebytoken.fail',['username_clean' => strtolower($identifier)]);
         }
+        if($this->log_logins)
+            Log::debug('login.retrievebytoken.disabled',['username_clean' => strtolower($identifier)]);
         return NULL;
     }
 
@@ -85,8 +97,12 @@ class PhpbbUserProvider implements UserProvider
         $qry = ForumUser::where('username_clean', '=', strtolower($credentials['username']));
         if ($qry->count() > 0) {
             $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_new_privmsg', 'user_unread_privmsg', 'user_byond', 'user_byond_linked')->first();
+            if($this->log_logins)
+                Log::debug('login.retrievebycredentials.success',['username_clean' => strtolower($credentials['username'])]);
             return $user;
         }
+        if($this->log_logins)
+            Log::debug('login.retrievebycredentials.fail',['username_clean' => strtolower($credentials['username'])]);
         return NULL;
     }
 
@@ -103,21 +119,33 @@ class PhpbbUserProvider implements UserProvider
         $pwmatch = FALSE;
         $hash = $user->getAuthPassword();
         if ($this->hash_password) {
+            if($this->log_logins)
+                Log::debug('login.validatecreds.hashpw',['username_clean' => strtolower($credentials['username'])]);
             //Check if hash is a bcryp 2 hash, then use bcrypt2
             if (strncmp($hash, '$2y$10$', 7) == 0) {
                 $pwmatch = Hash::check($credentials['password'],$hash);
+                if($this->log_logins)
+                    Log::debug('login.validatecreds.newhash',['username_clean' => strtolower($credentials['username'])]);
             } else {
                 $passwordhash = new PasswordHash;
                 $pwmatch = $passwordhash->phpbb_check_hash($credentials['password'], $user->getAuthPassword());
+                if($this->log_logins)
+                    Log::debug('login.validatecreds.oldhash',['username_clean' => strtolower($credentials['username'])]);
             }
         } else {
+            if($this->log_logins)
+                Log::debug('login.validatecreds.nohash',['username_clean' => strtolower($credentials['username'])]);
             $pwmatch = $credentials['password'] == $hash;
         }
 
 
         if ($user->username_clean == strtolower($credentials['username']) && $pwmatch == TRUE) {
+            if($this->log_logins)
+                Log::debug('login.validatecreds.success',['username_clean' => strtolower($credentials['username'])]);
             return TRUE;
         }
+        if($this->log_logins)
+            Log::debug('login.validatecreds.fail',['username_clean' => strtolower($credentials['username'])]);
         return FALSE;
     }
 
@@ -132,8 +160,15 @@ class PhpbbUserProvider implements UserProvider
     public function updateRememberToken(Authenticatable $user, $token)
     {
         if ($this->use_remember_me == TRUE) {
+            if($this->log_logins)
+                Log::debug('login.updaterememberme.enabled',['username_clean' => $user->username_clean,'token'=>$token]);
             $user->setRememberToken($token);
             $user->save();
+        }
+        else
+        {
+            if($this->log_logins)
+                Log::debug('login.updaterememberme.disabled',['username_clean' => $user->username_clean,'token'=>$token]);
         }
     }
 }
