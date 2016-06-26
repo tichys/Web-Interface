@@ -31,34 +31,35 @@ class CreateCciaactionlist extends Migration
      */
     public function up()
     {
-        Schema::connection('server')->create('cciaactions', function (Blueprint $table) {
+        Schema::connection('server')->create('ccia_actions', function (Blueprint $table) {
             $table->increments('id');
-            $table->enum('type',array('injunction','suspension','warning'));
-            $table->string('characters');
+            $table->text('title');
+            $table->enum('type',array('injunction','suspension','warning','other'));
             $table->string('issuedby');
             $table->text('details');
             $table->string('url');
+            $table->date('expires_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
 
-        Schema::connection('server')->create('cciaaction_player', function (Blueprint $table) {
+        Schema::connection('server')->create('ccia_action_char', function (Blueprint $table) {
             $table->integer('action_id')->unsigned();
-            $table->integer('player_id');
+            $table->integer('char_id');
 
             $table->foreign('action_id')
                 ->references('id')
-                ->on('cciaactions')
+                ->on('ccia_actions')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreign('player_id')
+            $table->foreign('char_id')
                 ->references('id')
-                ->on('player')
+                ->on('characters')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->primary(['action_id','player_id']);
+            $table->primary(['action_id','char_id']);
         });
     }
 
@@ -69,7 +70,7 @@ class CreateCciaactionlist extends Migration
      */
     public function down()
     {
-        Schema::connection('server')->drop('cciaaction_player');
-        Schema::connection('server')->drop('cciaactions');
+        Schema::connection('server')->drop('ccia_action_char');
+        Schema::connection('server')->drop('ccia_actions');
     }
 }

@@ -86,4 +86,15 @@ return [
     |
     */
     "syndie_contract_mods_id" => env('SYNDIE_CONTRACT_MODS_ID', 5),
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Log Logins to Debug log
+    |--------------------------------------------------------------------------
+    |
+    | If logins should be logged to the debug log
+    |
+    */
+    "log_logins" => env('LOG_LOGINS', FALSE),
 ];

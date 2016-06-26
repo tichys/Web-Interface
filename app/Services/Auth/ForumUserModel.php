@@ -37,7 +37,7 @@ class ForumUserModel extends Model implements AuthenticateableContract
     public $timestamps = false;
 
     protected $enable_remember_me = false;
-    protected $remember_token_name = "remember_me";
+    protected $remember_token_name = "wi_remember_token";
 
     public function __construct()
     {
@@ -83,7 +83,7 @@ class ForumUserModel extends Model implements AuthenticateableContract
     {
         if($this->enable_remember_me)
         {
-            return $this->remember_token;
+            return $this->wi_remember_token;
         }
         else
         {
@@ -101,7 +101,7 @@ class ForumUserModel extends Model implements AuthenticateableContract
     {
         if($this->enable_remember_me)
         {
-            $this->remember_token = $value;
+            $this->wi_remember_token = $value;
             $this->save();
         }
     }

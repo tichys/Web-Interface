@@ -23,24 +23,25 @@
         <div class="col-md-10 col-md-offset-1">
             @include('components.formerrors')
             <div class="panel panel-default">
-                <div class="panel-heading">Edit a Book</div>
+                <div class="panel-heading">Edit a CCIA Action</div>
 
                 <div class="panel-body">
 
-                    {{Form::model($book, array('route' => array('server.library.edit.post', $book->id),'method' => 'post')) }}
+                    {{Form::model($action, array('route' => array('ccia.actions.edit.post', $action->id),'method' => 'post')) }}
                     {{Form::token()}}
 
-                    {{Form::bsText('author')}}
                     {{Form::bsText('title')}}
-                    {{Form::bsSelectList('category',array(
-                        'Reference'=>'Reference',
-                        'Non-Fiction'=>'Non-Fiction',
-                        'Fiction'=>'Fiction',
-                        'Religion'=>'Religion',
-                        'Adult'=>'Adult'))}}
-                    {{Form::bsTextArea('content')}}
+                    {{Form::bsSelectList('type',array(
+                    'injunction'=>'Injunction',
+                    'suspension'=>'Suspension',
+                    'warning'=>'Warning',
+                    'other'=>'Other'))}}
+                    {{Form::bsText('issuedby')}}
+                    {{Form::bsTextArea('details')}}
+                    {{Form::bsText('url')}}
+                    {{Form::bsDate('expires_at')}}
 
-                    @can('server_library_edit'){{Form::submit('Submit', array('class'=>'btn btn-default'))}}@endcan()
+                    @can('ccia_action_edit'){{Form::submit('Submit', array('class'=>'btn btn-default'))}}@endcan()
 
                     {{ Form::close() }}
                 </div>
