@@ -170,5 +170,17 @@ Route::group(['middleware' => 'web'], function () {
             Route::post('/add', ['as' => 'ccia.generalnotice.add.post', 'uses' => 'CCIA\GeneralNoticeController@postAdd']);
             Route::get('/data', ['as' => 'ccia.generalnotice.data', 'uses'=>'CCIA\GeneralNoticeController@getData']);
         });
+        Route::group(['prefix' => 'actionlist'], function () {
+            Route::get('', ['as' => 'ccia.actions.index', 'uses' => 'CCIA\ActionController@index']);
+            Route::get('/{action_id}/show', ['as' => 'ccia.actions.show.get', 'uses' => 'CCIA\ActionController@getShow']);
+            Route::get('/{action_id}/edit', ['as' => 'ccia.actions.edit.get', 'uses' => 'CCIA\ActionController@getEdit']);
+            Route::post('/{action_id}/edit', ['as' => 'ccia.actions.edit.post', 'uses' => 'CCIA\ActionController@postEdit']);
+            Route::get('/{action_id}/delete', ['as' => 'ccia.actions.delete', 'uses' => 'CCIA\ActionController@delete']);
+            Route::post('/{action_id}/linkchar', ['as' => 'ccia.actions.linkchar', 'uses'=>'CCIA\ActionController@linkChar']);
+            Route::post('/{action_id}/unlinkchar', ['as' => 'ccia.actions.unlinkchar', 'uses'=>'CCIA\ActionController@unlinkChar']);
+            Route::get('/add', ['as' => 'ccia.actions.add.get', 'uses' => 'CCIA\ActionController@getAdd']);
+            Route::post('/add', ['as' => 'ccia.actions.add.post', 'uses' => 'CCIA\ActionController@postAdd']);
+            Route::get('/data', ['as' => 'ccia.actions.data', 'uses'=>'CCIA\ActionController@getData']);
+        });
     });
 });

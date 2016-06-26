@@ -119,11 +119,11 @@
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">DO</a>
                                     <ul class="dropdown-menu">
-                                        <li @cannot('admin_do_recorder_logs_show')class="disabled"@endcannot>
+                                        <li @cannot('ccia_recorderlogs_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>DO Recorder Logs <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                         </li>
-                                        <li @cannot('admin_do_actions_show')class="disabled"@endcannot>
-                                            <a href="#"><i class="fa fa-btn"></i>DO Actions <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                        <li @cannot('ccia_action_show')class="disabled"@endcannot>
+                                            <a href="{{route('ccia.actions.index')}}"><i class="fa fa-btn"></i>DO Actions</a>
                                         </li>
                                         <li>
                                             <a href="{{route('ccia.generalnotice.index')}}"><i class="fa fa-btn"></i>CCIA General Notice </a>

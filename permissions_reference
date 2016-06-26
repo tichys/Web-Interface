@@ -24,12 +24,14 @@ D - admin_site_logs_show -> Show the site logs
 admin_server_logs_show -> Show the server logs
 D - admin_forms_show -> Show the corporate Form Database
 D - admin_forms_edit -> Edit the corporate Form Database
-admin_do_actions_show -> Show the DO Actions
-admin_do_actions_edit -> Edit the DO Actions
 
 #CCIA Stuff
 D - ccia_general_notice_edit -> Edit DO Notices
 D - ccia_recorder_logs_show -> Show the DO recorder logs
+D - ccia_action_show -> Show the ccia actions
+D - ccia_action_edit -> Edit the ccia actions
+ccia_recorderlogs_show -> Show the ccia recorder logs
+ccia_recorderlogs_edit -> Edit the ccia recorder logs
 
 #Player Overvew
 D - admin_players_show -> Show the player page (Alone Useless -> Needs some of the perms below)
