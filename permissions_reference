@@ -27,7 +27,7 @@ D - admin_forms_edit -> Edit the corporate Form Database
 
 #CCIA Stuff
 D - ccia_general_notice_edit -> Edit DO Notices
-D - ccia_recorder_logs_show -> Show the DO recorder logs
+ccia_recorder_logs_show -> Show the DO recorder logs
 D - ccia_action_show -> Show the ccia actions
 D - ccia_action_edit -> Edit the ccia actions
 ccia_recorderlogs_show -> Show the ccia recorder logs
