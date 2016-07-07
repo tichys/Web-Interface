@@ -61,7 +61,7 @@
                         {{Form::model($char_flavour, array('route' => array('server.chars.edit.cr.post', $char_flavour->char_id),'method' => 'post')) }}
                         {{Form::token()}}
                         {{Form::bsTextArea('records_ccia')}}
-                        @can('server_library_edit'){{Form::submit('Submit', array('class'=>'btn btn-default'))}}@endcan()
+                        @can('ccia_record_edit'){{Form::submit('Submit', array('class'=>'btn btn-default'))}}@endcan()
                         {{Form::close()}}
                     </div>
                 </div>
