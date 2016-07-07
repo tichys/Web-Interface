@@ -33,6 +33,12 @@
     </div>
     <div class="row">
         <div class="col-md-6">
+            @can('ccia_action_edit')
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                Do not forget to link the action to the correct characters or the action will not be shown on the employment console
+            </div>
+            @endcan
             <div class="panel panel-default">
                 <div class="panel-heading">Linked Chars: </div>
 
@@ -42,6 +48,7 @@
                     <td><b>Action</b></td>
                     </thead>
                     <tbody>
+                    @can('ccia_action_edit')
                     <tr>
                         <form action="{{route('ccia.actions.linkchar',['action_id'=>$action->id])}}" method="post">
                             <td><input type="text" class="form-control" id="char_id" name="char_id" placeholder="Character ID(numeric)"></td>
@@ -51,6 +58,7 @@
                             </td>
                         </form>
                     </tr>
+                    @endcan()
                     @foreach($linked_chars as $char)
                         <tr>
                             <form action="{{route('ccia.actions.unlinkchar',['action_id'=>$action->id])}}" method="post">
@@ -58,7 +66,9 @@
                                 <td>
                                     <input type="hidden" name="char" value="{{$char->id}}">
                                     {{Form::token()}}
+                                    @can('ccia_action_edit')
                                     <button type="submit" class="btn btn-danger">Remove Char</button>
+                                    @endcan()
                                 </td>
                             </form>
                         </tr>
