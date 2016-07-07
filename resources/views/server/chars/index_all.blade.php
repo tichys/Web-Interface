@@ -17,34 +17,44 @@
 
 @extends('layouts.app')
 
+@section('styles')
+    <link href="{{ asset('/assets/css/datatables.bootstrap.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                @include('components.formerrors')
                 <div class="panel panel-default">
-                    <div class="panel-heading">Add a new Book</div>
+                    <div class="panel-heading">Char Overview</div>
 
                     <div class="panel-body">
-                        {{Form::open(array('route' => 'server.library.add.post','method' => 'post')) }}
-                        {{Form::token()}}
-
-                        {{Form::bsText('author')}}
-                        {{Form::bsText('title')}}
-                        {{Form::bsSelectList('category',array(
-                            'Reference'=>'Reference',
-                            'Non-Fiction'=>'Non-Fiction',
-                            'Fiction'=>'Fiction',
-                            'Religion'=>'Religion',
-                            'Adult'=>'Adult'))}}
-                        {{Form::bsTextArea('content')}}
-
-                        {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
-
-                        {{ Form::close() }}
+                        <table id="forms-table" class="table table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>ckey</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('javascripts')
+    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+    <script>
+        $(function() {
+            $('#forms-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('server.chars.data.all') }}'
+            });
+        });
+    </script>
 @endsection

@@ -65,7 +65,7 @@ class LibraryController extends Controller
 
         Log::notice('perm.library.edit - Book has been edited',['user_id' => $request->user()->user_id, 'book_id' => $book->id]);
 
-        return redirect()->route('server.library.index');
+        return redirect()->route('server.library.show.get',['book_id'=>$book_id]);
     }
 
     public function delete($book_id, Request $request)
@@ -116,7 +116,7 @@ class LibraryController extends Controller
 
         Log::notice('perm.library.add - Book has been added',['user_id' => $request->user()->user_id, 'book_id' => $book->id]);
 
-        return redirect()->route('server.library.index');
+        return redirect()->route('server.library.show.get',['book_id'=>$book->id]);
     }
 
     public function getBookData()

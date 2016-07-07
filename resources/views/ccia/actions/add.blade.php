@@ -23,23 +23,24 @@
             <div class="col-md-10 col-md-offset-1">
                 @include('components.formerrors')
                 <div class="panel panel-default">
-                    <div class="panel-heading">Add a new Book</div>
+                    <div class="panel-heading">Add a new CCIA Action</div>
 
                     <div class="panel-body">
-                        {{Form::open(array('route' => 'server.library.add.post','method' => 'post')) }}
+                        {{Form::open(array('route' => 'ccia.actions.add.post','method' => 'post')) }}
                         {{Form::token()}}
 
-                        {{Form::bsText('author')}}
                         {{Form::bsText('title')}}
-                        {{Form::bsSelectList('category',array(
-                            'Reference'=>'Reference',
-                            'Non-Fiction'=>'Non-Fiction',
-                            'Fiction'=>'Fiction',
-                            'Religion'=>'Religion',
-                            'Adult'=>'Adult'))}}
-                        {{Form::bsTextArea('content')}}
+                        {{Form::bsSelectList('type',array(
+                        'injunction'=>'Injunction',
+                        'suspension'=>'Suspension',
+                        'warning'=>'Warning',
+                        'other'=>'Other'))}}
+                        {{Form::bsText('issuedby')}}
+                        {{Form::bsTextArea('details')}}
+                        {{Form::bsText('url')}}
+                        {{Form::bsDate('expires_at')}}
 
-                        {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                        @can('ccia_action_edit'){{Form::submit('Submit', array('class'=>'btn btn-default'))}}@endcan()
 
                         {{ Form::close() }}
                     </div>

@@ -33,7 +33,6 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
-                                @can('admin_char_show')<th>ckey</th>@endcan()
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -53,7 +52,7 @@
             $('#forms-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('server.chars.data') }}'
+                ajax: '{{ route('server.chars.data.own') }}'
             });
         });
     </script>

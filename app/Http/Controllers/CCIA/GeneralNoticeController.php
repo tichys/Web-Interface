@@ -62,10 +62,6 @@
             if ($request->user()->cannot('ccia_general_notice_edit')) {
                 abort('403', 'You do not have permission to edit CCIA General Notices.');
             }
-
-            if ($request->user()->cannot('ccia_general_notice_edit')) {
-                abort('403', 'You do not have permission to edit CCIA General Notices.');
-            }
             $this->validate($request,[
                 'title' => 'required',
                 'message' => 'required'
@@ -78,7 +74,7 @@
 
             Log::notice('perm.cciageneralnotice.edit - CCIA General Notice has been edited',['user_id' => $request->user()->user_id, 'notice_id' => $notice->id]);
 
-            return redirect()->route('ccia.generalnotice.index');
+            return redirect()->route('ccia.generalnotice.show.get',['generalnotice_id'=>$notice->id]);
         }
         
         public function getAdd(Request $request)
@@ -108,7 +104,7 @@
 
             Log::notice('perm.cciageneralnotice.add - CCIA General Notice has been added',['user_id' => $request->user()->user_id, 'notice_id' => $notice->id]);
 
-            return redirect()->route('ccia.generalnotice.index');
+            return redirect()->route('ccia.generalnotice.show.get',['generalnotice_id'=>$notice->id]);
         }
         
         public function delete(Request $request,$generalnotice_id)
@@ -118,6 +114,7 @@
             }
 
             $notice = CCIAGeneralNotice::findOrFail($generalnotice_id);
+            Log::notice('perm.cciageneralnotice.delete - CCIA General Notice has been deleted',['user_id' => $request->user()->user_id, 'notice_id' => $notice->id]);
             $notice->delete();
             
             return redirect()->route('ccia.generalnotice.index');
