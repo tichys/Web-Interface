@@ -74,7 +74,7 @@
 
             Log::notice('perm.cciageneralnotice.edit - CCIA General Notice has been edited',['user_id' => $request->user()->user_id, 'notice_id' => $notice->id]);
 
-            return redirect()->route('ccia.generalnotice.index');
+            return redirect()->route('ccia.generalnotice.show.get',['generalnotice_id'=>$notice->id]);
         }
         
         public function getAdd(Request $request)
@@ -104,7 +104,7 @@
 
             Log::notice('perm.cciageneralnotice.add - CCIA General Notice has been added',['user_id' => $request->user()->user_id, 'notice_id' => $notice->id]);
 
-            return redirect()->route('ccia.generalnotice.index');
+            return redirect()->route('ccia.generalnotice.show.get',['generalnotice_id'=>$notice->id]);
         }
         
         public function delete(Request $request,$generalnotice_id)

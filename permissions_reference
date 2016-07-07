@@ -30,6 +30,7 @@ D - ccia_general_notice_edit -> Edit DO Notices
 ccia_recorder_logs_show -> Show the DO recorder logs
 D - ccia_action_show -> Show the ccia actions
 D - ccia_action_edit -> Edit the ccia actions
+D - ccia_record_edit -> Edit the ccia char record
 ccia_recorderlogs_show -> Show the ccia recorder logs
 ccia_recorderlogs_edit -> Edit the ccia recorder logs
 

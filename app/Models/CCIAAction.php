@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CCIAAction extends Model
 {
+    use SoftDeletes;
+
+    protected $dates      = ['deleted_at','expires_at'];
     protected $connection = 'server';
     protected $table      = 'ccia_actions';
     protected $fillable   = ['type', 'issuedby', 'details', 'url'];

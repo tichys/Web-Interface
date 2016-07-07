@@ -112,7 +112,7 @@
                                             <a href="{{route('admin.players.index')}}"><i class="fa fa-btn"></i>Players</a>
                                         </li>
                                         <li @cannot('admin_char_show')class="disabled"@endcannot>
-                                            <a href="{{route('server.chars.index')}}"><i class="fa fa-btn"></i>Character Records</a>
+                                            <a href="{{route('server.chars.index.all')}}"><i class="fa fa-btn"></i>Character Records</a>
                                         </li>
                                     </ul>
                                 </li>

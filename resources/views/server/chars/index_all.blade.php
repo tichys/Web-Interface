@@ -33,6 +33,7 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>ckey</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -52,7 +53,7 @@
             $('#forms-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('server.chars.data.own') }}'
+                ajax: '{{ route('server.chars.data.all') }}'
             });
         });
     </script>

@@ -1,4 +1,4 @@
-{{--Copyright (c) 2016 "Sierra Brown"--}}
+{{--Copyright (c) 2016 "Werner Maisl"--}}
 
 {{--This file is part of the Aurora Webinterface--}}
 
@@ -25,20 +25,46 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                <div class="panel panel-default">
-                    <div class="panel-heading">CCIA Actions</div>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#active">Active Actions</a></li>
+                    <li><a data-toggle="tab" href="#all">All Actions</a></li>
+                </ul>
 
-                    <div class="panel-body">
-                        @can('ccia_action_edit')<p><a href="{{route('ccia.actions.add.post')}}" class="btn btn-success" role="button">Add new Action</a></p>@endcan()
-                        <table id="general-notices-table" class="table table-condensed">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                        </table>
+                <div class="tab-content">
+                    <div id="active" class="tab-pane fade in active">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                @can('ccia_action_edit')<p><a href="{{route('ccia.actions.add.post')}}" class="btn btn-success" role="button">Add new Action</a></p>@endcan()
+                                <table id="active-actions-table" class="table table-condensed">
+                                    <thead>
+                                    <tr>
+                                        <th width="30">ID</th>
+                                        <th>Title</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="all" class="tab-pane fade in">
+                        <div class="tab-pane fade in ">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    @can('ccia_action_edit')<p><a href="{{route('ccia.actions.add.post')}}" class="btn btn-success" role="button">Add new Action</a></p>@endcan()
+                                    <table id="all-actions-table" class="table table-condensed">
+                                        <thead>
+                                        <tr>
+                                            <th width="30">ID</th>
+                                            <th>Title</th>
+                                            <th>Expires At</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -51,10 +77,15 @@
     <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
     <script>
         $(function() {
-            $('#general-notices-table').DataTable({
+            $('#active-actions-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('ccia.actions.data') }}'
+                ajax: '{{ route('ccia.actions.data.active') }}'
+            });
+            $('#all-actions-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('ccia.actions.data.all') }}'
             });
         });
     </script>
