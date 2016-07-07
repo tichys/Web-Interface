@@ -95,7 +95,7 @@ class ActionController extends Controller
 
         Log::notice('perm.cciaaction.edit - CCIA Action has been edited', ['user_id' => $request->user()->user_id, 'action_id' => $action->id]);
 
-        return redirect()->route('ccia.actions.index');
+        return redirect()->route('ccia.actions.show.get',['action_id'=>$action->id]);
     }
 
     public function getAdd(Request $request)
@@ -142,7 +142,7 @@ class ActionController extends Controller
 
         Log::notice('perm.cciaaction.add - CCIA Action has been added', ['user_id' => $request->user()->user_id, 'action_id' => $action->id]);
 
-        return redirect()->route('ccia.actions.index');
+        return redirect()->route('ccia.actions.show.get',['action_id'=>$action->id]);
     }
 
     public function linkChar(Request $request, $action_id)
