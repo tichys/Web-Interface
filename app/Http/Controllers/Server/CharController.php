@@ -22,6 +22,16 @@ class CharController extends Controller
         return view('server.chars.index');
     }
 
+    public function indexAll(Request $request)
+    {
+        if($request->user()->cannot('admin_char_show'))
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        return view('server.chars.index_all');
+    }
+
     public function getShow($char_id, Request $request)
     {
         $char = ServerCharacter::findOrFail($char_id);
@@ -34,28 +44,65 @@ class CharController extends Controller
         return view('server.chars.show', ['char' => $char,'char_flavour' => $char_flavour]);
     }
 
-    public function getCharData(Request $request)
+
+    public function getEditCR(Request $request, $char_id)
     {
-        if($request->user()->can('admin_char_show'))
+        if($request->user()->cannot('ccia_record_edit'))
         {
-            $chars = ServerCharacter::select(['id','name','ckey']);
-
-            return Datatables::of($chars)
-                ->removeColumn('id')
-                ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
-                ->addColumn('action','<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
-                ->make();
+            abort('403','You do not have the required permission');
         }
-        else
+
+        $char = ServerCharacter::findOrFail($char_id);
+        $char_flavour = ServerCharacterFlavour::findOrFail($char_id);
+
+        return view('server.chars.edit_cr',['char' => $char,'char_flavour' => $char_flavour]);
+    }
+
+    public function postEditCR(Request $request, $char_id)
+    {
+        if($request->user()->cannot('ccia_record_edit'))
         {
-            $chars = ServerCharacter::select(['id','name'])->where('ckey',$request->user()->user_byond);
-
-            return Datatables::of($chars)
-                ->removeColumn('id')
-                ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
-                ->addColumn('action','<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
-                ->make();
+            abort('403','You do not have the required permission');
         }
+
+        $this->validate($request,[
+            'records_ccia' => 'required'
+        ]);
+
+        $char_flavour = ServerCharacterFlavour::findOrFail($char_id);
+        $char_flavour->records_ccia = $request->input('records_ccia');
+        $char_flavour->save();
+        return redirect()->route('server.chars.show.get',['char_id'=>$char_id]);
+
+    }
+
+
+    public function getCharDataAll(Request $request)
+    {
+
+        if($request->user()->cannot('admin_char_show'))
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        $chars = ServerCharacter::select(['id','name','ckey']);
+
+        return Datatables::of($chars)
+            ->removeColumn('id')
+            ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
+            ->addColumn('action','<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a>@can(\'ccia_record_edit\')<a href="{{route(\'server.chars.edit.cr.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Edit CCIA Record</a>@endcan()</p>')
+            ->make();
+    }
+
+    public function getCharDataOwn(Request $request)
+    {
+        $chars = ServerCharacter::select(['id','name'])->where('ckey',$request->user()->user_byond);
+
+        return Datatables::of($chars)
+            ->removeColumn('id')
+            ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
+            ->addColumn('action','<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
+            ->make();
     }
 
     private function can_view_char(Request $request,$char)

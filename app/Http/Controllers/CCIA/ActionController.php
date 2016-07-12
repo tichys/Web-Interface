@@ -95,7 +95,7 @@ class ActionController extends Controller
 
         Log::notice('perm.cciaaction.edit - CCIA Action has been edited', ['user_id' => $request->user()->user_id, 'action_id' => $action->id]);
 
-        return redirect()->route('ccia.actions.index');
+        return redirect()->route('ccia.actions.show.get',['action_id'=>$action->id]);
     }
 
     public function getAdd(Request $request)
@@ -142,7 +142,7 @@ class ActionController extends Controller
 
         Log::notice('perm.cciaaction.add - CCIA Action has been added', ['user_id' => $request->user()->user_id, 'action_id' => $action->id]);
 
-        return redirect()->route('ccia.actions.index');
+        return redirect()->route('ccia.actions.show.get',['action_id'=>$action->id]);
     }
 
     public function linkChar(Request $request, $action_id)
@@ -188,9 +188,18 @@ class ActionController extends Controller
         return redirect()->route('ccia.actions.index');
     }
 
-    public function getData(Request $request)
+    public function getDataActive(Request $request)
     {
-        $data = CCIAAction::select(['id', 'title']);
+        $data = CCIAAction::select(['id', 'title'])->where('expires_at',NULL)->orWhere('expires_at','>=',date("Y-m-d"));
+
+        return Datatables::of($data)
+            ->editColumn('title', '<a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}">{{$title}}</a>')
+            ->addColumn('action', '<p><a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_action_edit\')<a href="{{route(\'ccia.actions.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.actions.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->make();
+    }
+    public function getDataAll(Request $request)
+    {
+        $data = CCIAAction::select(['id', 'title','expires_at']);
 
         return Datatables::of($data)
             ->editColumn('title', '<a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}">{{$title}}</a>')

@@ -110,8 +110,12 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::group(['prefix' => 'chars'], function () {
             Route::get('', ['as' => 'server.chars.index', 'uses'=>'Server\CharController@index']);
+            Route::get('/all', ['as' => 'server.chars.index.all', 'uses'=>'Server\CharController@indexAll']);
             Route::get('/{char_id}/show', ['as' => 'server.chars.show.get', 'uses'=>'Server\CharController@getShow']);
-            Route::get('/data', ['as' => 'server.chars.data', 'uses'=>'Server\CharController@getCharData']);
+            Route::get('/{char_id}/edit/cr', ['as' => 'server.chars.edit.cr.get', 'uses'=>'Server\CharController@getEditCR']);
+            Route::post('/{char_id}/edit/cr', ['as' => 'server.chars.edit.cr.post', 'uses'=>'Server\CharController@postEditCR']);
+            Route::get('/data/own', ['as' => 'server.chars.data.own', 'uses'=>'Server\CharController@getCharDataOwn']);
+            Route::get('/data/all', ['as' => 'server.chars.data.all', 'uses'=>'Server\CharController@getCharDataAll']);
         });
     });
 
@@ -196,7 +200,8 @@ Route::group(['middleware' => 'web'], function () {
             Route::post('/{action_id}/unlinkchar', ['as' => 'ccia.actions.unlinkchar', 'uses'=>'CCIA\ActionController@unlinkChar']);
             Route::get('/add', ['as' => 'ccia.actions.add.get', 'uses' => 'CCIA\ActionController@getAdd']);
             Route::post('/add', ['as' => 'ccia.actions.add.post', 'uses' => 'CCIA\ActionController@postAdd']);
-            Route::get('/data', ['as' => 'ccia.actions.data', 'uses'=>'CCIA\ActionController@getData']);
+            Route::get('/data/active', ['as' => 'ccia.actions.data.active', 'uses'=>'CCIA\ActionController@getDataActive']);
+            Route::get('/data/all', ['as' => 'ccia.actions.data.all', 'uses'=>'CCIA\ActionController@getDataAll']);
         });
     });
 });
