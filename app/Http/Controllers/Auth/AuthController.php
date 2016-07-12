@@ -124,7 +124,12 @@ class AuthController extends Controller
         if($count == 0) abort(404);
 
         //Check if a user with a linked byond account exists in the forum db
-        $user = ForumUserModel::where('user_byond',$ckey_in)->firstOrFail();
+        $user = ForumUserModel::where('user_byond',$ckey_in)->first();
+
+        if($user == NULL)
+        {
+            return view('errors.no_user_linked', array('ckey'=>$ckey_in));
+        }
 
         //Auth the user
         Auth::login($user);
