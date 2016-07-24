@@ -20,6 +20,7 @@
 
 namespace App\Http\Controllers\Syndie;
 
+use App\Models\SyndieContractObjective;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -38,6 +39,15 @@ class ContractController extends Controller
     public function index(Request $request)
     {
         return view('syndie.contract.index');
+    }
+
+    public function show($contract)
+    {
+        $contract = SyndieContract::findOrFail($contract);
+        $comments = SyndieContractComment::where('contract_id', '=', $contract->contract_id)->get();
+        $objectives = SyndieContractObjective::where('contract_id', '=', $contract->contract_id)->get();
+
+        return view('syndie.contract.view', ['contract' => $contract, 'objectives' => $objectives, 'comments' => $comments]);
     }
 
     public function getContractData(Request $request)
@@ -89,14 +99,6 @@ class ContractController extends Controller
         Log::notice('perm.contracts.add - Contract has been added',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
 
         return redirect()->route('syndie.contracts.index');
-    }
-
-    public function show($contract)
-    {
-        $contract = SyndieContract::findOrFail($contract);
-        $comments = SyndieContractComment::where('contract_id', '=', $contract->contract_id)->get();
-
-        return view('syndie.contract.view', ['contract' => $contract, 'comments' => $comments]);
     }
 
     public function getEdit(Request $request, $contract)

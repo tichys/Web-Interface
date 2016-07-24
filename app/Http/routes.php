@@ -58,9 +58,9 @@ Route::group(['middleware' => 'web'], function () {
         //Contract DB
         Route::group(['prefix' => 'contracts'], function () {
             Route::get('', ['as' => 'syndie.contracts.index', 'uses'=>'Syndie\ContractController@index']);
+            Route::get('/{contract}/show', ['as' => 'syndie.contracts.show', 'uses'=>'Syndie\ContractController@show']);
             Route::get('/add', ['as' => 'syndie.contracts.add.get', 'uses'=>'Syndie\ContractController@getAdd']);
             Route::post('/add', ['as' => 'syndie.contracts.add.post', 'uses'=>'Syndie\ContractController@postAdd']);
-            Route::get('/{contract}/show', ['as' => 'syndie.contracts.show', 'uses'=>'Syndie\ContractController@show']);
             Route::get('/{contract}/edit', ['as' => 'syndie.contracts.edit.get', 'uses'=>'Syndie\ContractController@getEdit']);
             Route::post('/{contract}/edit', ['as' => 'syndie.contracts.edit.post', 'uses'=>'Syndie\ContractController@postEdit']);
             Route::get('/{contract}/approve', ['as' => 'syndie.contracts.approve', 'uses'=>'Syndie\ContractController@approve']); //Mod Approve the contract
@@ -73,8 +73,8 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::group(['prefix' => 'comments'],function(){
             Route::get('', ['as' => 'syndie.comments.index', 'uses'=>'Syndie\ContractComment@index']);
-            Route::get('/add', ['as' => 'syndie.comments.add.get', 'uses'=>'Syndie\ContractComment@getAdd']);
-            Route::post('/add', ['as' => 'syndie.comments.add.post', 'uses'=>'Syndie\ContractComment@postAdd']);
+            Route::get('/{contract}/add', ['as' => 'syndie.comments.add.get', 'uses'=>'Syndie\ContractComment@getAdd']);
+            Route::post('/{contract}/add', ['as' => 'syndie.comments.add.post', 'uses'=>'Syndie\ContractComment@postAdd']);
             Route::get('/{comment}/edit', ['as' => 'syndie.comments.edit.get', 'uses'=>'Syndie\ContractComment@getEdit']);
             Route::post('/{comment}/edit', ['as' => 'syndie.comments.edit.post', 'uses'=>'Syndie\ContractComment@postEdit']);
             Route::get('/{comment}/confirmopen', ['as' => 'syndie.comments.confirmopen', 'uses'=>'Syndie\ContractComment@confirmopen']); // Confirm completion and leave the contract open
@@ -84,9 +84,9 @@ Route::group(['middleware' => 'web'], function () {
         });
 
         Route::group(['prefix' => 'objectives'],function(){
-            Route::get('/{contract}/', ['as' => 'syndie.objectives.index', 'uses'=>'Syndie\ContractObjective@index']);
             Route::get('/{contract}/add', ['as' => 'syndie.objectives.add.get', 'uses'=>'Syndie\ContractObjective@getAdd']);
             Route::post('/{contract}/add', ['as' => 'syndie.objectives.add.post', 'uses'=>'Syndie\ContractObjective@postAdd']);
+            Route::get('/{objective}/', ['as' => 'syndie.objectives.show', 'uses'=>'Syndie\ContractObjective@view']);
             Route::get('/{objective}/edit', ['as' => 'syndie.objectives.edit.get', 'uses'=>'Syndie\ContractObjective@getEdit']);
             Route::post('/{objective}/edit', ['as' => 'syndie.objectives.edit.post', 'uses'=>'Syndie\ContractObjective@postEdit']);
             Route::get('/{objective}/close', ['as' => 'syndie.objectives.close', 'uses'=>'Syndie\ContractObjective@close']);

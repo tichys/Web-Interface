@@ -57,7 +57,7 @@
         {{-- Contract Overview --}}
         <div class="row">
             {{-- Details about the contract--}}
-            <div class="col-lg-4">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h4><b>{{$contract->title}}</b></h4></div>
 
@@ -89,7 +89,7 @@
                     </table>
                 </div>
             </div>
-            @if(Auth::user()->cannot('contract_moderate'))<div class="col-lg-8">@else() <div class="col-lg-6"> @endif()
+            @if(Auth::user()->cannot('contract_moderate'))<div class="col-md-8">@else() <div class="col-md-6"> @endif()
                 <div class="panel panel-default">
                     <div class="panel-heading">Contract Description:</div>
 
@@ -100,21 +100,80 @@
             </div>
             {{-- Management Panel--}}
             @if(Auth::user()->can('contract_moderate'))
-            <div class="col-lg-2">
+            <div class="col-md-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">Actions</div>
                     <div class="panel-body">
                         {{-- Check if user is a contract mod--}}
                         @can('contract_moderate')
-                        <p><b>Mod Actions</b></p>
-                        <p><a href="{{route('syndie.contracts.approve',['contract'=>$contract->contract_id])}}" class="btn btn-info @if(!in_array($contract->status,['new','mod-nok'])) disabled @endif" role="button">Approve Contract</a></p>
-                        <p><a href="{{route('syndie.contracts.reject',['contract'=>$contract->contract_id])}}" class="btn btn-warning @if($contract->status != 'new') disabled @endif" role="button">Reject Contract</a></p>
-                        <p><a href="{{route('syndie.contracts.deletecontract',['contract'=>$contract->contract_id])}}" class="btn btn-danger" role="button">Delete Contract</a></p>
-                        @endcan('')
+                        <p><b>Contract Mod</b></p>
+                        <p><a href="{{route('syndie.contracts.approve',['contract'=>$contract->contract_id])}}" class="btn btn-success @if(!in_array($contract->status,['new','mod-nok'])) disabled @endif" role="button">Approve</a></p>
+                        <p><a href="{{route('syndie.contracts.reject',['contract'=>$contract->contract_id])}}" class="btn btn-warning @if($contract->status != 'new') disabled @endif" role="button">Reject </a></p>
+                        <p><a href="{{route('syndie.contracts.deletecontract',['contract'=>$contract->contract_id])}}" class="btn btn-danger" role="button">Delete</a></p>
+                        @endcan()
                     </div>
                 </div>
             </div>
             @endif()
+        </div>
+        {{-- Contract Objectives / Comments --}}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Contract Objectives</div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Reward</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($objectives as $objective)
+                                    @if($objective->status == "open")
+                                    <tr class="success">
+                                    @elseif($objective->status == "closed")
+                                    <tr class="warning">
+                                    @else()
+                                    <tr>
+                                    @endif()
+                                        <td>{{$objective->title}}</td>
+                                        <td>{{$objective->reward_other}}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <a class="btn btn-info " href="{{route('syndie.objectives.show',['objective'=>$objective->objective_id])}}">
+                                                    View{{--<span class="glyphicon glyphicon-question-sign"></span>--}}
+                                                </a>
+
+                                                @if($contract->contractee_id == Auth::user()->id || Auth::user()->can('contract_moderate'))
+                                                    <a class="btn btn-warning" href="{{route('syndie.objectives.edit.get',['objective'=>$objective->objective_id])}}">
+                                                        Edit{{--<span class="glyphicon glyphicon-pencil"></span>--}}
+                                                    </a>
+                                                    @if($objective->status == "closed")
+                                                        <a class="btn btn-success" href="{{route('syndie.objectives.open',['objective'=>$objective->objective_id])}}">
+                                                            Open{{--<span class="glyphicon glyphicon-ok"></span>--}}
+                                                        </a>
+                                                    @endif()
+                                                    @if($objective->status == "open")
+                                                        <a class="btn btn-warning" href="{{route('syndie.objectives.close',['objective'=>$objective->objective_id])}}">
+                                                            Close{{--<span class="glyphicon glyphicon-remove"></span>--}}
+                                                        </a>
+                                                    @endif()
+                                                    <a class="btn btn-danger" href="{{route('syndie.objectives.delete',['objective'=>$objective->objective_id])}}">
+                                                        Delete{{--<span class="glyphicon glyphicon-trash"></span>--}}
+                                                    </a>
+                                                @endif()
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

@@ -18,10 +18,8 @@ class ContractChanges extends Migration
             $table->integer('contract_id'); // ID of the person offering the contract
             $table->string('status');
             /* Status Codes:
-             * uncompleted -> The objective is uncompleted
-             * completed -> The objective is completed
-             * rejected -> The objective has been rejected by a contract mod
-             * deleted -> The objective has been deleted
+             * open -> The objective is uncompleted
+             * closed -> The objective is completed
              */
             $table->string('title');
             $table->text('description');
