@@ -1,0 +1,37 @@
+{{--Copyright (c) 2016 "Werner Maisl"--}}
+
+{{--This file is part of the Aurora Webinterface--}}
+
+{{--The Aurora Webinterface is free software: you can redistribute it and/or modify--}}
+{{--it under the terms of the GNU Affero General Public License as--}}
+{{--published by the Free Software Foundation, either version 3 of the--}}
+{{--License, or (at your option) any later version.--}}
+
+{{--This program is distributed in the hope that it will be useful,--}}
+{{--but WITHOUT ANY WARRANTY; without even the implied warranty of--}}
+{{--MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the--}}
+{{--GNU Affero General Public License for more details.--}}
+
+{{--You should have received a copy of the GNU Affero General Public License--}}
+{{--along with this program. If not, see <http://www.gnu.org/licenses/>.<!DOCTYPE html>--}}
+
+<li class="timeline-inverted">
+    <div class="timeline-badge success"><i class="glyphicon glyphicon-ok"></i></div>
+    <div class="timeline-panel">
+        <div class="timeline-heading">
+            <h4 class="timeline-title"><b>Completion Report: </b>{{$comment->title}}</h4>
+            @include('syndie.comments.subtitle')
+        </div>
+        <div class="timeline-body">
+            <p>@parsedown($comment->comment)</p>
+            @include('syndie.comments.image')
+            @if($contract->status == "completed" && (Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('contract_moderate')))
+                <p>
+                    <a href="{{route('syndie.contracts.confirm',['comment'=>$comment->comment_id])}}" class="btn btn-success" role="button">Confirm Completion</a>
+                    <a href="{{route('syndie.contracts.reopen',['comment'=>$comment->comment_id])}}" class="btn btn-info" role="button">Reopen Contract</a>
+                </p>
+            @endif()
+            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.comments.delete',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
+        </div>
+    </div>
+</li>

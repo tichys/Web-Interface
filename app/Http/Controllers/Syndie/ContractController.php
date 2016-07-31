@@ -20,7 +20,6 @@
 
 namespace App\Http\Controllers\Syndie;
 
-use App\Models\SyndieContractObjective;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -28,6 +27,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\SyndieContract;
 use App\Models\SyndieContractComment;
+use App\Models\SyndieContractObjective;
 use Yajra\Datatables\Datatables;
 use App\Jobs\SendContractNotificationEmail;
 use Illuminate\Support\Facades\Storage;
@@ -124,6 +124,7 @@ class ContractController extends Controller
 
         $SyndieContract->title = $request->input('title');
         $SyndieContract->description = $request->input('description');
+        $SyndieContract->reward_other = $request->input('reward');
         $SyndieContract->save();
 
         Log::notice('perm.contracts.edit - Contract has been edited',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);

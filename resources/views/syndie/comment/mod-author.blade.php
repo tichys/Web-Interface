@@ -15,29 +15,17 @@
 {{--You should have received a copy of the GNU Affero General Public License--}}
 {{--along with this program. If not, see <http://www.gnu.org/licenses/>.<!DOCTYPE html>--}}
 
-@extends('layouts.app')
-
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <div class="panel-heading">Edit Contract: <b>{{$contract->title}}</b></div>
-
-                <div class="panel-body">
-                    {{Form::model($contract, array('route' => array('syndie.contracts.edit.post', $contract->contract_id),'method' => 'post')) }}
-                    {{Form::token()}}
-
-                    {{Form::bsText('title')}}
-                    {{Form::bsText('reward',$contract->reward_other)}}
-                    {{Form::bsTextArea('description')}}
-
-                    {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
-
-                    {{ Form::close() }}
-                </div>
-            </div>
+<li>
+    <div class="timeline-badge warning"><i class="glyphicon glyphicon-warning-sign"></i></div>
+    <div class="timeline-panel">
+        <div class="timeline-heading">
+            <h4 class="timeline-title"><b>Private: </b>{{$comment->title}}</h4>
+            @include('syndie.comments.subtitle')
+        </div>
+        <div class="timeline-body">
+            <p>@parsedown($comment->comment)</p>
+            @include('syndie.comments.image')
+            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.comments.delete',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
         </div>
     </div>
-</div>
-@endsection
+</li>
