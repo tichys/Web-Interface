@@ -25,11 +25,11 @@
                 @include('components.formerrors')
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">New Comment</div>
+                    <div class="panel-heading">New Comment for Contract: {{$contract->title}}</div>
 
 
                     <div class="panel-body">
-                        {{ Form::open(array('route' => array('syndie.contracts.add.post',$contract->contract_id),'method' => 'post', 'files' => true)) }}
+                        {{ Form::open(array('route' => array('syndie.comments.add.post',$contract->contract_id),'method' => 'post', 'files' => true)) }}
 
                         {{Form::token()}}
 
@@ -41,12 +41,14 @@
                         {{Form::bsSelectList('type',array('ic'=>'IC Comment','ic-failrep'=> 'IC Failure Report','ic-comprep'=>'IC Completion Report','ooc' => 'OOC Comment'))}}
                         @endif()
 
-                        {{--Only show the commentor name field of the user is not the owner of the contract or a mod--}}
-                        <div class="alert alert-success">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            The username is forced to your forum username for the following message types: 'ooc','mod-author','mod-ooc'
+                        <div id="user">
+                            {{--Only show the commentor name field of the user is not the owner of the contract or a mod--}}
+                            {{--<div class="alert alert-success">--}}
+                                {{--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>--}}
+                                {{--The username is forced to your forum username for the following message types: 'ooc','mod-author','mod-ooc'--}}
+                            {{--</div>--}}
+                            {{Form::bsText('commentor_name')}}
                         </div>
-                        {{Form::bsText('commentor_name')}}
 
                         {{Form::bsText('title')}}
 
@@ -56,19 +58,31 @@
                         </div>
                         {{Form::bsTextArea('comment')}}
 
-                        <div class="alert alert-success">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            Uploading a image is optional. You can only upload one image at a time.<br>
-                            It is recommended to provide a description for each image you upload and then post a contract report.
-                        </div>
+                        {{--<div id="image">--}}
+                            {{--<div class="alert alert-success">--}}
+                                {{--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>--}}
+                                {{--Uploading a image is optional. You can only upload one image at a time.<br>--}}
+                                {{--It is recommended to provide a description for each image you upload and then post a contract report.--}}
+                            {{--</div>--}}
+                            {{--{{Form::bsFile('image')}}--}}
+                        {{--</div>--}}
 
-                        <div id="objectives" hidden>
-                            Test div for objectives
+                        <div id="objectives-select" class="form-group" hidden>
+                            <label for="objectives">Select completed objectives:</label><br>
+                            <select class="form-control objectives" id="objectives" multiple="multiple" name="objectives[]" style="width: 100%">
+                                @foreach($objectives as $objective)
+                                    <option value="{{$objective->objective_id}}" @if(@in_array($objective->objective_id, old('objectives'))) selected="selected" @endif>{{$objective->title}}</option>
+                                @endforeach()
+                            </select>
                         </div>
-                        <div id="agents" hidden>
-                            Test div for agents
+                        <div id="agents-select" class="form-group" hidden>
+                            <label for="agents">Select participating agent ckeys:</label><br>
+                            <select class="form-control agents" id="agents" multiple="multiple" name="agents[]" style="width: 100%">
+                                @if(Auth::user()->user_byond_linked == 1)
+                                    <option value="{{Auth::user()->getServerPlayerID()}}" selected="selected">{{Auth::user()->user_byond}}</option>
+                                @endif
+                            </select>
                         </div>
-                        {{Form::bsFile('image')}}
 
                         {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
 
@@ -81,21 +95,63 @@
 @endsection
 
 @section('javascripts')
-    <script>
-        $("#type").change(function () {
+    <script type="text/javascript" src="{{asset('assets/js/select2.min.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            updateForm();
+            $(".objectives").select2({
+                placeholder: "Select objectives to link to completion report",
+                allowClear: true,
+                width: '100%'
+            });
+            $(".agents").select2({
+                placeholder: "Select agent ckeys to link to completion report",
+                allowClear: true,
+                width: '100%',
+                maximumSelectionLength: 5,
+                minimumInputLength: 3,
+                ajax: {
+                    url: "{{ route("syndie.api.get.agentlist") }}",
+                    dataType: 'json',
+                    delay: 400,
+                    data: function(params) {
+                        return {
+                            term: params.term
+                        }
+                    },
+                    processResults: function (data) {
+//                        alert(JSON.stringify(data));
+                        return {
+                            results: $.map(data, function (item, value) {
+//                                alert(JSON.stringify(item));
+                                return {
+                                    text: item,
+                                    id: value
+                                }
+                            })
+                        };
+                    }
+                }
+            });
+        });
 
+        $("#type").change(function () {
+            updateForm();
+        });
+
+        function updateForm(){
             $("#title").hide();
             $('label[for="title"]').hide();
             $("#comment").hide();
             $('label[for="comment"]').hide();
-            $("#commentor_name").hide();
-            $('label[for="commentor_name"]').hide();
+            $("#user").hide();
+            $('label[for="user"]').hide();
             $("#image").hide();
             $('label[for="image"]').hide();
-            $("#objectives").hide();
-            $('label[for="objectives"]').hide();
-            $("#agents").hide();
-            $('label[for="agents"]').hide();
+            $("#objectives-select").hide();
+            $('label[for="objectives-select"]').hide();
+            $("#agents-select").hide();
+            $('label[for="agents-select"]').hide();
 
             var type = $( "#type option:selected" ).val();
             if(type == "ic")
@@ -106,8 +162,8 @@
                 $("#comment").show();
                 $('label[for="comment"]').show();
 
-                $("#commentor_name").show();
-                $('label[for="commentor_name"]').show();
+                $("#user").show();
+                $('label[for="user"]').show();
 
                 $("#image").show();
                 $('label[for="image"]').show();
@@ -120,8 +176,8 @@
                 $("#comment").show();
                 $('label[for="comment"]').show();
 
-                $("#commentor_name").show();
-                $('label[for="commentor_name"]').show();
+                $("#user").show();
+                $('label[for="user"]').show();
 
                 $("#image").show();
                 $('label[for="image"]').show();
@@ -134,17 +190,17 @@
                 $("#comment").show();
                 $('label[for="comment"]').show();
 
-                $("#commentor_name").show();
-                $('label[for="commentor_name"]').show();
+                $("#user").show();
+                $('label[for="user"]').show();
 
                 $("#image").show();
                 $('label[for="image"]').show();
 
-                $("#objectives").show();
-                $('label[for="objectives"]').show();
+                $("#objectives-select").show();
+                $('label[for="objectives-select"]').show();
 
-                $("#agents").show();
-                $('label[for="agents"]').show();
+                $("#agents-select").show();
+                $('label[for="agents-select"]').show();
 
             }
             else if(type == "ic-cancel")
@@ -155,8 +211,8 @@
                 $("#comment").show();
                 $('label[for="comment"]').show();
 
-                $("#commentor_name").show();
-                $('label[for="commentor_name"]').show();
+                $("#user").show();
+                $('label[for="user"]').show();
 
                 $("#image").show();
                 $('label[for="image"]').show();
@@ -185,8 +241,10 @@
                 $("#comment").show();
                 $('label[for="comment"]').show();
             }
-
-//            alert(type);
-        });
+        }
     </script>
+@endsection
+
+@section('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
 @endsection

@@ -75,8 +75,8 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('', ['as' => 'syndie.comments.index', 'uses'=>'Syndie\ContractComment@index']);
             Route::get('/{contract}/add', ['as' => 'syndie.comments.add.get', 'uses'=>'Syndie\ContractComment@getAdd']);
             Route::post('/{contract}/add', ['as' => 'syndie.comments.add.post', 'uses'=>'Syndie\ContractComment@postAdd']);
-            Route::get('/{comment}/edit', ['as' => 'syndie.comments.edit.get', 'uses'=>'Syndie\ContractComment@getEdit']);
-            Route::post('/{comment}/edit', ['as' => 'syndie.comments.edit.post', 'uses'=>'Syndie\ContractComment@postEdit']);
+//            Route::get('/{comment}/edit', ['as' => 'syndie.comments.edit.get', 'uses'=>'Syndie\ContractComment@getEdit']);
+//            Route::post('/{comment}/edit', ['as' => 'syndie.comments.edit.post', 'uses'=>'Syndie\ContractComment@postEdit']);
             Route::get('/{comment}/confirmopen', ['as' => 'syndie.comments.confirmopen', 'uses'=>'Syndie\ContractComment@confirmopen']); // Confirm completion and leave the contract open
             Route::get('/{comment}/confirmclose', ['as' => 'syndie.comments.confirmclose', 'uses'=>'Syndie\ContractComment@confirmclose']); // Confirm completion and close the contract
             Route::get('/{comment}/reject', ['as' => 'syndie.comments.reject', 'uses'=>'Syndie\ContractComment@reject']); // Confirm completion and close the contract
@@ -93,6 +93,8 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/{objective}/open', ['as' => 'syndie.objectives.open', 'uses'=>'Syndie\ContractObjective@open']);
             Route::get('/{objective}/delete', ['as' => 'syndie.objectives.delete', 'uses'=>'Syndie\ContractObjective@delete']);
         });
+
+        Route::get('/api/agentlist', ['as' => 'syndie.api.get.agentlist', 'uses'=>'Syndie\ContractController@getAgentList']);
     });
 
     //Stuff that interferes with ingame objects

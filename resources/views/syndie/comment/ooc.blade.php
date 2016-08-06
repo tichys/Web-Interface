@@ -20,11 +20,11 @@
     <div class="timeline-panel">
         <div class="timeline-heading">
             <h4 class="timeline-title"><b>OOC Message: </b>{{$comment->title}}</h4>
-            @include('syndie.comments.subtitle')
+            @include('syndie.comment.subtitle')
         </div>
         <div class="timeline-body">
             <p>@parsedown($comment->comment)</p>
-            @include('syndie.comments.image')
+            @include('syndie.comment.image')
             @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.comments.delete',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
         </div>
     </div>

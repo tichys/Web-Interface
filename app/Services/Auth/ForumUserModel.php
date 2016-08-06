@@ -141,4 +141,16 @@ class ForumUserModel extends Model implements AuthenticateableContract
 
         return !! $role->intersect($this->roles)->count();
     }
+
+    public function getServerPlayerID()
+    {
+        if($this->user_byond_linked == 1)
+        {
+            $player = \App\Models\ServerPlayer::where('ckey',$this->user_byond)->first();
+            return $player->id;
+        }
+        else{
+            return NULL;
+        }
+    }
 }

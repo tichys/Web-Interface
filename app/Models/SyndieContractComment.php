@@ -31,4 +31,19 @@ class SyndieContractComment extends Model
     protected $fillable = ['contract_id', 'commentor_name', 'title', 'comment'];
     protected $primaryKey = 'comment_id';
     protected $dates = ['deleted_at'];
+
+    public function objectives()
+    {
+        return $this->belongsToMany('App\Models\SyndieContractObjective','syndie_contracts_comments_objectives','comment_id','objective_id');
+    }
+
+    public function completers()
+    {
+        return $this->belongsToMany('App\Models\ServerPlayer','syndie_contracts_comments_completers','comment_id','user_id');
+    }
+
+    public function contract()
+    {
+        return $this->belongsTo('App\Models\SyndieContract','contract_id','contract_id');
+    }
 }

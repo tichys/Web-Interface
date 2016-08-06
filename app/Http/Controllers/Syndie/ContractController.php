@@ -28,10 +28,12 @@ use App\Http\Controllers\Controller;
 use App\Models\SyndieContract;
 use App\Models\SyndieContractComment;
 use App\Models\SyndieContractObjective;
+use App\Models\ServerPlayer;
 use Yajra\Datatables\Datatables;
 use App\Jobs\SendContractNotificationEmail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use App\Services\Server\Helpers;
 use Log;
 
 class ContractController extends Controller
@@ -167,6 +169,23 @@ class ContractController extends Controller
             return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
         } else {
             abort(403, 'Unauthorized action.');
+        }
+    }
+
+    public function getAgentList(Request $request)
+    {
+        $helpers = new Helpers();
+
+        $term = $request->input('term');
+
+        $search_key = $helpers->sanitize_ckey($term);
+
+        //Check for proper input length
+        if(strlen($term) >= 3)
+        {
+            //Get corresponding ckeys from DB
+            $players = ServerPlayer::where('ckey','like','%'.$search_key.'%')->lists('ckey','id');
+            return json_encode($players);
         }
     }
 

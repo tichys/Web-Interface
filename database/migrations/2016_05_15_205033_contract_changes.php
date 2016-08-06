@@ -33,16 +33,20 @@ class ContractChanges extends Migration
 
         /* Edit Comments Table */
         Schema::connection('server')->table('syndie_contracts_comments',function($table){
-            $table->string('report_status')->nullable();
+            $table->enum('report_status',['waiting-approval','accepted','rejected'])->nullable();
             /* Status Codes:
              * NULL -> Just a Comment not a completion report
              * waiting-approval -> Waiting for the author to confirm the completion of the contract
              * accepted -> Contract Completion has been accepted
              * rejected -> Contract Completion has been rejected
              */
+            $table->foreign('contract_id','contract_id')
+                ->references('id')
+                ->on('syndie_contracts')
+                ->onDelete('cascade');
         });
 
-        /* Add Many-To-Many Comment <-> Users */
+        /* Add Many-To-Many Comment <-> Completers */
         Schema::connection('server')->create('syndie_contracts_comments_completers', function(Blueprint $table)
         {
             $table->integer('user_id');

@@ -20,18 +20,55 @@
     <div class="timeline-panel">
         <div class="timeline-heading">
             <h4 class="timeline-title"><b>Completion Report: </b>{{$comment->title}}</h4>
-            @include('syndie.comments.subtitle')
+            @include('syndie.comment.subtitle')
         </div>
         <div class="timeline-body">
+            @if($comment->report_status == "waiting-approval")
+                <div class="alert alert-info">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    This report is waiting to be approved by the contract author
+                </div>
+            @endif
+            @if($comment->report_status == "accepted")
+                <div class="alert alert-success">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    This report has been accepted by the contract author
+                </div>
+            @endif
+            @if($comment->report_status == "rejected")
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    This report has been rejected by the contract author
+                </div>
+            @endif
             <p>@parsedown($comment->comment)</p>
-            @include('syndie.comments.image')
-            @if($contract->status == "completed" && (Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('contract_moderate')))
-                <p>
-                    <a href="{{route('syndie.contracts.confirm',['comment'=>$comment->comment_id])}}" class="btn btn-success" role="button">Confirm Completion</a>
-                    <a href="{{route('syndie.contracts.reopen',['comment'=>$comment->comment_id])}}" class="btn btn-info" role="button">Reopen Contract</a>
-                </p>
-            @endif()
-            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.comments.delete',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
+            @if($comment->objectives()->count() > 0)
+                <br><p><u>Completed objectives:</u></p>
+                <ul>
+                    @foreach($comment->objectives()->get() as $objective)
+                        <li>{{$objective->title}}</li>
+                    @endforeach
+                </ul>
+            @endif
+            @if($comment->completers()->count() > 0)
+                <br><p><u>Completing Agents:</u></p>
+                <ul>
+                    @foreach($comment->completers()->get() as $completer)
+                        <li>{{$completer->ckey}}</li>
+                    @endforeach
+                </ul>
+            @endif
+            @include('syndie.comment.image')
+            @if($contract->contractee_id == Auth::user()->id || Auth::user()->can('contract_moderate'))
+                @if($comment->report_status == "waiting-approval")
+                    <br><p>
+                        <a href="{{route('syndie.comments.confirmopen',['comment'=>$comment->comment_id])}}" class="btn btn-success" role="button">Confirm Open</a>
+                        <a href="{{route('syndie.comments.confirmclose',['comment'=>$comment->comment_id])}}" class="btn btn-warning" role="button">Confirm Close</a>
+                        <a href="{{route('syndie.comments.reject',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Reject</a>
+                    </p>
+                @endif
+                @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.comments.delete',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
+            @endif
         </div>
     </div>
 </li>

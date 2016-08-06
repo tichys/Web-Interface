@@ -36,4 +36,14 @@ class SyndieContractObjective extends Model
     protected $fillable = ['title', 'description', 'reward', 'reward_other'];
     protected $primaryKey = 'objective_id';
     protected $dates = ['deleted_at'];
+
+    public function comments()
+    {
+        return $this->belongsToMany('App\Models\SyndieContractComment','syndie_contract_comment_objectives');
+    }
+
+    public function contract()
+    {
+        return $this->belongsTo('App\Models\SyndieContract','contract_id','contract_id');
+    }
 }

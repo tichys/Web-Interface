@@ -17,6 +17,247 @@ class ContractComment extends Controller
         $contract = SyndieContract::findOrFail($contract);
         $objectives = SyndieContractObjective::where('contract_id', '=', $contract->contract_id)->get();
 
-        return view('syndie.comment.add',["contract"=>$contract, 'objectives' => $objectives]);
+        return view('syndie.comment.add', ["contract" => $contract, "objectives" => $objectives]);
+    }
+
+    public function postAdd(Request $request, $contract)
+    {
+        //dd($request->all());
+        //Get the Contract
+        $contract = SyndieContract::findOrFail($contract);
+
+        //Validate that the type is present and that user has the permission to use it
+        $type = $request->input("type");
+        if ($request->user()->can('contract_moderate')) {
+            $validate_array = [
+                'type' => 'required|in:ic,ic-failrep,ic-comprep,ic-cancel,ooc,mod-ooc,mod-author'
+            ];
+        } else if ($request->user()->user_id == $contract->contractee_id) {
+            $validate_array = [
+                'type' => 'required|in:ic,ic-cancel,ooc,mod-author'
+            ];
+        } else {
+            $validate_array = [
+                'type' => 'required|in:ic,ic-failrep,ic-comprep'
+            ];
+        }
+        $this->validate($request, $validate_array);
+
+        //Create new Comment but dont save it yet
+
+        $comment = new SyndieContractComment();
+        $comment->contract_id = $contract->contract_id;
+        $comment->type = $type;
+        $comment->commentor_id = $request->user()->user_id;
+
+        //Get the type and validate the required options for the type
+        $type = $request->input("type");
+
+        switch ($type) {
+            case "ic":
+            case "ic-failrep":
+                $this->validate($request, [
+                    'title' => 'required|max:50',
+                    'comment' => 'required',
+                    'commentor_name' => 'required|max:50'
+                ]);
+
+                $comment->title = $request->input('title');
+                $comment->comment = $request->input('comment');
+                $comment->commentor_name = $request->input('commentor_name');
+                $comment->save();
+                break;
+
+
+            case "ic-cancel":
+                $this->validate($request, [
+                    'title' => 'required|max:50',
+                    'comment' => 'required',
+                    'commentor_name' => 'required|max:50'
+                ]);
+
+                $comment->title = $request->input('title');
+                $comment->comment = $request->input('comment');
+                $comment->commentor_name = $request->input('commentor_name');
+                $comment->save();
+
+                $contract->status = "closed";
+                $contract->save();
+                break;
+
+            case "ooc":
+            case "mod-ooc":
+            case "mod-author":
+                $this->validate($request, [
+                    'title' => 'required|max:50',
+                    'comment' => 'required',
+                    'commentor_name' => 'required|max:50'
+                ]);
+
+                $comment->title = $request->input('title');
+                $comment->comment = $request->input('comment');
+                $comment->commentor_name = $request->user()->username;
+                $comment->save();
+                break;
+
+            case "ic-comprep":
+                $this->validate($request, [
+                    'title' => 'required|max:50',
+                    'comment' => 'required',
+                    'commentor_name' => 'required|max:50',
+                    'objectives' => 'required',
+                    'agents' => 'required'
+                ]);
+
+                $comment->title = $request->input('title');
+                $comment->comment = $request->input('comment');
+                $comment->commentor_name = $request->input('commentor_name');
+                $comment->report_status = "waiting-approval";
+                $comment->save();
+
+                //Now sync the objectives and agents
+                $comment->objectives()->sync($request->input('objectives'));
+                $comment->completers()->sync($request->input('agents'));
+                break;
+        }
+        return redirect()->route('syndie.contracts.show', ['contract' => $comment->contract_id]);
+    }
+
+    public function confirmopen(Request $request, $comment)
+    {
+        $comment = SyndieContractComment::findOrFail($comment);
+        $contract = SyndieContract::findOrFail($comment->contract_id);
+        $objectives = $comment->objectives()->get();
+
+        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        $comment->report_status = 'accepted';
+        $comment->save();
+
+        //Close Objectives
+        $this->closeContractObjectives($objectives);
+        $this->createCompletionComment($comment,$contract,$objectives,"confirmopen");
+
+        return redirect()->route('syndie.contracts.show', ['contract' => $comment->contract_id]);
+    }
+
+    public function confirmclose(Request $request, $comment)
+    {
+        $comment = SyndieContractComment::findOrFail($comment);
+        $contract = SyndieContract::findOrFail($comment->contract_id);
+        $objectives = $comment->objectives()->get();
+
+        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        $comment->report_status = 'accepted';
+        $comment->save();
+
+        $contract->status = "closed";
+        $contract->save();
+
+        //Close Objectives
+        $this->closeContractObjectives($objectives);
+        $this->createCompletionComment($comment,$contract,$objectives,"confirmclose");
+
+        return redirect()->route('syndie.contracts.show', ['contract' => $comment->contract_id]);
+    }
+
+    public function reject(Request $request, $comment)
+    {
+        $comment = SyndieContractComment::findOrFail($comment);
+        $contract = SyndieContract::findOrFail($comment->contract_id);
+        $objectives = $comment->objectives()->get();
+
+        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        $comment->report_status = 'rejected';
+        $comment->save();
+
+        $this->createCompletionComment($comment,$contract,$objectives,"reject");
+
+        return redirect()->route('syndie.contracts.show', ['contract' => $comment->contract_id]);
+    }
+
+    public function delete(Request $request, $comment)
+    {
+        $comment = SyndieContractComment::findOrFail($comment);
+
+        if($request->user()->cannot('contract_moderate'))
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        $comment->delete();
+
+        return redirect()->route('syndie.contracts.show', ['contract' => $comment->contract_id]);
+    }
+
+    private function closeContractObjectives($objectives)
+    {
+        foreach($objectives as $objective)
+        {
+            $objective->status = "closed";
+            $objective->save();
+        }
+    }
+
+    private function createCompletionComment(SyndieContractComment $comment, SyndieContract $contract, $objectives,$type = "confirmopen")
+    {
+        $system_comment = new SyndieContractComment();
+        $system_comment->contract_id = $comment->contract_id;
+        $system_comment->commentor_id = 0;
+        $system_comment->commentor_name = "System";
+        $system_comment->title = "Contract Completion";
+        $system_comment->type = "ic";
+
+        switch($type)
+        {
+            case "confirmopen":
+                $system_comment->comment =
+"#### Completion Report Approved
+The Completion-Report with the title $comment->title by $comment->commentor_name has been **approved** by the contract author.
+
+The contract has been left open.
+";
+                break;
+            case "confirmclose":
+                $system_comment->comment =
+"#### Completion Report Approved
+The Completion-Report with the title $comment->title by $comment->commentor_name has been **approved** by the contract author.
+
+The contract has been closed.
+";
+
+                break;
+            case "reject":
+                $system_comment->comment =
+"#### Completion Report Approved
+The Completion-Report with the title $comment->title by $comment->commentor_name has been **rejected** the contract author.
+";
+                break;
+        }
+
+        if($type == "confirmopen" || $type == "confirmclose")
+        {
+            $system_comment->comment .= "The following payment has been transferred to the contractor:";
+            $system_comment->comment .= "
+* Base Reward: ". $contract->reward_other;
+            foreach($objectives as $objective)
+            {
+                $system_comment->comment .= "
+* Objective Reward - \"".$objective->title."\": ". $objective->reward_other;
+            }
+        }
+
+        $system_comment->save();
     }
 }
