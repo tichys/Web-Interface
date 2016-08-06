@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SyndieContract;
 use App\Models\SyndieContractComment;
 use App\Models\SyndieContractObjective;
+use App\Jobs\SendContractNotificationEmail;
 use Illuminate\Support\Facades\Log;
 
 class ContractComment extends Controller
@@ -120,6 +121,7 @@ class ContractComment extends Controller
                 $comment->completers()->sync($request->input('agents'));
                 break;
         }
+        $this->dispatch(new SendContractNotificationEmail($contract, $type));
 
         Log::notice('perm.syndie.contractcomment.add - Contract Comment has been added',['user_id' => $request->user()->user_id, 'comment_id' => $comment->comment_id]);
         return redirect()->route('syndie.contracts.show', ['contract' => $comment->contract_id]);
