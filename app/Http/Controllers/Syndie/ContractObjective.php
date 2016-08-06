@@ -68,7 +68,7 @@ class ContractObjective extends Controller
             abort('403','You do not have the required permission');
         }
 
-        return view('syndie.objective.edit', ['objective' => $objective]);
+        return view('syndie.objective.edit', ['objective' => $objective,'contract' => $contract]);
     }
 
     public function postEdit(Request $request, $objective)
@@ -82,8 +82,6 @@ class ContractObjective extends Controller
 
         $objective->title = $request->input('title');
         $objective->description = $request->input('description');
-        $objective->reward_credits = $request->input('reward_credits');
-        $objective->reward_other = $request->input('reward_other');
         $objective->save();
 
         Log::notice('perm.syndie.objective.edit - Contract Objective has been edited',['user_id' => $request->user()->user_id, 'objective_id' => $objective->objective_id]);
