@@ -23,8 +23,8 @@
     <title>Aurora-WI</title>
 
     <!-- Fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
+    <link href="{{asset('assets/css/font-awesome.css')}}" rel='stylesheet' type='text/css'>
+    <link href="{{asset('assets/css/lato.css')}}" rel='stylesheet' type='text/css'>
 
     <!-- Styles -->
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -198,17 +198,15 @@
         @yield('content')
     </div>
 
-
-    <footer>
-        <div class="footer navbar-fixed-bottom">
-            <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.5.1</p></small>
-        </div>
-    </footer>
-
     <!-- JavaScripts -->
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
     @yield('javascripts')
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
 </body>
+<footer>
+    <div class="footer navbar-fixed-bottom">
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.5.1</p></small>
+    </div>
+</footer>
 </html>

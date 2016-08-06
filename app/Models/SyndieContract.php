@@ -97,4 +97,14 @@ class SyndieContract extends Model
             DB::connection($this->connection)->table('syndie_contracts_subscribers')->where('contract_id', $this->contract_id)->where('user_id', $subscribers)->delete();
         }
     }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Models\SyndieContractComment','contract_id');
+    }
+
+    public function objectives()
+    {
+        return $this->hasMany('App\Models\SyndieContractObjective','contract_id');
+    }
 }

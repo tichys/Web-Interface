@@ -56,250 +56,175 @@
 
         {{-- Contract Overview --}}
         <div class="row">
-            {{-- Details about the contract--}}
-            <div class="col-lg-4">
+             {{--Details about the contract--}}
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h4><b>{{$contract->title}}</b></h4></div>
 
                     <table class="table">
                         <tbody>
+                        <tr>
+                            <td><b>Contractee:</b></td>
+                            <td>{{$contract->contractee_name}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Status:</b></td>
+                            <td>@include("syndie.components.contractstatus")</td>
+                        </tr>
+                        <tr>
+                            <td><b>Base Reward:</b></td>
+                            <td>{{$contract->reward_other}}</td>
+                        </tr>
+                        @if((Auth::user()->user_id == $contract->contractee_id && $contract->status = "new") || Auth::user()->can('contract_moderate') )
                             <tr>
-                                <td><b>Contractee:</b></td>
-                                <td>{{$contract->contractee_name}}</td>
-                            </tr>
-                            <tr>
-                                <td><b>Status:</b></td>
-                                <td>@include("components.syndiecontractstatus")</td>
-                            </tr>
-                            <tr>
-                                <td><b>Reward:</b></td>
-                                <td>{{$contract->reward_other}}</td>
-                            </tr>
-                            @if(Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('contract_moderate') )
-                                <tr>
-                                    <td><a href="{{route('syndie.contracts.edit.get',['contract'=>$contract->contract_id])}}" class="btn btn-info" role="button">Edit the Contract</a></td>
-                                    <td></td>
-                                </tr>
-                            @endif
-                            <tr>
-                                @if(!$contract->is_subscribed(Auth::user()->user_id))
-                                    <td><a href="{{route('syndie.contracts.subscribe',['contract'=>$contract->contract_id])}}" class="btn btn-success" role="button">Subscribe to Updates</a></td>
-                                @else()
-                                    <td><a href="{{route('syndie.contracts.unsubscribe',['contract'=>$contract->contract_id])}}" class="btn btn-warning" role="button">Unsubscribe from Updates</a></td>
-                                @endif()
+                                <td><a href="{{route('syndie.contracts.edit.get',['contract'=>$contract->contract_id])}}" class="btn btn-warning" role="button">Edit the Contract</a></td>
                                 <td></td>
                             </tr>
+                        @endif
+                        <tr>
+                            @if(!$contract->is_subscribed(Auth::user()->user_id))
+                                <td><a href="{{route('syndie.contracts.subscribe',['contract'=>$contract->contract_id])}}" class="btn btn-success" role="button">Subscribe</a></td>
+                            @else()
+                                <td><a href="{{route('syndie.contracts.unsubscribe',['contract'=>$contract->contract_id])}}" class="btn btn-info" role="button">Unsubscribe</a></td>
+                            @endif()
+                            <td></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            @if(Auth::user()->cannot('contract_moderate'))<div class="col-lg-8">@else() <div class="col-lg-6"> @endif()
-                <div class="panel panel-default">
-                    <div class="panel-heading">Contract Description:</div>
+            @if(Auth::user()->cannot('contract_moderate'))<div class="col-md-8">@else() <div class="col-md-6"> @endif()
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Contract Description:</div>
 
-                    <div class="panel-body">
-                        <p>@parsedown($contract->description)</p>
+                        <div class="panel-body">
+                            <p>@parsedown($contract->description)</p>
+                        </div>
                     </div>
                 </div>
+                 {{--Management Panel--}}
+                @if(Auth::user()->can('contract_moderate'))
+                    <div class="col-md-2">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Actions</div>
+                            <div class="panel-body">
+                                 {{--Check if user is a contract mod--}}
+                                @can('contract_moderate')
+                                    <p><b>Contract Mod</b></p>
+                                    <p><a href="{{route('syndie.contracts.approve',['contract'=>$contract->contract_id])}}" class="btn btn-success @if(!in_array($contract->status,['new','mod-nok'])) disabled @endif" role="button">Approve</a></p>
+                                    <p><a href="{{route('syndie.contracts.reject',['contract'=>$contract->contract_id])}}" class="btn btn-warning @if($contract->status != 'new') disabled @endif" role="button">Reject </a></p>
+                                    <p><a href="{{route('syndie.contracts.deletecontract',['contract'=>$contract->contract_id])}}" class="btn btn-danger" role="button">Delete</a></p>
+                                @endcan()
+                            </div>
+                        </div>
+                    </div>
+                @endif()
             </div>
-            {{-- Management Panel--}}
-            @if(Auth::user()->can('contract_moderate'))
-            <div class="col-lg-2">
+        </div>
+
+        {{-- Contract Objectives / Comments --}}
+
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Actions</div>
+                    <div class="btn-group pull-right">
+                        <a href="{{route('syndie.objectives.add.get',['contract'=>$contract->contract_id])}}" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Objective</a>
+                    </div>
+                    <div class="panel-heading">Contract Objectives</div>
                     <div class="panel-body">
-                        {{-- Check if user is a contract mod--}}
-                        @can('contract_moderate')
-                        <p><b>Mod Actions</b></p>
-                        <p><a href="{{route('syndie.contracts.approve',['contract'=>$contract->contract_id])}}" class="btn btn-info @if(!in_array($contract->status,['new','mod-nok'])) disabled @endif" role="button">Approve Contract</a></p>
-                        <p><a href="{{route('syndie.contracts.reject',['contract'=>$contract->contract_id])}}" class="btn btn-warning @if($contract->status != 'new') disabled @endif" role="button">Reject Contract</a></p>
-                        <p><a href="{{route('syndie.contracts.deletecontract',['contract'=>$contract->contract_id])}}" class="btn btn-danger" role="button">Delete Contract</a></p>
-                        @endcan('')
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Status</th>
+                                    <th>Reward</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($objectives as $objective)
+                                    @if($objective->status == "open")
+                                        <tr class="success">
+                                    @elseif($objective->status == "closed")
+                                        <tr class="warning">
+                                    @else()
+                                        <tr>
+                                            @endif()
+                                            <td>{{$objective->title}}</td>
+                                            <td>{{$objective->status}}</td>
+                                            <td>{{$objective->reward_other}}</td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <a class="btn btn-info " href="{{route('syndie.objectives.show',['objective'=>$objective->objective_id])}}">
+                                                        View
+                                                        {{--<span class="glyphicon glyphicon-question-sign"></span>--}}
+                                                    </a>
+
+                                                    @if($contract->contractee_id == Auth::user()->id || Auth::user()->can('contract_moderate'))
+                                                        <a class="btn btn-warning" href="{{route('syndie.objectives.edit.get',['objective'=>$objective->objective_id])}}">
+                                                            Edit
+                                                            {{--<span class="glyphicon glyphicon-pencil"></span>--}}
+                                                        </a>
+                                                        @if($objective->status == "closed")
+                                                            <a class="btn btn-success" href="{{route('syndie.objectives.open',['objective'=>$objective->objective_id])}}">
+                                                                Open
+                                                                {{--<span class="glyphicon glyphicon-ok"></span>--}}
+                                                            </a>
+                                                        @endif()
+                                                        @if($objective->status == "open")
+                                                            <a class="btn btn-warning" href="{{route('syndie.objectives.close',['objective'=>$objective->objective_id])}}">
+                                                                Close
+                                                                {{--<span class="glyphicon glyphicon-remove"></span>--}}
+                                                            </a>
+                                                        @endif()
+                                                        <a class="btn btn-danger" href="{{route('syndie.objectives.delete',['objective'=>$objective->objective_id])}}">
+                                                            Delete
+                                                            {{--<span class="glyphicon glyphicon-trash"></span>--}}
+                                                        </a>
+                                                    @endif()
+                                                </div>
+                                            </td>
+                                        </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-            @endif()
         </div>
 
         {{-- Message Timeline--}}
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-lg-10 col-lg-offset-1">
                 <div class="page-header">
                     <h1 id="timeline">Comments</h1>
                 </div>
+                <div class="btn-group pull-right">
+                    <a href="{{route('syndie.comments.add.get',['contract'=>$contract->contract_id])}}" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Message</a>
+                </div>
+                <br>
+                <br>
                 <ul class="timeline">
                     @foreach($comments as $comment)
-                        {{-- Check if the comment is a mod author comment and if the player is a mod or the author--}}
-                        @if($comment->type !== 'mod-author' || Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('contract_moderate') )
-
-                            {{-- If Comment is mod-ooc -> Left side + ooc colors --}}
-                            @if($comment->type === 'mod-ooc')
-                                <li>
-                                    <div class="timeline-badge danger"><i class="glyphicon glyphicon-warning-sign"></i></div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title"><b>Mod OOC: </b>{{$comment->title}}</h4>
-                                            @include('components.syndiecomment.subtitle')
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>@parsedown($comment->comment)</p>
-                                            @include('components.syndiecomment.image')
-                                            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
-                                        </div>
-                                    </div>
-                                </li>
-                            @elseif($comment->type === 'mod-author')
-                                <li>
-                                    <div class="timeline-badge warning"><i class="glyphicon glyphicon-warning-sign"></i></div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title"><b>Private: </b>{{$comment->title}}</h4>
-                                            @include('components.syndiecomment.subtitle')
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>@parsedown($comment->comment)</p>
-                                            @include('components.syndiecomment.image')
-                                            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
-                                        </div>
-                                    </div>
-                                </li>
-                            @elseif($comment->type === 'ic')
-                                @if($comment->commentor_id == $contract->contractee_id)<li> @else <li class="timeline-inverted">@endif
-                                    <div class="timeline-badge success"><i class="glyphicon glyphicon-envelope"></i></div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title"><b>Message: </b>{{$comment->title}}</h4>
-                                            @include('components.syndiecomment.subtitle')
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>@parsedown($comment->comment)</p>
-                                            @include('components.syndiecomment.image')
-                                            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
-                                        </div>
-                                    </div>
-                                </li>
-                            @elseif($comment->type === 'ic-comprep')
-                                <li class="timeline-inverted">
-                                    <div class="timeline-badge success"><i class="glyphicon glyphicon-ok"></i></div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title"><b>Completion Report: </b>{{$comment->title}}</h4>
-                                            @include('components.syndiecomment.subtitle')
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>@parsedown($comment->comment)</p>
-                                            @include('components.syndiecomment.image')
-                                            @if($contract->status == "completed" && (Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('contract_moderate')))
-                                            <p>
-                                                <a href="{{route('syndie.contracts.confirm',['comment'=>$comment->comment_id])}}" class="btn btn-success" role="button">Confirm Completion</a>
-                                                <a href="{{route('syndie.contracts.reopen',['comment'=>$comment->comment_id])}}" class="btn btn-info" role="button">Reopen Contract</a>
-                                            </p>
-                                            @endif()
-                                            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
-                                        </div>
-                                    </div>
-                                </li>
-                                @elseif($comment->type === 'ic-failrep')
-                                    <li class="timeline-inverted">
-                                        <div class="timeline-badge danger"><i class="glyphicon glyphicon-remove"></i></div>
-                                        <div class="timeline-panel">
-                                            <div class="timeline-heading">
-                                                <h4 class="timeline-title"><b>Failure Report: </b>{{$comment->title}}</h4>
-                                                @include('components.syndiecomment.subtitle')
-                                            </div>
-                                            <div class="timeline-body">
-                                                <p>@parsedown($comment->comment)</p>
-                                                @include('components.syndiecomment.image')
-                                                @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
-                                            </div>
-                                        </div>
-                                    </li>
-                                @elseif($comment->type === 'ic-cancel')
-                                    <li>
-                                        <div class="timeline-badge danger"><i class="glyphicon glyphicon-minus"></i></div>
-                                        <div class="timeline-panel">
-                                            <div class="timeline-heading">
-                                                <h4 class="timeline-title"><b>Contract Canceled: </b>{{$comment->title}}</h4>
-                                                @include('components.syndiecomment.subtitle')
-                                            </div>
-                                            <div class="timeline-body">
-                                                <p>@parsedown($comment->comment)</p>
-                                                @include('components.syndiecomment.image')
-                                                @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
-                                            </div>
-                                        </div>
-                                    </li>
-                                @elseif($comment->type === 'ooc')
-                                    @if($comment->commentor_id == $contract->contractee_id)<li> @else <li class="timeline-inverted">@endif
-                                    <div class="timeline-badge"><i class="glyphicon"></i></div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title"><b>OOC Message: </b>{{$comment->title}}</h4>
-                                            @include('components.syndiecomment.subtitle')
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>@parsedown($comment->comment)</p>
-                                            @include('components.syndiecomment.image')
-                                            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
-                                        </div>
-                                    </div>
-                                </li>
-                            @endif()
+                        @if($comment->type === 'mod-ooc')
+                            @include('syndie.comment.mod-ooc')
+                        @elseif($comment->type === 'mod-author')
+                            @include('syndie.comment.mod-author')
+                        @elseif($comment->type === 'ic')
+                            @include('syndie.comment.ic')
+                        @elseif($comment->type === 'ic-comprep')
+                            @include('syndie.comment.ic-comprep')
+                        @elseif($comment->type === 'ic-failrep')
+                            @include('syndie.comment.ic-failrep')
+                        @elseif($comment->type === 'ic-cancel')
+                            @include('syndie.comment.ic-cancel')
+                        @elseif($comment->type === 'ooc')
+                            @include('syndie.comment.ooc')
                         @endif()
                     @endforeach
                 </ul>
-            </div>
-        </div>
-        {{-- New PM Panel--}}
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">New Message</div>
-
-                    <div class="panel-body">
-                        {{ Form::open(array('route' => array('syndie.contracts.addmessage',$contract->contract_id),'method' => 'post', 'files' => true)) }}
-
-                        {{Form::token()}}
-
-                        {{--Only show the commentor name field of the user is not the owner of the contract or a mod--}}
-                        @if(Auth::user()->user_id != $contract->contractee_id || Auth::user()->can('contract_moderate'))
-                            <div class="alert alert-success">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                The username is forced to your forum username for the following message types: 'ooc','mod-author','mod-ooc'
-                            </div>
-                            {{Form::bsText('commentor_name')}}
-                        @else
-                            {{Form::hidden('commentor_name',$contract->contractee_name)}}
-                        @endif()
-
-                        @if(Auth::user()->can('contract_moderate')){{-- Check if user is contract mod --}}
-                        {{Form::bsSelectList('type',array('ic'=>'IC Comment','ic-failrep'=> 'IC Failure Report','ic-comprep'=>'IC Completion Report','ic-cancel'=>'IC Cancel Contract','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM','mod-ooc'=>'MOD-OOC Message'))}}
-                        @elseif(Auth::user()->user_id == $contract->contractee_id ){{-- Check if user is contract owner --}}
-                        {{Form::bsSelectList('type',array('ic'=>'IC Comment','ic-cancel'=>'IC Cancel Contract','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM'))}}
-                        @else(){{-- Otherwise --}}
-                        {{Form::bsSelectList('type',array('ic'=>'IC Comment','ic-failrep'=> 'IC Failure Report','ic-comprep'=>'IC Completion Report','ooc' => 'OOC Comment'))}}
-                        @endif()
-
-                        {{Form::bsText('title')}}
-
-                        <div class="alert alert-success">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            You can use Markdown in the comment field
-                        </div>
-                        {{Form::bsTextArea('comment')}}
-
-                        <div class="alert alert-success">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            Uploading a image is optional. You can only upload one image at a time.<br>
-                            It is recommened to provide a description for each image you upload and then post a contract report
-                        </div>
-                        {{Form::bsFile('image')}}
-
-                        {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
-
-                        {{ Form::close() }}
-                    </div>
-                </div>
             </div>
         </div>
     </div>

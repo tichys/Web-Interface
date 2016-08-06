@@ -21,6 +21,7 @@
 
 namespace App\Services\Auth;
 
+use App\Models\ServerPlayer;
 use App\Services\Auth\ForumUserModel as ForumUser;
 use App\Services\Auth\PasswordHash;
 use Carbon\Carbon;

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ServerCharacter extends Model
 {
+    use SoftDeletes;
     protected $connection = 'server';
     protected $table = 'characters';
     protected $primaryKey = 'id';

@@ -18,26 +18,26 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <div class="panel-heading">Edit Contract: <b>{{$contract->title}}</b></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
 
-                <div class="panel-body">
-                    {{Form::model($contract, array('route' => array('syndie.contracts.edit.post', $contract->contract_id),'method' => 'post')) }}
-                    {{Form::token()}}
+                @include('components.formerrors')
+                <div class="alert alert-info">
+                    You are viewing objective "{{$objective->title}}" assigned to the contract "{{$contract->title}}"<br>
+                    The completion of this objective is rewarded with: {{$objective->reward_other}}<br>
+                    <a href="{{route("syndie.contracts.show",["contract"=>$contract->contract_id])}}">Click here to return to the contract</a>
+                </div>
 
-                    {{Form::bsText('title')}}
-                    {{Form::bsText('reward',$contract->reward_other)}}
-                    {{Form::bsTextArea('description')}}
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{$objective->title}}</div>
 
-                    {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
 
-                    {{ Form::close() }}
+                    <div class="panel-body">
+                        {{$objective->description}}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
