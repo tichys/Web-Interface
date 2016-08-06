@@ -16,11 +16,7 @@ class ContractChanges extends Migration
         Schema::connection('server')->create('syndie_contracts_objectives', function (Blueprint $table) {
             $table->increments('objective_id');
             $table->integer('contract_id'); // ID of the person offering the contract
-            $table->string('status');
-            /* Status Codes:
-             * open -> The objective is uncompleted
-             * closed -> The objective is completed
-             */
+            $table->enum('status',['open','closed','deleted']);
             $table->string('title');
             $table->text('description');
             $table->integer('reward_credits')->nullable();
@@ -41,7 +37,7 @@ class ContractChanges extends Migration
              * rejected -> Contract Completion has been rejected
              */
             $table->foreign('contract_id','contract_id')
-                ->references('id')
+                ->references('contract_id')
                 ->on('syndie_contracts')
                 ->onDelete('cascade');
         });
