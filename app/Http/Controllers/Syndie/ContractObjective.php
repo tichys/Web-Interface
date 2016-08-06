@@ -46,7 +46,7 @@ class ContractObjective extends Controller
         ]);
 
         $objective = new SyndieContractObjective();
-        $objective->contract_id = $contract;
+        $objective->contract_id = $contract->contract_id;
         $objective->status = "open";
         $objective->title = $request->input('title');
         $objective->description = $request->input('description');
