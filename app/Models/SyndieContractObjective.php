@@ -22,24 +22,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SyndieContractComment extends Model
+class SyndieContractObjective extends Model
 {
     use SoftDeletes;
 
+    /* Status Codes:
+     * open -> The objective is uncompleted
+     * closed -> The objective is completed
+     */
+
     protected $connection = 'server';
-    protected $table = 'syndie_contracts_comments';
-    protected $fillable = ['contract_id', 'commentor_name', 'title', 'comment'];
-    protected $primaryKey = 'comment_id';
+    protected $table = 'syndie_contracts_objectives';
+    protected $fillable = ['title', 'description', 'reward', 'reward_other'];
+    protected $primaryKey = 'objective_id';
     protected $dates = ['deleted_at'];
 
-    public function objectives()
+    public function comments()
     {
-        return $this->belongsToMany('App\Models\SyndieContractObjective','syndie_contracts_comments_objectives','comment_id','objective_id');
-    }
-
-    public function completers()
-    {
-        return $this->belongsToMany('App\Models\ServerPlayer','syndie_contracts_comments_completers','comment_id','user_id');
+        return $this->belongsToMany('App\Models\SyndieContractComment','syndie_contract_comment_objectives');
     }
 
     public function contract()

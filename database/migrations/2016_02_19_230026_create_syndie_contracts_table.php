@@ -56,8 +56,8 @@ class CreateSyndieContractsTable extends Migration
 
         Schema::connection('server')->create('syndie_contracts_comments', function (Blueprint $table) {
             $table->increments('comment_id');
-            $table->integer('contract_id');
-            $table->integer('commentor_id');
+            $table->integer('contract_id')->unsigned();
+            $table->integer('commentor_id')->unsigned();
             $table->string('commentor_name');
             $table->string('title');
             $table->text('comment');
