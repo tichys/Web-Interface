@@ -72,6 +72,7 @@ class CharController extends Controller
         $char_flavour = ServerCharacterFlavour::findOrFail($char_id);
         $char_flavour->records_ccia = $request->input('records_ccia');
         $char_flavour->save();
+        Log::notice('perm.server.char.editcciarecord - CCIA Record has been edited',['user_id' => $request->user()->user_id, 'char_id' => $char_id]);
         return redirect()->route('server.chars.show.get',['char_id'=>$char_id]);
 
     }

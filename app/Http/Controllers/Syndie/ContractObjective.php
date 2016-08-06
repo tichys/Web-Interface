@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\SyndieContract;
 use App\Models\SyndieContractObjective;
+use Illuminate\Support\Facades\Log;
 
 class ContractObjective extends Controller
 {
@@ -53,6 +54,8 @@ class ContractObjective extends Controller
         $objective->reward_other = $request->input('reward');
         $objective->save();
 
+        Log::notice('perm.syndie.objective.add - Contract Objective has been added',['user_id' => $request->user()->user_id, 'objective_id' => $objective->objective_id]);
+
         return redirect()->route('syndie.contracts.show',['contract'=>$objective->contract_id]);
     }
 
@@ -83,6 +86,8 @@ class ContractObjective extends Controller
         $objective->reward_other = $request->input('reward_other');
         $objective->save();
 
+        Log::notice('perm.syndie.objective.edit - Contract Objective has been edited',['user_id' => $request->user()->user_id, 'objective_id' => $objective->objective_id]);
+
         return redirect()->route('syndie.contracts.show',['contract'=>$objective->contract_id]);
     }
 
@@ -97,6 +102,8 @@ class ContractObjective extends Controller
 
         $objective->status = "closed";
         $objective->save();
+
+        Log::notice('perm.syndie.objective.close - Contract Objective has been closed',['user_id' => $request->user()->user_id, 'objective_id' => $objective->objective_id]);
 
         return redirect()->route('syndie.contracts.show',['contract'=>$objective->contract_id]);
     }
@@ -113,6 +120,8 @@ class ContractObjective extends Controller
         $objective->status = "open";
         $objective->save();
 
+        Log::notice('perm.syndie.objective.open - Contract Objective has been opened',['user_id' => $request->user()->user_id, 'objective_id' => $objective->objective_id]);
+
         return redirect()->route('syndie.contracts.show',['contract'=>$objective->contract_id]);
     }
 
@@ -128,6 +137,8 @@ class ContractObjective extends Controller
         $objective->status = "deleted";
         $objective->save();
         $objective->delete();
+
+        Log::notice('perm.syndie.objective.delete - Contract Objective has been deleted',['user_id' => $request->user()->user_id, 'objective_id' => $objective->objective_id]);
 
         return redirect()->route('syndie.contracts.show',['contract'=>$objective->contract_id]);
     }

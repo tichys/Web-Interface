@@ -34,7 +34,7 @@ use App\Jobs\SendContractNotificationEmail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use App\Services\Server\Helpers;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class ContractController extends Controller
 {

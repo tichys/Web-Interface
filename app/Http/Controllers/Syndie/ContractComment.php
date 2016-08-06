@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SyndieContract;
 use App\Models\SyndieContractComment;
 use App\Models\SyndieContractObjective;
+use Illuminate\Support\Facades\Log;
 
 class ContractComment extends Controller
 {
@@ -90,8 +91,7 @@ class ContractComment extends Controller
             case "mod-author":
                 $this->validate($request, [
                     'title' => 'required|max:50',
-                    'comment' => 'required',
-                    'commentor_name' => 'required|max:50'
+                    'comment' => 'required'
                 ]);
 
                 $comment->title = $request->input('title');
@@ -120,6 +120,8 @@ class ContractComment extends Controller
                 $comment->completers()->sync($request->input('agents'));
                 break;
         }
+
+        Log::notice('perm.syndie.contractcomment.add - Contract Comment has been added',['user_id' => $request->user()->user_id, 'comment_id' => $comment->comment_id]);
         return redirect()->route('syndie.contracts.show', ['contract' => $comment->contract_id]);
     }
 
@@ -140,6 +142,8 @@ class ContractComment extends Controller
         //Close Objectives
         $this->closeContractObjectives($objectives);
         $this->createCompletionComment($comment,$contract,$objectives,"confirmopen");
+
+        Log::notice('perm.syndie.contractcomment.confirmopen - Contract Comment has been confirmed open',['user_id' => $request->user()->user_id, 'comment_id' => $comment->comment_id]);
 
         return redirect()->route('syndie.contracts.show', ['contract' => $comment->contract_id]);
     }
@@ -165,6 +169,8 @@ class ContractComment extends Controller
         $this->closeContractObjectives($objectives);
         $this->createCompletionComment($comment,$contract,$objectives,"confirmclose");
 
+        Log::notice('perm.syndie.contractcomment.confirmclose - Contract Comment has been confirmed closed',['user_id' => $request->user()->user_id, 'comment_id' => $comment->comment_id]);
+
         return redirect()->route('syndie.contracts.show', ['contract' => $comment->contract_id]);
     }
 
@@ -184,6 +190,8 @@ class ContractComment extends Controller
 
         $this->createCompletionComment($comment,$contract,$objectives,"reject");
 
+        Log::notice('perm.syndie.contractcomment.reject - Contract Comment has been rejected',['user_id' => $request->user()->user_id, 'comment_id' => $comment->comment_id]);
+
         return redirect()->route('syndie.contracts.show', ['contract' => $comment->contract_id]);
     }
 
@@ -197,6 +205,8 @@ class ContractComment extends Controller
         }
 
         $comment->delete();
+
+        Log::notice('perm.syndie.contractcomment.delete - Contract Comment has been deleted',['user_id' => $request->user()->user_id, 'comment_id' => $comment->comment_id]);
 
         return redirect()->route('syndie.contracts.show', ['contract' => $comment->contract_id]);
     }
