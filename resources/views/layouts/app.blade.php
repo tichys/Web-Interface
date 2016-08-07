@@ -23,8 +23,8 @@
     <title>Aurora-WI</title>
 
     <!-- Fonts -->
-    <link href="{{asset('assets/css/font-awesome.css')}}" rel='stylesheet' type='text/css'>
-    <link href="{{asset('assets/css/lato.css')}}" rel='stylesheet' type='text/css'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
 
     <!-- Styles -->
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -119,9 +119,9 @@
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">DO</a>
                                     <ul class="dropdown-menu">
-                                        <li @cannot('ccia_recorderlogs_show')class="disabled"@endcannot>
-                                            <a href="#"><i class="fa fa-btn"></i>DO Recorder Logs <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                                        </li>
+                                        {{--<li @cannot('ccia_recorderlogs_show')class="disabled"@endcannot>--}}
+                                            {{--<a href="#"><i class="fa fa-btn"></i>DO Recorder Logs <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>--}}
+                                        {{--</li>--}}
                                         <li @cannot('ccia_action_show')class="disabled"@endcannot>
                                             <a href="{{route('ccia.actions.index')}}"><i class="fa fa-btn"></i>DO Actions</a>
                                         </li>
@@ -206,7 +206,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.6.3</p></small>
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.6.4</p></small>
     </div>
 </footer>
 </html>

@@ -77,7 +77,7 @@ class PhpbbUserProvider implements UserProvider
     public function retrieveByToken($identifier, $token)
     {
         if ($this->use_remember_me == TRUE) {
-            $qry = ForumUserModel::where('username_clean', '=', strtolower($identifier))->where(ForumUserModel::getRememberTokenName(), '=', $token);
+            $qry = ForumUserModel::where('username_clean', '=', strtolower($identifier))->where('wi_remember_token', '=', $token);
             if ($qry->count() > 0) {
                 $user = $qry->select('user_id', 'username', 'username_clean', 'user_password', 'user_email', 'user_byond', 'user_byond_linked')->first();
                 if($this->log_logins)
