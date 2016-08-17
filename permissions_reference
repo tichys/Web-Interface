@@ -24,6 +24,7 @@ D - admin_site_logs_show -> Show the site logs
 admin_server_logs_show -> Show the server logs
 D - admin_forms_show -> Show the corporate Form Database
 D - admin_forms_edit -> Edit the corporate Form Database
+D - admin_server_contest_show -> View the contest stats
 
 #CCIA Stuff
 D - ccia_general_notice_edit -> Edit DO Notices
@@ -45,4 +46,3 @@ admin_notes_edit -> Edit a players notes
 
 #Server Stuff
 D - server_library_edit -> Edit the contents of the Server Library
-D - contest_stats_view -> View the contest stats

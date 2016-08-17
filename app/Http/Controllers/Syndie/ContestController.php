@@ -29,7 +29,7 @@ class ContestController extends Controller
 {
     public function index(Request $request)
     {
-        if($request->user()->cannot('contest_stats_view'))
+        if($request->user()->cannot('admin_server_contest_show'))
         {
             abort('403','You do not have the required permission');
         }
