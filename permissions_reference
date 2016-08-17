@@ -45,3 +45,4 @@ admin_notes_edit -> Edit a players notes
 
 #Server Stuff
 D - server_library_edit -> Edit the contents of the Server Library
+D - contest_stats_view -> View the contest stats
