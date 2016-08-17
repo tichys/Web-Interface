@@ -94,6 +94,12 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/{objective}/delete', ['as' => 'syndie.objectives.delete', 'uses'=>'Syndie\ContractObjective@delete']);
         });
 
+        Route::group(['prefix' => 'contest'],function(){
+            Route::get('/', ['as' => 'syndie.contest.view', 'uses'=>'Syndie\ContestController@index']);
+            Route::get('/factions/', ['as' => 'syndie.contest.factions.get', 'uses'=>'Syndie\ContestController@getFactions']);
+            Route::get('/reports/', ['as' => 'syndie.contest.reports.get', 'uses'=>'Syndie\ContestController@getReports']);
+        });
+
         Route::get('/api/agentlist', ['as' => 'syndie.api.get.agentlist', 'uses'=>'Syndie\ContractController@getAgentList']);
     });
 

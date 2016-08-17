@@ -165,6 +165,9 @@
                                         <li @cannot('admin_server_logs_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>Server Logs <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                         </li>
+                                        <li @cannot('admin_server_contest_show')class="disabled"@endcannot>
+                                            <a href="{{route('syndie.contest.view')}}"><i class="fa fa-btn"></i>Contest Stats</a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -206,7 +209,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.7.0</p></small>
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.8.0</p></small>
     </div>
 </footer>
 </html>
