@@ -32,6 +32,11 @@ class ServerPlayer extends Model
     protected $dates = ['firstseen', 'lastseen'];
     public $timestamps = FALSE;
 
+    public function serverrank()
+    {
+        return $this->hasOne('App\Models\ServerAdmin','ckey','ckey');
+    }
+
     /**
      * Adds flags to a player
      *

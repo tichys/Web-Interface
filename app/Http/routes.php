@@ -125,6 +125,18 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/data/own', ['as' => 'server.chars.data.own', 'uses'=>'Server\CharController@getCharDataOwn']);
             Route::get('/data/all', ['as' => 'server.chars.data.all', 'uses'=>'Server\CharController@getCharDataAll']);
         });
+
+        Route::group(['prefix' => 'permissions'], function () {
+            Route::any('', ['as' => 'server.permissions.index', 'uses'=>'Server\PermissionController@index']);
+            Route::get('/{permission_id}/', ['as' => 'server.permissions.show', 'uses'=>'Server\PermissionController@show']);
+            Route::get('/add', ['as' => 'server.permissions.add.get', 'uses'=>'Server\PermissionController@getAdd']);
+            Route::post('/add', ['as' => 'server.permissions.add.get', 'uses'=>'Server\PermissionController@postAdd']);
+            Route::get('/{permission_id}/remove', ['as' => 'server.permissions.remove', 'uses'=>'Server\PermissionController@remove']);
+            Route::get('/{permission_id}/add_flag/{flag}', ['as' => 'servers.permissions.flag.add', 'uses'=>'Server\PermissionController@addFlag']);
+            Route::get('/{permission_id}/remove_flag/{flag}', ['as' => 'servers.permissions.flag.remove', 'uses'=>'Server\PermissionController@removeFlag']);
+        });
+
+        Route::get('', ['as' => 'server.stats.index', 'uses'=>'Server\StatsController@index']);
     });
 
     //User Stuff
@@ -144,45 +156,41 @@ Route::group(['middleware' => 'web'], function () {
     //Admin Stuff
     Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
 
-        Route::group(['prefix' => 'stats'], function () {
-            Route::get('', ['as' => 'admin.stats.index', 'uses'=>'Admin\StatsController@index']);
-        });
-
         Route::group(['prefix' => 'player'], function () {
-            Route::get('', ['as' => 'admin.players.index', 'uses'=>'Admin\PlayerController@index']);
-            Route::get('/{player_id}/show', ['as' => 'admin.players.show', 'uses'=>'Admin\PlayerController@show']);
-            Route::get('/{player_id}/add_whitelist/{whitelist}', ['as' => 'admin.players.whitelist.add', 'uses'=>'Admin\PlayerController@addWhitelist']);
-            Route::get('/{player_id}/remove_whitelist/{whitelist}', ['as' => 'admin.players.whitelist.remove', 'uses'=>'Admin\PlayerController@removeWhitelist']);
-            Route::get('/{player_id}/warnings_data', ['as' => 'admin.players.warnings.data', 'uses'=>'Admin\PlayerController@getPlayerWarningsData']);
-            Route::get('/{player_id}/notes_data', ['as' => 'admin.players.notes.data', 'uses'=>'Admin\PlayerController@getPlayerNotesData']);
-            Route::get('/data', ['as' => 'admin.players.data', 'uses'=>'Admin\PlayerController@getPlayerData']);
+            Route::get('', ['as' => 'admin.players.index', 'uses'=>'Server\PlayerController@index']);
+            Route::get('/{player_id}/show', ['as' => 'admin.players.show', 'uses'=>'Server\PlayerController@show']);
+            Route::get('/{player_id}/add_whitelist/{whitelist}', ['as' => 'admin.players.whitelist.add', 'uses'=>'Server\PlayerController@addWhitelist']);
+            Route::get('/{player_id}/remove_whitelist/{whitelist}', ['as' => 'admin.players.whitelist.remove', 'uses'=>'Server\PlayerController@removeWhitelist']);
+            Route::get('/{player_id}/warnings_data', ['as' => 'admin.players.warnings.data', 'uses'=>'Server\PlayerController@getPlayerWarningsData']);
+            Route::get('/{player_id}/notes_data', ['as' => 'admin.players.notes.data', 'uses'=>'Server\PlayerController@getPlayerNotesData']);
+            Route::get('/data', ['as' => 'admin.players.data', 'uses'=>'Server\PlayerController@getPlayerData']);
         });
 
         Route::group(['prefix' => 'form'], function () {
-            Route::get('', ['as' => 'admin.forms.index', 'uses'=>'Admin\FormController@index']);
-            Route::get('/{form_id}/edit', ['as' => 'admin.forms.edit.get', 'uses'=>'Admin\FormController@getEdit']);
-            Route::post('/{form_id}/edit', ['as' => 'admin.forms.edit.post', 'uses'=>'Admin\FormController@postEdit']);
-            Route::get('/{form_id}/delete', ['as' => 'admin.forms.delete', 'uses'=>'Admin\FormController@delete']);
-            Route::get('/add', ['as' => 'admin.forms.add.get', 'uses'=>'Admin\FormController@getAdd']);
-            Route::post('/add', ['as' => 'admin.forms.add.post', 'uses'=>'Admin\FormController@postAdd']);
-            Route::get('/data', ['as' => 'admin.forms.data', 'uses'=>'Admin\FormController@getFormData']);
+            Route::get('', ['as' => 'admin.forms.index', 'uses'=>'Server\FormController@index']);
+            Route::get('/{form_id}/edit', ['as' => 'admin.forms.edit.get', 'uses'=>'Server\FormController@getEdit']);
+            Route::post('/{form_id}/edit', ['as' => 'admin.forms.edit.post', 'uses'=>'Server\FormController@postEdit']);
+            Route::get('/{form_id}/delete', ['as' => 'admin.forms.delete', 'uses'=>'Server\FormController@delete']);
+            Route::get('/add', ['as' => 'admin.forms.add.get', 'uses'=>'Server\FormController@getAdd']);
+            Route::post('/add', ['as' => 'admin.forms.add.post', 'uses'=>'Server\FormController@postAdd']);
+            Route::get('/data', ['as' => 'admin.forms.data', 'uses'=>'Server\FormController@getFormData']);
         });
 
         Route::group(['prefix' => 'role'], function () {
-            Route::get('', ['as' => 'admin.roles.index', 'uses'=>'Admin\RoleController@index']);
-            Route::get('/add', ['as' => 'admin.roles.add.get', 'uses'=>'Admin\RoleController@getAdd']);
-            Route::post('/add', ['as' => 'admin.roles.add.post', 'uses'=>'Admin\RoleController@postAdd']);
-            Route::get('{role_id}/edit', ['as' => 'admin.roles.edit.get', 'uses'=>'Admin\RoleController@getEdit']);
-            Route::post('{role_id}/edit', ['as' => 'admin.roles.edit.post', 'uses'=>'Admin\RoleController@postEdit']);
-            Route::get('{role_id}/delete', ['as' => 'admin.roles.delete', 'uses'=>'Admin\RoleController@delete']);
-            Route::post('{role_id}/addperm', ['as' => 'admin.roles.addperm', 'uses'=>'Admin\RoleController@addPermission']);
-            Route::post('{role_id}/remperm', ['as' => 'admin.roles.remperm', 'uses'=>'Admin\RoleController@removePermission']);
-            Route::post('{role_id}/adduser', ['as' => 'admin.roles.adduser', 'uses'=>'Admin\RoleController@addUser']);
-            Route::post('{role_id}/remuser', ['as' => 'admin.roles.remuser', 'uses'=>'Admin\RoleController@removeUser']);
+            Route::get('', ['as' => 'admin.roles.index', 'uses'=>'Site\RoleController@index']);
+            Route::get('/add', ['as' => 'admin.roles.add.get', 'uses'=>'Site\RoleController@getAdd']);
+            Route::post('/add', ['as' => 'admin.roles.add.post', 'uses'=>'Site\RoleController@postAdd']);
+            Route::get('{role_id}/edit', ['as' => 'admin.roles.edit.get', 'uses'=>'Site\RoleController@getEdit']);
+            Route::post('{role_id}/edit', ['as' => 'admin.roles.edit.post', 'uses'=>'Site\RoleController@postEdit']);
+            Route::get('{role_id}/delete', ['as' => 'admin.roles.delete', 'uses'=>'Site\RoleController@delete']);
+            Route::post('{role_id}/addperm', ['as' => 'admin.roles.addperm', 'uses'=>'Site\RoleController@addPermission']);
+            Route::post('{role_id}/remperm', ['as' => 'admin.roles.remperm', 'uses'=>'Site\RoleController@removePermission']);
+            Route::post('{role_id}/adduser', ['as' => 'admin.roles.adduser', 'uses'=>'Site\RoleController@addUser']);
+            Route::post('{role_id}/remuser', ['as' => 'admin.roles.remuser', 'uses'=>'Site\RoleController@removeUser']);
         });
 
         Route::group(['prefix' => 'log','middleware' => 'permission.site:admin_site_logs_show'],function(){
-            Route::get('web', ['as'=>'admin.site.log.index', 'uses'=>'Admin\SiteLogViewerController@index']);
+            Route::get('web', ['as'=>'admin.site.log.index', 'uses'=>'Site\LogViewerController@index']);
         });
     });
 

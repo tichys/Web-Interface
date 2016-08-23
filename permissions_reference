@@ -7,24 +7,35 @@ D - contract_moderate -> Allows to moderate Syndicate Contracts
 # Admin Menu
 #
 D - admin_menu_view -> Show the admin menu
-admin_server_permissions_show -> Show the permissions on the server
-admin_server_permissions_edit -> Edit the permissions on the server
+D - admin_server_permissions_show -> Show a users permissions on the server
+D - admin_server_permissions_edit -> Edit a users permissions on the server
+admin_server_logs_show -> Show the server logs
+admin_server_stats_show -> Show the admin stats
+D - admin_server_contest_show -> View the contest stats
+
 admin_staff_roster_show -> Show the staff roster
 admin_staff_roster_edit -> Edit the staff roster
+
 D - admin_char_show -> Show the Character Records
 admin_char_edit -> Edit the Characters
 admin_char_edit_records -> Edit the Char Records
 
-admin_server_stats_show -> Show the admin stats
+
 D - admin_site_roles_show -> Show the site roles
 D - admin_site_roles_edit -> Edit the site roles
 admin_site_permissions_show -> Show the site permissions
 admin_site_permissions_edit -> Edit the site permissions
 D - admin_site_logs_show -> Show the site logs
-admin_server_logs_show -> Show the server logs
+
 D - admin_forms_show -> Show the corporate Form Database
 D - admin_forms_edit -> Edit the corporate Form Database
-D - admin_server_contest_show -> View the contest stats
+
+admin_discord_bans_show -> Show the bans on discord
+admin_discord_bans_edit -> Edit the bans on discord
+admin_discord_logs_show -> Show the discord logs
+admin_discord_strikes_show -> Show the discord strikes
+admin_discord_strikes_edit -> Edit the discord strikes
+admin_discrod_channels_show -> Show the discord channels
 
 #CCIA Stuff
 D - ccia_general_notice_edit -> Edit DO Notices

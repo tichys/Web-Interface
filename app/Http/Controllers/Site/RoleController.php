@@ -18,7 +18,7 @@
  *
  */
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Site;
 
 use App\Services\Auth\ForumUserModel;
 use Illuminate\Http\Request;
@@ -41,7 +41,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $roles = SiteRole::get();
-        return view('/admin/roles/index', ['roles' => $roles]);
+        return view('/admin/siteroles/index', ['roles' => $roles]);
     }
 
     public function getAdd(Request $request)
@@ -50,7 +50,7 @@ class RoleController extends Controller
             abort('403', 'You do not have the required permission');
         }
 
-        return view('/admin/roles/add');
+        return view('/admin/siteroles/add');
     }
 
     public function postAdd(Request $request)
@@ -83,7 +83,7 @@ class RoleController extends Controller
 
         $assigned_users = $role->get_users(true);
 
-        return view('/admin/roles/edit', ['role' => $role,'avail_permissions'=>$avail_permissions,'assigned_users'=>$assigned_users]);
+        return view('/admin/siteroles/edit', ['role' => $role,'avail_permissions'=>$avail_permissions,'assigned_users'=>$assigned_users]);
     }
 
     public function postEdit(Request $request, $role_id)

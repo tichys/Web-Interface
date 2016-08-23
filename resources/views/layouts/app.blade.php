@@ -157,10 +157,10 @@
                                             <a href="{{route('server.library.index')}}"><i class="fa fa-btn"></i>Library</a>
                                         </li>
                                         <li @cannot('admin_server_permissions_show')class="disabled"@endcannot>
-                                            <a href="#"><i class="fa fa-btn"></i>Server Permissions <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                            <a href="{{route('server.permissions.index')}}"><i class="fa fa-btn"></i>Server Permissions</a>
                                         </li>
                                         <li @cannot('admin_server_stats_show')class="disabled"@endcannot>
-                                            <a href="{{route('admin.stats.index')}}"><i class="fa fa-btn"></i>Statistics <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                            <a href="{{route('server.stats.index')}}"><i class="fa fa-btn"></i>Statistics <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                         </li>
                                         <li @cannot('admin_server_logs_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>Server Logs <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
