@@ -40,13 +40,13 @@ class FormController extends Controller
 
     public function index()
     {
-        return view('admin.forms.index');
+        return view('server.forms.index');
     }
 
     public function getEdit($form_id)
     {
         $form = ServerForm::findOrFail($form_id);
-        return view('admin.forms.edit', ['form' => $form]);
+        return view('server.forms.edit', ['form' => $form]);
     }
 
     public function postEdit($form_id, Request $request)
@@ -98,7 +98,7 @@ class FormController extends Controller
             abort('403','You do not have the required permission');
         }
 
-        return view('admin.forms.add');
+        return view('server.forms.add');
     }
 
     public function postAdd(Request $request)

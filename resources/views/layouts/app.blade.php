@@ -109,7 +109,7 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Player</a>
                                     <ul class="dropdown-menu">
                                         <li @cannot('admin_players_show')class="disabled"@endcannot>
-                                            <a href="{{route('admin.players.index')}}"><i class="fa fa-btn"></i>Players</a>
+                                            <a href="{{route('server.players.index')}}"><i class="fa fa-btn"></i>Players</a>
                                         </li>
                                         <li @cannot('admin_char_show')class="disabled"@endcannot>
                                             <a href="{{route('server.chars.index.all')}}"><i class="fa fa-btn"></i>Character Records</a>
@@ -134,13 +134,13 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Site</a>
                                     <ul class="dropdown-menu">
                                         <li @cannot('admin_site_roles_show')class="disabled"@endcannot>
-                                            <a href="{{route('admin.roles.index')}}"><i class="fa fa-btn"></i>Site Roles</a>
+                                            <a href="{{route('site.roles.index')}}"><i class="fa fa-btn"></i>Site Roles</a>
                                         </li>
                                         <li @cannot('admin_site_permissions_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>Site Permissions <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                         </li>
                                         <li @cannot('admin_site_logs_show')class="disabled"@endcannot>
-                                            <a href="{{route('admin.site.log.index')}}"><i class="fa fa-btn"></i>WebSite Logs</a>
+                                            <a href="{{route('site.log.index')}}"><i class="fa fa-btn"></i>WebSite Logs</a>
                                         </li>
                                         <li @cannot('admin_staff_roster_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>Staff Roster <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>

@@ -53,6 +53,110 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/home', 'HomeController@index'); //Home Page
 
+    //CCIA Stuff
+    Route::group(['prefix' => 'ccia', 'middleware' => 'auth'], function () {
+        Route::group(['prefix' => 'actionlist'], function () {
+            Route::get('', ['as' => 'ccia.actions.index', 'uses' => 'CCIA\ActionController@index']);
+            Route::get('/{action_id}/show', ['as' => 'ccia.actions.show.get', 'uses' => 'CCIA\ActionController@getShow']);
+            Route::get('/{action_id}/edit', ['as' => 'ccia.actions.edit.get', 'uses' => 'CCIA\ActionController@getEdit']);
+            Route::post('/{action_id}/edit', ['as' => 'ccia.actions.edit.post', 'uses' => 'CCIA\ActionController@postEdit']);
+            Route::get('/{action_id}/delete', ['as' => 'ccia.actions.delete', 'uses' => 'CCIA\ActionController@delete']);
+            Route::post('/{action_id}/linkchar', ['as' => 'ccia.actions.linkchar', 'uses'=>'CCIA\ActionController@linkChar']);
+            Route::post('/{action_id}/unlinkchar', ['as' => 'ccia.actions.unlinkchar', 'uses'=>'CCIA\ActionController@unlinkChar']);
+            Route::get('/add', ['as' => 'ccia.actions.add.get', 'uses' => 'CCIA\ActionController@getAdd']);
+            Route::post('/add', ['as' => 'ccia.actions.add.post', 'uses' => 'CCIA\ActionController@postAdd']);
+            Route::get('/data/active', ['as' => 'ccia.actions.data.active', 'uses'=>'CCIA\ActionController@getDataActive']);
+            Route::get('/data/all', ['as' => 'ccia.actions.data.all', 'uses'=>'CCIA\ActionController@getDataAll']);
+        });
+        Route::group(['prefix' => 'generalnotice'], function () {
+            Route::get('', ['as' => 'ccia.generalnotice.index', 'uses' => 'CCIA\GeneralNoticeController@index']);
+            Route::get('/{generalnotice_id}/show', ['as' => 'ccia.generalnotice.show.get', 'uses' => 'CCIA\GeneralNoticeController@getShow']);
+            Route::get('/{generalnotice_id}/edit', ['as' => 'ccia.generalnotice.edit.get', 'uses' => 'CCIA\GeneralNoticeController@getEdit']);
+            Route::post('/{generalnotice_id}/edit', ['as' => 'ccia.generalnotice.edit.post', 'uses' => 'CCIA\GeneralNoticeController@postEdit']);
+            Route::get('/{generalnotice_id}/delete', ['as' => 'ccia.generalnotice.delete', 'uses' => 'CCIA\GeneralNoticeController@delete']);
+            Route::get('/add', ['as' => 'ccia.generalnotice.add.get', 'uses' => 'CCIA\GeneralNoticeController@getAdd']);
+            Route::post('/add', ['as' => 'ccia.generalnotice.add.post', 'uses' => 'CCIA\GeneralNoticeController@postAdd']);
+            Route::get('/data', ['as' => 'ccia.generalnotice.data', 'uses'=>'CCIA\GeneralNoticeController@getData']);
+        });
+    });
+
+    //Server Stuff
+    Route::group(['prefix' => 'server','middleware' => 'auth'],function(){
+
+        Route::group(['prefix' => 'chars'], function () {
+            Route::get('', ['as' => 'server.chars.index', 'uses'=>'Server\CharController@index']);
+            Route::get('/all', ['as' => 'server.chars.index.all', 'uses'=>'Server\CharController@indexAll']);
+            Route::get('/{char_id}/show', ['as' => 'server.chars.show.get', 'uses'=>'Server\CharController@getShow']);
+            Route::get('/{char_id}/edit/cr', ['as' => 'server.chars.edit.cr.get', 'uses'=>'Server\CharController@getEditCR']);
+            Route::post('/{char_id}/edit/cr', ['as' => 'server.chars.edit.cr.post', 'uses'=>'Server\CharController@postEditCR']);
+            Route::get('/data/own', ['as' => 'server.chars.data.own', 'uses'=>'Server\CharController@getCharDataOwn']);
+            Route::get('/data/all', ['as' => 'server.chars.data.all', 'uses'=>'Server\CharController@getCharDataAll']);
+        });
+
+        Route::group(['prefix' => 'form'], function () {
+            Route::get('', ['as' => 'admin.forms.index', 'uses'=>'Server\FormController@index']);
+            Route::get('/{form_id}/edit', ['as' => 'admin.forms.edit.get', 'uses'=>'Server\FormController@getEdit']);
+            Route::post('/{form_id}/edit', ['as' => 'admin.forms.edit.post', 'uses'=>'Server\FormController@postEdit']);
+            Route::get('/{form_id}/delete', ['as' => 'admin.forms.delete', 'uses'=>'Server\FormController@delete']);
+            Route::get('/add', ['as' => 'admin.forms.add.get', 'uses'=>'Server\FormController@getAdd']);
+            Route::post('/add', ['as' => 'admin.forms.add.post', 'uses'=>'Server\FormController@postAdd']);
+            Route::get('/data', ['as' => 'admin.forms.data', 'uses'=>'Server\FormController@getFormData']);
+        });
+
+        Route::group(['prefix' => 'library'], function () {
+            Route::get('', ['as' => 'server.library.index', 'uses'=>'Server\LibraryController@index']);
+            Route::get('/{book_id}/show', ['as' => 'server.library.show.get', 'uses'=>'Server\LibraryController@getShow']);
+            Route::get('/{book_id}/edit', ['as' => 'server.library.edit.get', 'uses'=>'Server\LibraryController@getEdit']);
+            Route::post('/{book_id}/edit', ['as' => 'server.library.edit.post', 'uses'=>'Server\LibraryController@postEdit']);
+            Route::get('/{book_id}/delete', ['as' => 'server.library.delete', 'uses'=>'Server\LibraryController@delete']);
+            Route::get('/add', ['as' => 'server.library.add.get', 'uses'=>'Server\LibraryController@getAdd']);
+            Route::post('/add', ['as' => 'server.library.add.post', 'uses'=>'Server\LibraryController@postAdd']);
+            Route::get('/data', ['as' => 'server.library.data', 'uses'=>'Server\LibraryController@getBookData']);
+        });
+
+        Route::group(['prefix' => 'permissions'], function () {
+            Route::any('', ['as' => 'server.permissions.index', 'uses'=>'Server\PermissionController@index']);
+            Route::get('/{permission_id}/', ['as' => 'server.permissions.show', 'uses'=>'Server\PermissionController@show']);
+            Route::get('/add', ['as' => 'server.permissions.add.get', 'uses'=>'Server\PermissionController@getAdd']);
+            Route::post('/add', ['as' => 'server.permissions.add.get', 'uses'=>'Server\PermissionController@postAdd']);
+            Route::get('/{permission_id}/remove', ['as' => 'server.permissions.remove', 'uses'=>'Server\PermissionController@remove']);
+            Route::get('/{permission_id}/add_flag/{flag}', ['as' => 'servers.permissions.flag.add', 'uses'=>'Server\PermissionController@addFlag']);
+            Route::get('/{permission_id}/remove_flag/{flag}', ['as' => 'servers.permissions.flag.remove', 'uses'=>'Server\PermissionController@removeFlag']);
+        });
+
+        Route::group(['prefix' => 'player'], function () {
+            Route::get('', ['as' => 'server.players.index', 'uses'=>'Server\PlayerController@index']);
+            Route::get('/{player_id}/show', ['as' => 'server.players.show', 'uses'=>'Server\PlayerController@show']);
+            Route::get('/{player_id}/add_whitelist/{whitelist}', ['as' => 'server.players.whitelist.add', 'uses'=>'Server\PlayerController@addWhitelist']);
+            Route::get('/{player_id}/remove_whitelist/{whitelist}', ['as' => 'server.players.whitelist.remove', 'uses'=>'Server\PlayerController@removeWhitelist']);
+            Route::get('/{player_id}/warnings_data', ['as' => 'server.players.warnings.data', 'uses'=>'Server\PlayerController@getPlayerWarningsData']);
+            Route::get('/{player_id}/notes_data', ['as' => 'server.players.notes.data', 'uses'=>'Server\PlayerController@getPlayerNotesData']);
+            Route::get('/data', ['as' => 'server.players.data', 'uses'=>'Server\PlayerController@getPlayerData']);
+        });
+
+        Route::get('', ['as' => 'server.stats.index', 'uses'=>'Server\StatsController@index']);
+    });
+
+    //Website Stuff
+    Route::group(['prefix' => 'site','middleware' => 'auth'],function(){
+        Route::group(['prefix' => 'log','middleware' => 'permission.site:admin_site_logs_show'],function(){
+            Route::get('web', ['as'=>'site.log.index', 'uses'=>'Site\LogViewerController@index']);
+        });
+
+        Route::group(['prefix' => 'role'], function () {
+            Route::get('', ['as' => 'site.roles.index', 'uses'=>'Site\RoleController@index']);
+            Route::get('/add', ['as' => 'site.roles.add.get', 'uses'=>'Site\RoleController@getAdd']);
+            Route::post('/add', ['as' => 'site.roles.add.post', 'uses'=>'Site\RoleController@postAdd']);
+            Route::get('{role_id}/edit', ['as' => 'site.roles.edit.get', 'uses'=>'Site\RoleController@getEdit']);
+            Route::post('{role_id}/edit', ['as' => 'site.roles.edit.post', 'uses'=>'Site\RoleController@postEdit']);
+            Route::get('{role_id}/delete', ['as' => 'site.roles.delete', 'uses'=>'Site\RoleController@delete']);
+            Route::post('{role_id}/addperm', ['as' => 'site.roles.addperm', 'uses'=>'Site\RoleController@addPermission']);
+            Route::post('{role_id}/remperm', ['as' => 'site.roles.remperm', 'uses'=>'Site\RoleController@removePermission']);
+            Route::post('{role_id}/adduser', ['as' => 'site.roles.adduser', 'uses'=>'Site\RoleController@addUser']);
+            Route::post('{role_id}/remuser', ['as' => 'site.roles.remuser', 'uses'=>'Site\RoleController@removeUser']);
+        });
+    });
+
     //Syndie Stuff
     Route::group(['prefix' => 'syndie','middleware' => 'auth'], function () {
         //Contract DB
@@ -103,42 +207,6 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/api/agentlist', ['as' => 'syndie.api.get.agentlist', 'uses'=>'Syndie\ContractController@getAgentList']);
     });
 
-    //Stuff that interferes with ingame objects
-    Route::group(['prefix' => 'server','middleware' => 'auth'],function(){
-        Route::group(['prefix' => 'library'], function () {
-            Route::get('', ['as' => 'server.library.index', 'uses'=>'Server\LibraryController@index']);
-            Route::get('/{book_id}/show', ['as' => 'server.library.show.get', 'uses'=>'Server\LibraryController@getShow']);
-            Route::get('/{book_id}/edit', ['as' => 'server.library.edit.get', 'uses'=>'Server\LibraryController@getEdit']);
-            Route::post('/{book_id}/edit', ['as' => 'server.library.edit.post', 'uses'=>'Server\LibraryController@postEdit']);
-            Route::get('/{book_id}/delete', ['as' => 'server.library.delete', 'uses'=>'Server\LibraryController@delete']);
-            Route::get('/add', ['as' => 'server.library.add.get', 'uses'=>'Server\LibraryController@getAdd']);
-            Route::post('/add', ['as' => 'server.library.add.post', 'uses'=>'Server\LibraryController@postAdd']);
-            Route::get('/data', ['as' => 'server.library.data', 'uses'=>'Server\LibraryController@getBookData']);
-        });
-
-        Route::group(['prefix' => 'chars'], function () {
-            Route::get('', ['as' => 'server.chars.index', 'uses'=>'Server\CharController@index']);
-            Route::get('/all', ['as' => 'server.chars.index.all', 'uses'=>'Server\CharController@indexAll']);
-            Route::get('/{char_id}/show', ['as' => 'server.chars.show.get', 'uses'=>'Server\CharController@getShow']);
-            Route::get('/{char_id}/edit/cr', ['as' => 'server.chars.edit.cr.get', 'uses'=>'Server\CharController@getEditCR']);
-            Route::post('/{char_id}/edit/cr', ['as' => 'server.chars.edit.cr.post', 'uses'=>'Server\CharController@postEditCR']);
-            Route::get('/data/own', ['as' => 'server.chars.data.own', 'uses'=>'Server\CharController@getCharDataOwn']);
-            Route::get('/data/all', ['as' => 'server.chars.data.all', 'uses'=>'Server\CharController@getCharDataAll']);
-        });
-
-        Route::group(['prefix' => 'permissions'], function () {
-            Route::any('', ['as' => 'server.permissions.index', 'uses'=>'Server\PermissionController@index']);
-            Route::get('/{permission_id}/', ['as' => 'server.permissions.show', 'uses'=>'Server\PermissionController@show']);
-            Route::get('/add', ['as' => 'server.permissions.add.get', 'uses'=>'Server\PermissionController@getAdd']);
-            Route::post('/add', ['as' => 'server.permissions.add.get', 'uses'=>'Server\PermissionController@postAdd']);
-            Route::get('/{permission_id}/remove', ['as' => 'server.permissions.remove', 'uses'=>'Server\PermissionController@remove']);
-            Route::get('/{permission_id}/add_flag/{flag}', ['as' => 'servers.permissions.flag.add', 'uses'=>'Server\PermissionController@addFlag']);
-            Route::get('/{permission_id}/remove_flag/{flag}', ['as' => 'servers.permissions.flag.remove', 'uses'=>'Server\PermissionController@removeFlag']);
-        });
-
-        Route::get('', ['as' => 'server.stats.index', 'uses'=>'Server\StatsController@index']);
-    });
-
     //User Stuff
     Route::group(['prefix' => 'user','middleware' => 'auth'], function () {
         //User Dashboard
@@ -153,71 +221,5 @@ Route::group(['middleware' => 'web'], function () {
 
     });
 
-    //Admin Stuff
-    Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
 
-        Route::group(['prefix' => 'player'], function () {
-            Route::get('', ['as' => 'admin.players.index', 'uses'=>'Server\PlayerController@index']);
-            Route::get('/{player_id}/show', ['as' => 'admin.players.show', 'uses'=>'Server\PlayerController@show']);
-            Route::get('/{player_id}/add_whitelist/{whitelist}', ['as' => 'admin.players.whitelist.add', 'uses'=>'Server\PlayerController@addWhitelist']);
-            Route::get('/{player_id}/remove_whitelist/{whitelist}', ['as' => 'admin.players.whitelist.remove', 'uses'=>'Server\PlayerController@removeWhitelist']);
-            Route::get('/{player_id}/warnings_data', ['as' => 'admin.players.warnings.data', 'uses'=>'Server\PlayerController@getPlayerWarningsData']);
-            Route::get('/{player_id}/notes_data', ['as' => 'admin.players.notes.data', 'uses'=>'Server\PlayerController@getPlayerNotesData']);
-            Route::get('/data', ['as' => 'admin.players.data', 'uses'=>'Server\PlayerController@getPlayerData']);
-        });
-
-        Route::group(['prefix' => 'form'], function () {
-            Route::get('', ['as' => 'admin.forms.index', 'uses'=>'Server\FormController@index']);
-            Route::get('/{form_id}/edit', ['as' => 'admin.forms.edit.get', 'uses'=>'Server\FormController@getEdit']);
-            Route::post('/{form_id}/edit', ['as' => 'admin.forms.edit.post', 'uses'=>'Server\FormController@postEdit']);
-            Route::get('/{form_id}/delete', ['as' => 'admin.forms.delete', 'uses'=>'Server\FormController@delete']);
-            Route::get('/add', ['as' => 'admin.forms.add.get', 'uses'=>'Server\FormController@getAdd']);
-            Route::post('/add', ['as' => 'admin.forms.add.post', 'uses'=>'Server\FormController@postAdd']);
-            Route::get('/data', ['as' => 'admin.forms.data', 'uses'=>'Server\FormController@getFormData']);
-        });
-
-        Route::group(['prefix' => 'role'], function () {
-            Route::get('', ['as' => 'admin.roles.index', 'uses'=>'Site\RoleController@index']);
-            Route::get('/add', ['as' => 'admin.roles.add.get', 'uses'=>'Site\RoleController@getAdd']);
-            Route::post('/add', ['as' => 'admin.roles.add.post', 'uses'=>'Site\RoleController@postAdd']);
-            Route::get('{role_id}/edit', ['as' => 'admin.roles.edit.get', 'uses'=>'Site\RoleController@getEdit']);
-            Route::post('{role_id}/edit', ['as' => 'admin.roles.edit.post', 'uses'=>'Site\RoleController@postEdit']);
-            Route::get('{role_id}/delete', ['as' => 'admin.roles.delete', 'uses'=>'Site\RoleController@delete']);
-            Route::post('{role_id}/addperm', ['as' => 'admin.roles.addperm', 'uses'=>'Site\RoleController@addPermission']);
-            Route::post('{role_id}/remperm', ['as' => 'admin.roles.remperm', 'uses'=>'Site\RoleController@removePermission']);
-            Route::post('{role_id}/adduser', ['as' => 'admin.roles.adduser', 'uses'=>'Site\RoleController@addUser']);
-            Route::post('{role_id}/remuser', ['as' => 'admin.roles.remuser', 'uses'=>'Site\RoleController@removeUser']);
-        });
-
-        Route::group(['prefix' => 'log','middleware' => 'permission.site:admin_site_logs_show'],function(){
-            Route::get('web', ['as'=>'admin.site.log.index', 'uses'=>'Site\LogViewerController@index']);
-        });
-    });
-
-    // CCIA Stuff
-    Route::group(['prefix' => 'ccia', 'middleware' => 'auth'], function () {
-        Route::group(['prefix' => 'generalnotice'], function () {
-            Route::get('', ['as' => 'ccia.generalnotice.index', 'uses' => 'CCIA\GeneralNoticeController@index']);
-            Route::get('/{generalnotice_id}/show', ['as' => 'ccia.generalnotice.show.get', 'uses' => 'CCIA\GeneralNoticeController@getShow']);
-            Route::get('/{generalnotice_id}/edit', ['as' => 'ccia.generalnotice.edit.get', 'uses' => 'CCIA\GeneralNoticeController@getEdit']);
-            Route::post('/{generalnotice_id}/edit', ['as' => 'ccia.generalnotice.edit.post', 'uses' => 'CCIA\GeneralNoticeController@postEdit']);
-            Route::get('/{generalnotice_id}/delete', ['as' => 'ccia.generalnotice.delete', 'uses' => 'CCIA\GeneralNoticeController@delete']);
-            Route::get('/add', ['as' => 'ccia.generalnotice.add.get', 'uses' => 'CCIA\GeneralNoticeController@getAdd']);
-            Route::post('/add', ['as' => 'ccia.generalnotice.add.post', 'uses' => 'CCIA\GeneralNoticeController@postAdd']);
-            Route::get('/data', ['as' => 'ccia.generalnotice.data', 'uses'=>'CCIA\GeneralNoticeController@getData']);
-        });
-        Route::group(['prefix' => 'actionlist'], function () {
-            Route::get('', ['as' => 'ccia.actions.index', 'uses' => 'CCIA\ActionController@index']);
-            Route::get('/{action_id}/show', ['as' => 'ccia.actions.show.get', 'uses' => 'CCIA\ActionController@getShow']);
-            Route::get('/{action_id}/edit', ['as' => 'ccia.actions.edit.get', 'uses' => 'CCIA\ActionController@getEdit']);
-            Route::post('/{action_id}/edit', ['as' => 'ccia.actions.edit.post', 'uses' => 'CCIA\ActionController@postEdit']);
-            Route::get('/{action_id}/delete', ['as' => 'ccia.actions.delete', 'uses' => 'CCIA\ActionController@delete']);
-            Route::post('/{action_id}/linkchar', ['as' => 'ccia.actions.linkchar', 'uses'=>'CCIA\ActionController@linkChar']);
-            Route::post('/{action_id}/unlinkchar', ['as' => 'ccia.actions.unlinkchar', 'uses'=>'CCIA\ActionController@unlinkChar']);
-            Route::get('/add', ['as' => 'ccia.actions.add.get', 'uses' => 'CCIA\ActionController@getAdd']);
-            Route::post('/add', ['as' => 'ccia.actions.add.post', 'uses' => 'CCIA\ActionController@postAdd']);
-            Route::get('/data/active', ['as' => 'ccia.actions.data.active', 'uses'=>'CCIA\ActionController@getDataActive']);
-            Route::get('/data/all', ['as' => 'ccia.actions.data.all', 'uses'=>'CCIA\ActionController@getDataAll']);
-        });
-    });
 });

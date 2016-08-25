@@ -25,7 +25,7 @@
                 <div class="panel-heading">Add a new Role</div>
 
                 <div class="panel-body">
-                    {{Form::open(array('route' => 'admin.roles.add.post','method' => 'post')) }}
+                    {{Form::open(array('route' => 'site.roles.add.post','method' => 'post')) }}
                     {{Form::token()}}
 
                     {{Form::bsText('name')}}

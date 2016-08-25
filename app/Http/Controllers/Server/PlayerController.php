@@ -46,7 +46,7 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        return view('admin.player.index');
+        return view('server.player.index');
     }
 
     /**
@@ -60,7 +60,7 @@ class PlayerController extends Controller
     {
         $player = ServerPlayer::findOrFail($player_id);
 
-        return view('admin.player.show',['player'=>$player,'whitelists'=>$player->get_player_whitelists()]);
+        return view('server.player.show',['player'=>$player,'whitelists'=>$player->get_player_whitelists()]);
     }
 
 
@@ -78,7 +78,7 @@ class PlayerController extends Controller
 
         Log::notice('perm.whitelist.add - Whitelist has been added',['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
 
-        return redirect()->route('admin.players.show', ['player_id' => $player_id]);
+        return redirect()->route('server.players.show', ['player_id' => $player_id]);
     }
 
     public function removeWhitelist($player_id, $whitelist, Request $request)
@@ -95,7 +95,7 @@ class PlayerController extends Controller
 
         Log::notice('perm.whitelist.remove - Whitelist has been removed',['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
 
-        return redirect()->route('admin.players.show', ['player_id' => $player_id]);
+        return redirect()->route('server.players.show', ['player_id' => $player_id]);
     }
 
 
@@ -141,7 +141,7 @@ class PlayerController extends Controller
         $players = ServerPlayer::select(['id','ckey']);
 
         return Datatables::of($players)
-            ->editColumn('ckey','<a href="{{route(\'admin.players.show\',[\'player_id\'=>$id])}}">{{$ckey}}</a>')
+            ->editColumn('ckey','<a href="{{route(\'server.players.show\',[\'player_id\'=>$id])}}">{{$ckey}}</a>')
             ->make();
     }
 }

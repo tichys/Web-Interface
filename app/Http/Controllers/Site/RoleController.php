@@ -41,7 +41,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $roles = SiteRole::get();
-        return view('/admin/siteroles/index', ['roles' => $roles]);
+        return view('site.roles.index', ['roles' => $roles]);
     }
 
     public function getAdd(Request $request)
@@ -50,7 +50,7 @@ class RoleController extends Controller
             abort('403', 'You do not have the required permission');
         }
 
-        return view('/admin/siteroles/add');
+        return view('site.roles.add');
     }
 
     public function postAdd(Request $request)
@@ -69,7 +69,7 @@ class RoleController extends Controller
 
         Log::notice('perm.site_role.add - Site Role has been added',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
 
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('site.roles.index');
     }
 
     public function getEdit(Request $request, $role_id)
@@ -83,7 +83,7 @@ class RoleController extends Controller
 
         $assigned_users = $role->get_users(true);
 
-        return view('/admin/siteroles/edit', ['role' => $role,'avail_permissions'=>$avail_permissions,'assigned_users'=>$assigned_users]);
+        return view('site.roles.edit', ['role' => $role,'avail_permissions'=>$avail_permissions,'assigned_users'=>$assigned_users]);
     }
 
     public function postEdit(Request $request, $role_id)
@@ -105,7 +105,7 @@ class RoleController extends Controller
 
         Log::notice('perm.site_role.edit - Site Role has been edited',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
 
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('site.roles.index');
     }
 
     public function delete(Request $request, $role_id)
@@ -120,7 +120,7 @@ class RoleController extends Controller
 
         $role->delete();
 
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('site.roles.index');
     }
 
     public function addPermission(Request $request, $role_id)
@@ -134,7 +134,7 @@ class RoleController extends Controller
 
         Log::notice('perm.site_role.attach_permission - Site Role Permission attached',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'permission_id' => $permission->id, 'permission_name' => $permission->name]);
 
-        return redirect()->route('admin.roles.edit.get',['role_id' => $role_id]);
+        return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
     }
 
     public function removePermission(Request $request, $role_id)
@@ -149,7 +149,7 @@ class RoleController extends Controller
         Log::notice('perm.site_role.detach_permission - Site Role Permission detached',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'permission_id' => $permission->id, 'permission_name' => $permission->name]);
 
 
-        return redirect()->route('admin.roles.edit.get',['role_id' => $role_id]);
+        return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
     }
 
     public function addUser(Request $request, $role_id)
@@ -167,7 +167,7 @@ class RoleController extends Controller
 
         Log::notice('perm.site_role.add_user - Site Role User added',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->username_clean]);
 
-        return redirect()->route('admin.roles.edit.get',['role_id' => $role_id]);
+        return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
     }
 
     public function removeUser(Request $request, $role_id)
@@ -182,6 +182,6 @@ class RoleController extends Controller
 
         Log::notice('perm.site_role.remove_user - Site Role User removed',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->username_clean]);
 
-        return redirect()->route('admin.roles.edit.get',['role_id' => $role_id]);
+        return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
     }
 }

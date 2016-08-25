@@ -29,6 +29,6 @@ class StatsController extends Controller
 {
     public function index()
     {
-        return view("admin.stats");
+        return view("server.stats.index");
     }
 }

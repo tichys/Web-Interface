@@ -48,7 +48,7 @@
                         </tr>
                         <tr>
                             <td>Rank</td>
-                            <td>{{$player->lastadminrank}}</td>
+                            <td>@if(count($player->serverrank())) {{$player->serverrank->rank}} @else Player @endif</td>
                         </tr>
                         </tbody>
                     </table>
@@ -72,7 +72,7 @@
                                     </td>
                                     @can('admin_whitelists_edit')
                                     <td>
-                                        <a href="{{route('admin.players.whitelist.remove',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
+                                        <a href="{{route('server.players.whitelist.remove',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
                                            class="btn btn-danger" role="button">Remove Whitelist</a>
                                     </td>
                                     @endcan
@@ -84,7 +84,7 @@
                                     </td>
                                     @can('admin_whitelists_edit')
                                     <td>
-                                        <a href="{{route('admin.players.whitelist.add',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
+                                        <a href="{{route('server.players.whitelist.add',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
                                            class="btn btn-success" role="button">Add Whitelist</a>
                                     </td>
                                     @endcan
@@ -156,14 +156,14 @@
             $('#user-warnings-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.players.warnings.data',["player_id"=>$player->id]) }}'
+                ajax: '{{ route('server.players.warnings.data',["player_id"=>$player->id]) }}'
             });
             @endcan()
             @can('admin_notes_show')
             $('#user-notes-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.players.notes.data',["player_id"=>$player->id]) }}'
+                ajax: '{{ route('server.players.notes.data',["player_id"=>$player->id]) }}'
             });
             @endcan()
         });
