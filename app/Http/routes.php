@@ -139,7 +139,7 @@ Route::group(['middleware' => 'web'], function () {
 
     //Website Stuff
     Route::group(['prefix' => 'site','middleware' => 'auth'],function(){
-        Route::group(['prefix' => 'log','middleware' => 'permission.site:admin_site_logs_show'],function(){
+        Route::group(['prefix' => 'log','middleware' => 'permission.site:site_logs_show'],function(){
             Route::get('web', ['as'=>'site.log.index', 'uses'=>'Site\LogViewerController@index']);
         });
 

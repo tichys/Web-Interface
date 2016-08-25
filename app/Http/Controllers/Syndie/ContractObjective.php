@@ -40,7 +40,7 @@ class ContractObjective extends Controller
     public function getAdd(Request $request, $contract)
     {
         $contract = SyndieContract::findOrFail($contract);
-        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        if($request->user()->cannot('syndie_contract_moderate') && $contract->contractee_id != $request->user()->id)
         {
             abort('403','You do not have the required permission');
         }
@@ -51,7 +51,7 @@ class ContractObjective extends Controller
     public function postAdd(Request $request, $contract)
     {
         $contract = SyndieContract::findOrFail($contract);
-        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        if($request->user()->cannot('syndie_contract_moderate') && $contract->contractee_id != $request->user()->id)
         {
             abort('403','You do not have the required permission');
         }
@@ -80,7 +80,7 @@ class ContractObjective extends Controller
     {
         $objective = SyndieContractObjective::findOrFail($objective);
         $contract = $objective->contract()->get();
-        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        if($request->user()->cannot('syndie_contract_moderate') && $contract->contractee_id != $request->user()->id)
         {
             abort('403','You do not have the required permission');
         }
@@ -92,7 +92,7 @@ class ContractObjective extends Controller
     {
         $objective = SyndieContractObjective::findOrFail($objective);
         $contract = $objective->contract()->get();
-        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        if($request->user()->cannot('syndie_contract_moderate') && $contract->contractee_id != $request->user()->id)
         {
             abort('403','You do not have the required permission');
         }
@@ -110,7 +110,7 @@ class ContractObjective extends Controller
     {
         $objective = SyndieContractObjective::findOrFail($objective);
         $contract = $objective->contract()->get();
-        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        if($request->user()->cannot('syndie_contract_moderate') && $contract->contractee_id != $request->user()->id)
         {
             abort('403','You do not have the required permission');
         }
@@ -127,7 +127,7 @@ class ContractObjective extends Controller
     {
         $objective = SyndieContractObjective::findOrFail($objective);
         $contract = $objective->contract()->get();
-        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        if($request->user()->cannot('syndie_contract_moderate') && $contract->contractee_id != $request->user()->id)
         {
             abort('403','You do not have the required permission');
         }
@@ -144,7 +144,7 @@ class ContractObjective extends Controller
     {
         $objective = SyndieContractObjective::findOrFail($objective);
         $contract = $objective->contract()->get();
-        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        if($request->user()->cannot('syndie_contract_moderate') && $contract->contractee_id != $request->user()->id)
         {
             abort('403','You do not have the required permission');
         }

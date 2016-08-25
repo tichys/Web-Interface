@@ -42,7 +42,7 @@ class PermissionController extends Controller
 
     public function index(Request $request)
     {
-        if($request->user()->cannot('admin_server_permissions_show'))
+        if($request->user()->cannot('server_permissions_show'))
             abort(403);
 
         //Get admins from the admins table

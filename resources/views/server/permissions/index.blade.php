@@ -56,7 +56,7 @@
                 {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
 
                 {{ Form::close() }}
-                @can('admin_server_permissions_edit')<p><a href="{{route('server.library.add.post')}}" class="btn btn-success" role="button">Add new Permission</a></p>@endcan()
+                @can('server_permissions_edit')<p><a href="{{route('server.library.add.post')}}" class="btn btn-success" role="button">Add new Permission</a></p>@endcan()
             </div>
         </div>
     </div>

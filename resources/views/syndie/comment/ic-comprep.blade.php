@@ -59,7 +59,7 @@
                 </ul>
             @endif
             @include('syndie.comment.image')
-            @if($contract->contractee_id == Auth::user()->id || Auth::user()->can('contract_moderate'))
+            @if($contract->contractee_id == Auth::user()->id || Auth::user()->can('syndie_contract_moderate'))
                 @if($comment->report_status == "waiting-approval")
                     <br><p>
                         <a href="{{route('syndie.comments.confirmopen',['comment'=>$comment->comment_id])}}" class="btn btn-success" role="button">Confirm Open</a>
@@ -67,7 +67,7 @@
                         <a href="{{route('syndie.comments.reject',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Reject</a>
                     </p>
                 @endif
-                @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.comments.delete',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
+                @if(Auth::user()->can('syndie_contract_moderate'))<br><p><a href="{{route('syndie.comments.delete',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
             @endif
         </div>
     </div>

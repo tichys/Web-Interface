@@ -41,7 +41,7 @@ class CharController extends Controller
 
     public function indexAll(Request $request)
     {
-        if($request->user()->cannot('admin_char_show'))
+        if($request->user()->cannot('server_chars_show'))
         {
             abort('403','You do not have the required permission');
         }
@@ -98,7 +98,7 @@ class CharController extends Controller
     public function getCharDataAll(Request $request)
     {
 
-        if($request->user()->cannot('admin_char_show'))
+        if($request->user()->cannot('server_chars_show'))
         {
             abort('403','You do not have the required permission');
         }
@@ -130,7 +130,7 @@ class CharController extends Controller
             return true;
 
         //Check if the user has the permission to view characters
-        if($request->user()->can('admin_char_show'))
+        if($request->user()->can('server_chars_show'))
             return true;
 
         return false;

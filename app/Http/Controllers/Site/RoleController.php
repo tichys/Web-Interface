@@ -33,7 +33,7 @@ class RoleController extends Controller
 {
     public function __construct(Request $request)
     {
-        if ($request->user()->cannot('admin_site_roles_show')) {
+        if ($request->user()->cannot('site_roles_show')) {
             abort('403', 'You do not have the required permission');
         }
     }
@@ -46,7 +46,7 @@ class RoleController extends Controller
 
     public function getAdd(Request $request)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
 
@@ -55,7 +55,7 @@ class RoleController extends Controller
 
     public function postAdd(Request $request)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $this->validate($request, [
@@ -88,7 +88,7 @@ class RoleController extends Controller
 
     public function postEdit(Request $request, $role_id)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $this->validate($request, [
@@ -110,7 +110,7 @@ class RoleController extends Controller
 
     public function delete(Request $request, $role_id)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
 
@@ -125,7 +125,7 @@ class RoleController extends Controller
 
     public function addPermission(Request $request, $role_id)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $role = SiteRole::findOrFail($role_id);
@@ -139,7 +139,7 @@ class RoleController extends Controller
 
     public function removePermission(Request $request, $role_id)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $role = SiteRole::findOrFail($role_id);
@@ -157,7 +157,7 @@ class RoleController extends Controller
         $this->validate($request, [
             'user_id' => 'numeric'
         ]);
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $role = SiteRole::findOrFail($role_id);
@@ -172,7 +172,7 @@ class RoleController extends Controller
 
     public function removeUser(Request $request, $role_id)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $role = SiteRole::findOrFail($role_id);

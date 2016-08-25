@@ -75,7 +75,7 @@
                                 <td><b>Reward:</b></td>
                                 <td>{{$contract->reward_other}}</td>
                             </tr>
-                            @if(Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('contract_moderate') )
+                            @if(Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('syndie_contract_moderate') )
                                 <tr>
                                     <td><a href="{{route('syndie.contracts.edit.get',['contract'=>$contract->contract_id])}}" class="btn btn-info" role="button">Edit the Contract</a></td>
                                     <td></td>
@@ -93,7 +93,7 @@
                     </table>
                 </div>
             </div>
-            @if(Auth::user()->cannot('contract_moderate'))<div class="col-lg-8">@else() <div class="col-lg-6"> @endif()
+            @if(Auth::user()->cannot('syndie_contract_moderate'))<div class="col-lg-8">@else() <div class="col-lg-6"> @endif()
                 <div class="panel panel-default">
                     <div class="panel-heading">Contract Description:</div>
 
@@ -103,13 +103,13 @@
                 </div>
             </div>
             {{-- Management Panel--}}
-            @if(Auth::user()->can('contract_moderate'))
+            @if(Auth::user()->can('syndie_contract_moderate'))
             <div class="col-lg-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">Actions</div>
                     <div class="panel-body">
                         {{-- Check if user is a contract mod--}}
-                        @can('contract_moderate')
+                        @can('syndie_contract_moderate')
                         <p><b>Mod Actions</b></p>
                         <p><a href="{{route('syndie.contracts.approve',['contract'=>$contract->contract_id])}}" class="btn btn-info @if(!in_array($contract->status,['new','mod-nok'])) disabled @endif" role="button">Approve Contract</a></p>
                         <p><a href="{{route('syndie.contracts.reject',['contract'=>$contract->contract_id])}}" class="btn btn-warning @if($contract->status != 'new') disabled @endif" role="button">Reject Contract</a></p>
@@ -130,7 +130,7 @@
                 <ul class="timeline">
                     @foreach($comments as $comment)
                         {{-- Check if the comment is a mod author comment and if the player is a mod or the author--}}
-                        @if($comment->type !== 'mod-author' || Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('contract_moderate') )
+                        @if($comment->type !== 'mod-author' || Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('syndie_contract_moderate') )
 
                             {{-- If Comment is mod-ooc -> Left side + ooc colors --}}
                             @if($comment->type === 'mod-ooc')
@@ -144,7 +144,7 @@
                                         <div class="timeline-body">
                                             <p>@parsedown($comment->comment)</p>
                                             @include('syndie.contract.image')
-                                            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
+                                            @if(Auth::user()->can('syndie_contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                         </div>
                                     </div>
                                 </li>
@@ -159,7 +159,7 @@
                                         <div class="timeline-body">
                                             <p>@parsedown($comment->comment)</p>
                                             @include('syndie.contract.image')
-                                            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
+                                            @if(Auth::user()->can('syndie_contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                         </div>
                                     </div>
                                 </li>
@@ -174,7 +174,7 @@
                                         <div class="timeline-body">
                                             <p>@parsedown($comment->comment)</p>
                                             @include('syndie.contract.image')
-                                            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
+                                            @if(Auth::user()->can('syndie_contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                         </div>
                                     </div>
                                 </li>
@@ -189,13 +189,13 @@
                                         <div class="timeline-body">
                                             <p>@parsedown($comment->comment)</p>
                                             @include('syndie.contract.image')
-                                            @if($contract->status == "completed" && (Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('contract_moderate')))
+                                            @if($contract->status == "completed" && (Auth::user()->user_id == $contract->contractee_id || Auth::user()->can('syndie_contract_moderate')))
                                             <p>
                                                 <a href="{{route('syndie.contracts.confirm',['comment'=>$comment->comment_id])}}" class="btn btn-success" role="button">Confirm Completion</a>
                                                 <a href="{{route('syndie.contracts.reopen',['comment'=>$comment->comment_id])}}" class="btn btn-info" role="button">Reopen Contract</a>
                                             </p>
                                             @endif()
-                                            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
+                                            @if(Auth::user()->can('syndie_contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                         </div>
                                     </div>
                                 </li>
@@ -210,7 +210,7 @@
                                             <div class="timeline-body">
                                                 <p>@parsedown($comment->comment)</p>
                                                 @include('syndie.contract.image')
-                                                @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
+                                                @if(Auth::user()->can('syndie_contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                             </div>
                                         </div>
                                     </li>
@@ -225,7 +225,7 @@
                                             <div class="timeline-body">
                                                 <p>@parsedown($comment->comment)</p>
                                                 @include('syndie.contract.image')
-                                                @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
+                                                @if(Auth::user()->can('syndie_contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                             </div>
                                         </div>
                                     </li>
@@ -240,7 +240,7 @@
                                         <div class="timeline-body">
                                             <p>@parsedown($comment->comment)</p>
                                             @include('syndie.contract.image')
-                                            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
+                                            @if(Auth::user()->can('syndie_contract_moderate'))<br><p><a href="{{route('syndie.contracts.deletemessage',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
                                         </div>
                                     </div>
                                 </li>
@@ -262,7 +262,7 @@
                         {{Form::token()}}
 
                         {{--Only show the commentor name field of the user is not the owner of the contract or a mod--}}
-                        @if(Auth::user()->user_id != $contract->contractee_id || Auth::user()->can('contract_moderate'))
+                        @if(Auth::user()->user_id != $contract->contractee_id || Auth::user()->can('syndie_contract_moderate'))
                             <div class="alert alert-success">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 The username is forced to your forum username for the following message types: 'ooc','mod-author','mod-ooc'
@@ -272,7 +272,7 @@
                             {{Form::hidden('commentor_name',$contract->contractee_name)}}
                         @endif()
 
-                        @if(Auth::user()->can('contract_moderate')){{-- Check if user is contract mod --}}
+                        @if(Auth::user()->can('syndie_contract_moderate')){{-- Check if user is contract mod --}}
                         {{Form::bsSelectList('type',array('ic'=>'IC Comment','ic-failrep'=> 'IC Failure Report','ic-comprep'=>'IC Completion Report','ic-cancel'=>'IC Cancel Contract','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM','mod-ooc'=>'MOD-OOC Message'))}}
                         @elseif(Auth::user()->user_id == $contract->contractee_id ){{-- Check if user is contract owner --}}
                         {{Form::bsSelectList('type',array('ic'=>'IC Comment','ic-cancel'=>'IC Cancel Contract','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM'))}}

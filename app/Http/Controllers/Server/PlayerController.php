@@ -35,7 +35,7 @@ class PlayerController extends Controller
 
     public function __construct(Request $request)
     {
-        if($request->user()->cannot('admin_players_show'))
+        if($request->user()->cannot('server_players_show'))
         {
             abort('403','You do not have the required permission');
         }
@@ -66,7 +66,7 @@ class PlayerController extends Controller
 
     public function addWhitelist($player_id, $whitelist, Request $request)
     {
-        if($request->user()->cannot('admin_whitelists_edit'))
+        if($request->user()->cannot('server_players_whitelists_edit'))
         {
             abort('403','You do not have the required permission');
         }
@@ -83,7 +83,7 @@ class PlayerController extends Controller
 
     public function removeWhitelist($player_id, $whitelist, Request $request)
     {
-        if($request->user()->cannot('admin_whitelists_edit'))
+        if($request->user()->cannot('server_players_whitelists_edit'))
         {
             abort('403','You do not have the required permission');
         }
@@ -101,7 +101,7 @@ class PlayerController extends Controller
 
     public function getPlayerWarningsData($player_id, Request $request)
     {
-        if($request->user()->cannot('admin_warnings_show'))
+        if($request->user()->cannot('server_players_warnings_show'))
         {
             abort('403','You do not have the required permission');
         }
@@ -119,7 +119,7 @@ class PlayerController extends Controller
 
     public function getPlayerNotesData($player_id, Request $request)
     {
-        if($request->user()->cannot('admin_notes_show'))
+        if($request->user()->cannot('server_players_notes_show'))
         {
             abort('403','You do not have the required permission');
         }

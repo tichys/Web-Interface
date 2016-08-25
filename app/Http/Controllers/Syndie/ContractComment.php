@@ -47,7 +47,7 @@ class ContractComment extends Controller
 
         //Validate that the type is present and that user has the permission to use it
         $type = $request->input("type");
-        if ($request->user()->can('contract_moderate')) {
+        if ($request->user()->can('syndie_contract_moderate')) {
             $validate_array = [
                 'type' => 'required|in:ic,ic-failrep,ic-comprep,ic-cancel,ooc,mod-ooc,mod-author'
             ];
@@ -150,7 +150,7 @@ class ContractComment extends Controller
         $contract = SyndieContract::findOrFail($comment->contract_id);
         $objectives = $comment->objectives()->get();
 
-        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        if($request->user()->cannot('syndie_contract_moderate') && $contract->contractee_id != $request->user()->id)
         {
             abort('403','You do not have the required permission');
         }
@@ -173,7 +173,7 @@ class ContractComment extends Controller
         $contract = SyndieContract::findOrFail($comment->contract_id);
         $objectives = $comment->objectives()->get();
 
-        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        if($request->user()->cannot('syndie_contract_moderate') && $contract->contractee_id != $request->user()->id)
         {
             abort('403','You do not have the required permission');
         }
@@ -199,7 +199,7 @@ class ContractComment extends Controller
         $contract = SyndieContract::findOrFail($comment->contract_id);
         $objectives = $comment->objectives()->get();
 
-        if($request->user()->cannot('contract_moderate') && $contract->contractee_id != $request->user()->id)
+        if($request->user()->cannot('syndie_contract_moderate') && $contract->contractee_id != $request->user()->id)
         {
             abort('403','You do not have the required permission');
         }
@@ -218,7 +218,7 @@ class ContractComment extends Controller
     {
         $comment = SyndieContractComment::findOrFail($comment);
 
-        if($request->user()->cannot('contract_moderate'))
+        if($request->user()->cannot('syndie_contract_moderate'))
         {
             abort('403','You do not have the required permission');
         }

@@ -33,7 +33,7 @@
 
                         {{Form::token()}}
 
-                        @if(Auth::user()->can('contract_moderate')){{-- Check if user is contract mod --}}
+                        @if(Auth::user()->can('syndie_contract_moderate')){{-- Check if user is contract mod --}}
                         {{Form::bsSelectList('type',array('ic'=>'IC Comment','ic-failrep'=> 'IC Failure Report','ic-comprep'=>'IC Completion Report','ic-cancel'=>'IC Cancel Contract','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM','mod-ooc'=>'MOD-OOC Message'))}}
                         @elseif(Auth::user()->user_id == $contract->contractee_id ){{-- Check if user is contract owner --}}
                         {{Form::bsSelectList('type',array('ic'=>'IC Comment','ic-cancel'=>'IC Cancel Contract','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM'))}}

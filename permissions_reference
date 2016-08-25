@@ -1,59 +1,71 @@
 #
-# Contracts
+# CCIA Stuff
 #
-D - contract_moderate -> Allows to moderate Syndicate Contracts
+D - ccia_general_notice_edit -> Edit DO Notices
+
+D - ccia_action_show -> Show the ccia actions
+D - ccia_action_edit -> Edit the ccia actions
+D - ccia_record_edit -> Edit the ccia char record
+
+ccia_recorderlogs_show -> Show the ccia recorder logs
+ccia_recorderlogs_edit -> Edit the ccia recorder logs
+
 
 #
-# Admin Menu
+# Server Stuff
 #
-D - admin_menu_view -> Show the admin menu
-D - admin_server_permissions_show -> Show a users permissions on the server
-D - admin_server_permissions_edit -> Edit a users permissions on the server
-admin_server_logs_show -> Show the server logs
-admin_server_stats_show -> Show the admin stats
-D - admin_server_contest_show -> View the contest stats
+D - server_chars_show -> Show the Character Records (admin_char_show)
+server_chars_edit -> Edit the Characters
+server_chars_edit_records -> Edit the Char Records
 
-admin_staff_roster_show -> Show the staff roster
-admin_staff_roster_edit -> Edit the staff roster
+D - server_forms_show -> Show the corporate Form Database (admin_forms_show)
+D - server_forms_edit -> Edit the corporate Form Database (admin_forms_edit)
 
-D - admin_char_show -> Show the Character Records
-admin_char_edit -> Edit the Characters
-admin_char_edit_records -> Edit the Char Records
+D - server_library_edit -> Edit the contents of the Server Library
+
+D - server_permissions_show -> Show a users permissions on the server (admin_server_permissions_show)
+D - server_permissions_edit -> Edit a users permissions on the server (admin_server_permissions_edit)
+
+D - server_players_show -> Show the player page (Alone Useless -> Needs some of the perms below) (admin_players_show)
+D - server_players_whitelists_show -> Show the whitelists (admin_whitelists_show)
+D - server_players_whitelists_edit ->  Edit the whitelists (admin_whitelists_edit)
+D - server_players_warnings_show -> Show a players warnings (admin_warnings_show)
+server_players_warnings_edit -> Edit a players warnings (admin_warnings_edit)
+D - server_players_notes_show -> Show a players notes (admin_notes_show)
+server_players_notes_edit -> Edit a players notes (admin_notes_edit)
+
+server_logs_show -> Show the server logs (admin_server_logs_show)
+server_stats_show -> Show the admin stats
 
 
-D - admin_site_roles_show -> Show the site roles
-D - admin_site_roles_edit -> Edit the site roles
-admin_site_permissions_show -> Show the site permissions
-admin_site_permissions_edit -> Edit the site permissions
-D - admin_site_logs_show -> Show the site logs
+#
+# Site
+#
+D - site_admin_menu_view -> Show the admin menu (admin_menu_view)
 
-D - admin_forms_show -> Show the corporate Form Database
-D - admin_forms_edit -> Edit the corporate Form Database
+D - site_roles_show -> Show the site roles (admin_site_roles_show)
+D - site_roles_edit -> Edit the site roles (admin_site_roles_edit)
+site_permissions_show -> Show the site permissions
+site_permissions_edit -> Edit the site permissions
 
+D - site_logs_show -> Show the site logs (admin_site_logs_show)
+
+site_staff_roster_show -> Show the staff roster (admin_staff_roster_show)
+site_staff_roster_edit -> Edit the staff roster (admin_staff_roster_edit)
+
+#
+# Syndie
+#
+D - syndie_contract_moderate -> Allows to moderate Syndicate Contracts (contract_moderate)
+D - syndie_contest_show -> View the contest stats (admin_server_contest_show)
+
+
+#
+# Discord
+#
 admin_discord_bans_show -> Show the bans on discord
 admin_discord_bans_edit -> Edit the bans on discord
 admin_discord_logs_show -> Show the discord logs
 admin_discord_strikes_show -> Show the discord strikes
 admin_discord_strikes_edit -> Edit the discord strikes
 admin_discrod_channels_show -> Show the discord channels
-
-#CCIA Stuff
-D - ccia_general_notice_edit -> Edit DO Notices
-ccia_recorder_logs_show -> Show the DO recorder logs
-D - ccia_action_show -> Show the ccia actions
-D - ccia_action_edit -> Edit the ccia actions
-D - ccia_record_edit -> Edit the ccia char record
-ccia_recorderlogs_show -> Show the ccia recorder logs
-ccia_recorderlogs_edit -> Edit the ccia recorder logs
-
-#Player Overvew
-D - admin_players_show -> Show the player page (Alone Useless -> Needs some of the perms below)
-D - admin_whitelists_show -> Show the whitelists
-D - admin_whitelists_edit ->  Edit the whitelists
-D - admin_warnings_show -> Show a players warnings
-admin_warnings_edit -> Edit a players warnings
-D - admin_notes_show -> Show a players notes
-admin_notes_edit -> Edit a players notes
-
-#Server Stuff
-D - server_library_edit -> Edit the contents of the Server Library

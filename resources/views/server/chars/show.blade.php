@@ -43,7 +43,7 @@
                         <td><b>Blood Type:</b></td>
                         <td>{{$char->b_type}}</td>
                     </tr>
-                    @can('admin_char_show')
+                    @can('server_chars_show')
                         <tr>
                             <td><b>Owner ckey:</b></td>
                             <td>{{$char->ckey}}</td>
@@ -202,7 +202,7 @@
     <div class="row">
         <div class="col-md-12">
             <p>
-                @can('admin_char_show')<a href="{{route('server.chars.edit.cr.get',['char_id'=>$char->id])}}" class="btn btn-info" role="button">Edit CCIA Record</a>@endcan()
+                @can('server_chars_show')<a href="{{route('server.chars.edit.cr.get',['char_id'=>$char->id])}}" class="btn btn-info" role="button">Edit CCIA Record</a>@endcan()
             </p>
         </div>
     </div>
