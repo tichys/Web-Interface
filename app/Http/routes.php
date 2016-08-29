@@ -40,6 +40,22 @@
 */
 Route::group(['middleware' => 'web'], function () {
 
+    Route::get('/test', function () {
+        $query = New App\Services\Server\ServerQuery;
+        $query->setUp("localhost","1234");
+
+        $query->runQuery([
+            "query"=>"restart",
+            "senderkey"=>"Arrow768",
+            "target"=>"Yasmin Hoopengarnerasdf"
+        ]);
+        dd( [
+            "status" => $query->reply_status,
+            "response" => $query->response["response"],
+            "data" => json_decode($query->response["data"])
+        ]);
+    });
+
     Route::group(['middleware' => 'guest'],function(){
         Route::get('/', function () {
             return view('welcome');
@@ -112,6 +128,12 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/add', ['as' => 'server.library.add.get', 'uses'=>'Server\LibraryController@getAdd']);
             Route::post('/add', ['as' => 'server.library.add.post', 'uses'=>'Server\LibraryController@postAdd']);
             Route::get('/data', ['as' => 'server.library.data', 'uses'=>'Server\LibraryController@getBookData']);
+        });
+
+        Route::group(['prefix' => 'live'], function () {
+            Route::get('', ['as' => 'server.live.index', 'uses'=>'Server\LiveController@index']);
+            Route::get('/coms', ['as' => 'server.live.coms', 'uses'=>'Server\LiveController@getComoptions']);
+            Route::get('/ghosts', ['as' => 'server.live.coms', 'uses'=>'Server\LiveController@getGhostoptions']);
         });
 
         Route::group(['prefix' => 'permissions'], function () {
@@ -218,8 +240,15 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/cancel', ['as' => 'user.link.cancel', 'uses'=>'User\LinkController@cancel']);
         });
         Route::get('/warnings', ['as' => 'user.warnings', 'uses'=>'User\WarningController@index']);
-
     });
+});
 
-
+Route::group(['prefix' => 'api', 'middleware' => 'api'], function(){
+    Route::group(['prefix' => 'server' , 'middleware' => 'auth'],function(){
+        Route::get('/live/faxmachines', ['as' => 'api.server.live.get.faxmachines', 'uses'=>'Server\LiveController@getFaxmachines']);
+        Route::get('/live/ghosts', ['as' => 'api.server.live.get.ghosts', 'uses'=>'Server\LiveController@getGhosts']);
+        Route::post('/live/sendfax', ['as' => 'api.server.live.post.sendfax', 'uses'=>'Server\LiveController@postSendfax']);
+        Route::post('/live/sendreport', ['as' => 'api.server.live.post.sendreport', 'uses'=>'Server\LiveController@postSendreport']);
+        Route::post('/live/grantrespawn', ['as' => 'api.server.live.post.grantrespawn', 'uses'=>'Server\LiveController@postGrantrespawn']);
+    });
 });

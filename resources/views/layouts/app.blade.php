@@ -150,6 +150,10 @@
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Server</a>
                                     <ul class="dropdown-menu">
+                                        {{--<li @cannot('server_forms_show')class="disabled"@endcannot>--}}
+                                        <li>
+                                            <a href="{{route('server.live.index')}}"><i class="fa fa-btn"></i>Online-Control</a>
+                                        </li>
                                         <li @cannot('server_forms_show')class="disabled"@endcannot>
                                             <a href="{{route('admin.forms.index')}}"><i class="fa fa-btn"></i>Forms</a>
                                         </li>
