@@ -39,23 +39,7 @@
 |
 */
 Route::group(['middleware' => 'web'], function () {
-
-    Route::get('/test', function () {
-        $query = New App\Services\Server\ServerQuery;
-        $query->setUp("localhost","1234");
-
-        $query->runQuery([
-            "query"=>"restart",
-            "senderkey"=>"Arrow768",
-            "target"=>"Yasmin Hoopengarnerasdf"
-        ]);
-        dd( [
-            "status" => $query->reply_status,
-            "response" => $query->response["response"],
-            "data" => json_decode($query->response["data"])
-        ]);
-    });
-
+    
     Route::group(['middleware' => 'guest'],function(){
         Route::get('/', function () {
             return view('welcome');

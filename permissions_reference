@@ -37,8 +37,8 @@ server_players_notes_edit -> Edit a players notes (admin_notes_edit)
 server_logs_show -> Show the server logs (admin_server_logs_show)
 server_stats_show -> Show the admin stats
 
-server_remote_send_announcement -> Send a Server Announcement via the Wi
-server_remote_send_fax -> Send a Server Fax via the WI
+D - server_remote_coms -> Access to the coms API page
+D - server_remote_ghosts -> Access to the ghosts API page
 
 #
 # Site

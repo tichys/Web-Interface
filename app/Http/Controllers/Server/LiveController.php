@@ -32,96 +32,152 @@ class LiveController extends Controller
         return view('server.live.index');
     }
 
-    public function getComoptions()
+    public function getComoptions(Request $request)
     {
+        if ($request->user()->cannot('server_remote_coms')) {
+            abort('403', 'You do not have the required permission');
+        }
+
         return view('server.live.coms');
     }
 
-    public function getGhostoptions()
+    public function getGhostoptions(Request $request)
     {
+        if ($request->user()->cannot('server_remote_ghosts')) {
+            abort('403', 'You do not have the required permission');
+        }
+
         return view('server.live.ghosts');
     }
 
-    public function getFaxmachines()
+    public function getFaxmachines(Request $request)
     {
-        $query = New ServerQuery();
-        $query->setUp("localhost","1234");
-        $query->runQuery([
-            "query"=>"getfaxmachines"
-        ]);
+        if ($request->user()->cannot('server_remote_coms')) {
+            abort('403', 'You do not have the required permission');
+        }
 
-        if($query->reply_status == "200")
-            return $query->response["data"];
-        else
-            abort($query->reply_status);
+        $query = New ServerQuery();
+        try {
+            $query->setUp(config('aurora.gameserver_address'),config('aurora.gameserver_port'),config('aurora.gameserver_auth'));
+            $query->runQuery([
+                "query" => "get_faxmachines"
+            ]);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            abort(500, $e->getMessage());
+        }
+        if ($query->response->statuscode == "200") {
+            return $query->response->data;
+        } else {
+            abort($query->response->statuscode);
+        }
     }
 
-    public function getGhosts()
+    public function getGhosts(Request $request)
     {
-        $query = New ServerQuery();
-        $query->setUp("localhost","1234");
-        $query->runQuery([
-            "query"=>"getghosts"
-        ]);
+        if ($request->user()->cannot('server_remote_ghosts')) {
+            abort('403', 'You do not have the required permission');
+        }
 
-        if($query->reply_status == "200")
-            return $query->response["data"];
-        else
-            abort($query->reply_status);
+        $query = New ServerQuery();
+
+        try {
+            $query->setUp(config('aurora.gameserver_address'), config('aurora.gameserver_port'), config('aurora.gameserver_auth'));
+            $query->runQuery([
+                "query" => "get_ghosts"
+            ]);
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
+        if ($query->response->statuscode == "200") {
+            return $query->response->data;
+        } else {
+            abort($query->response->statuscode);
+        }
     }
 
     public function postSendfax(Request $request)
     {
-        $query = New ServerQuery;
-        $query->setUp("localhost","1234");
+        if ($request->user()->cannot('server_remote_coms')) {
+            abort('403', 'You do not have the required permission');
+        }
 
-        $query->runQuery([
-            "query" => "sendfax",
-            "senderkey" => $request->user()->username,
-            "title" => $request->input('faxtitle'),
-            "body" => nl2br($request->input('faxbody')),
-            "announce" => $request->input('faxannounce'),
-            "target" => $request->input('faxtargets')
-        ]);
-        if($query->reply_status == "200")
-            return $query->response["data"];
-        else
-            abort($query->reply_status);
+        $query = New ServerQuery;
+
+        try {
+            $query->setUp(config('aurora.gameserver_address'), config('aurora.gameserver_port'), config('aurora.gameserver_auth'));
+
+            $query->runQuery([
+                "query" => "send_fax",
+                "senderkey" => $request->user()->username,
+                "title" => $request->input('faxtitle'),
+                "body" => nl2br($request->input('faxbody')),
+                "announce" => $request->input('faxannounce'),
+                "target" => $request->input('faxtargets')
+            ]);
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
+        if ($query->response->statuscode == "200") {
+            return $query->response->data;
+        } else {
+            abort($query->response->statuscode);
+        }
     }
 
     public function postSendreport(Request $request)
     {
-        $query = New ServerQuery;
-        $query->setUp("localhost","1234");
+        if ($request->user()->cannot('server_remote_coms')) {
+            abort('403', 'You do not have the required permission');
+        }
 
-        $query->runQuery([
-            "query" => "sendcommandreport",
-            "senderkey" => $request->user()->username,
-            "title" => $request->input('reporttitle'),
-            "body" => $request->input('reportbody'),
-            "announce" => $request->input('reportannounce'),
-            "type" => $request->input('reporttype'),
-            "sendername" => $request->input('reportsender'),
-        ]);
-        if($query->reply_status == "200")
-            return $query->response["data"];
-        else
-            abort($query->reply_status);
+        $query = New ServerQuery;
+
+        try {
+            $query->setUp(config('aurora.gameserver_address'), config('aurora.gameserver_port'), config('aurora.gameserver_auth'));
+
+            $query->runQuery([
+                "query" => "send_commandreport",
+                "senderkey" => $request->user()->username,
+                "title" => $request->input('reporttitle'),
+                "body" => $request->input('reportbody'),
+                "announce" => $request->input('reportannounce'),
+                "type" => $request->input('reporttype'),
+                "sendername" => $request->input('reportsender'),
+            ]);
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
+        if ($query->response->statuscode == "200") {
+            return $query->response->data;
+        } else {
+            abort($query->response->statuscode);
+        }
     }
 
     public function postGrantrespawn(Request $request)
     {
-        $query = New ServerQuery;
-        $query->setUp("localhost","1234");
+        if ($request->user()->cannot('server_remote_ghosts')) {
+            abort('403', 'You do not have the required permission');
+        }
 
-        $query->runQuery([
-            "query" => "grantrespawn",
-            "senderkey" => $request->user()->username,
-            "target" => $request->input('target')
-        ]);
-        if($query->reply_status == "200")
-            return $query->response["data"];
-        else
-            abort($query->reply_status);
+        $query = New ServerQuery;
+
+        try {
+            $query->setUp(config('aurora.gameserver_address'), config('aurora.gameserver_port'), config('aurora.gameserver_auth'));
+
+            $query->runQuery([
+                "query" => "grant_respawn",
+                "senderkey" => $request->user()->username,
+                "target" => $request->input('target')
+            ]);
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
+        if ($query->response->statuscode == "200") {
+            return $query->response->data;
+        } else {
+            abort($query->response->statuscode);
+        }
     }
 }
