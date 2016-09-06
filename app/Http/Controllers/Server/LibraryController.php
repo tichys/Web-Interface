@@ -15,7 +15,7 @@ class LibraryController extends Controller
 {
     public function __construct(Request $request)
     {
-        //Check if user has his byond account linked or of the user is an admin
+        //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
         if($request->user()->user_byond_linked == 0 && $request->user()->cannot('server_library_edit'))
         {
             abort('403','Your byond account is not linked to your forum account.');
@@ -27,25 +27,31 @@ class LibraryController extends Controller
         return view('server.library.index');
     }
 
-    public function getShow($book_id)
+    public function getShow($book_id,Request $request)
     {
         $book = ServerLibrary::findOrFail($book_id);
-        return view('server.library.show', ['book' => $book]);
+
+        $canedit = $this->can_edit($book,$request->user());
+
+        return view('server.library.show', ['book' => $book, 'canedit' => $canedit]);
     }
 
     public function getEdit($book_id, Request $request)
     {
-        if($request->user()->cannot('server_library_edit'))
+        $book = ServerLibrary::findOrFail($book_id);
+
+        if($request->user()->cannot('server_library_edit') && $request->user()->user_byond != $book->uploader)
         {
             abort('403','You do not have the required permission');
         }
-        $book = ServerLibrary::findOrFail($book_id);
+
         return view('server.library.edit', ['book' => $book]);
     }
 
     public function postEdit($book_id, Request $request)
     {
-        if($request->user()->cannot('server_library_edit'))
+        $book = ServerLibrary::findOrFail($book_id);
+        if($request->user()->cannot('server_library_edit') && $request->user()->user_byond != $book->uploader)
         {
             abort('403','You do not have the required permission');
         }
@@ -56,7 +62,6 @@ class LibraryController extends Controller
             'category' => 'required|in:Reference,Non-Fiction,Fiction,Religion,Adult'
         ]);
 
-        $book = ServerLibrary::findOrFail($book_id);
         $book->author = $request->input('author');
         $book->title = $request->input('title');
         $book->content = $request->input('content');
@@ -84,20 +89,20 @@ class LibraryController extends Controller
 
     public function getAdd(Request $request)
     {
-        if($request->user()->cannot('server_library_edit'))
-        {
-            abort('403','You do not have the required permission');
-        }
+//        if($request->user()->cannot('server_library_edit'))
+//        {
+//            abort('403','You do not have the required permission');
+//        }
 
         return view('server.library.add');
     }
 
     public function postAdd(Request $request)
     {
-        if($request->user()->cannot('server_library_edit'))
-        {
-            abort('403','You do not have the required permission');
-        }
+//        if($request->user()->cannot('server_library_edit'))
+//        {
+//            abort('403','You do not have the required permission');
+//        }
 
         $this->validate($request,[
             'author' => 'required|max:50',
@@ -128,5 +133,16 @@ class LibraryController extends Controller
             ->editColumn('title', '<a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}">{{$title}}</a>')
             ->addColumn('action','<p><a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}" class="btn btn-success" role="button">Show</a>  @can(\'server_library_edit\')<a href="{{route(\'server.library.edit.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'server.library.delete\',[\'book\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
             ->make();
+    }
+
+    private function can_edit($book,$user)
+    {
+        //Check if user has library edit persm
+        if ($user->can('server_library_edit'))
+            return true;
+        if($user->user_byond == $book->uploader)
+            return true;
+
+        return false;
     }
 }
