@@ -40,7 +40,7 @@
                         'Adult'=>'Adult'))}}
                     {{Form::bsTextArea('content')}}
 
-                    @can('server_library_edit'){{Form::submit('Submit', array('class'=>'btn btn-default'))}}@endcan()
+                    {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
 
                     {{ Form::close() }}
                 </div>

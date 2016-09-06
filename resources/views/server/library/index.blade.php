@@ -29,7 +29,8 @@
                     <div class="panel-heading">Library Overview</div>
 
                     <div class="panel-body">
-                        @can('server_library_edit')<p><a href="{{route('server.library.add.post')}}" class="btn btn-success" role="button">Add new Book</a></p>@endcan()
+                        {{--@can('server_library_edit')<p><a href="{{route('server.library.add.post')}}" class="btn btn-success" role="button">Add new Book</a></p>@endcan()--}}
+                        <p><a href="{{route('server.library.add.post')}}" class="btn btn-success" role="button">Add new Book</a></p>
                         <table id="forms-table" class="table table-condensed">
                             <thead>
                             <tr>
