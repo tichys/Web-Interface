@@ -12,7 +12,8 @@
         "yajra/laravel-datatables-oracle": "~6.0",
         "erusev/parsedown": "^1.6",
         "rap2hpoutre/laravel-log-viewer": "^0.6.1",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "ezyang/htmlpurifier": "^4.8"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
