@@ -34,8 +34,8 @@
                         <table id="forms-table" class="table table-condensed">
                             <thead>
                             <tr>
-                                <th>Author</th>
                                 <th>Title</th>
+                                <th>Author</th>
                                 <th>Category</th>
                                 <th>Action</th>
                             </tr>
