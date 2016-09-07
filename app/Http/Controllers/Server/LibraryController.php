@@ -70,7 +70,6 @@ class LibraryController extends Controller
         $book->title = $purifier->purify($request->input('title'));
         $book->content = $purifier->purify($request->input('content'));
         $book->category = $request->input('category');
-        dd($book->content);
         $book->save();
 
         Log::notice('perm.library.edit - Book has been edited',['user_id' => $request->user()->user_id, 'book_id' => $book->id]);
