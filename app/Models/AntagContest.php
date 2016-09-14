@@ -30,6 +30,7 @@ class AntagContest
         return DB::connection('server')->table('contest_participants')
             ->select(DB::raw('contest_faction, count(1) as char_count'))
             ->groupBy('contest_faction')
+            ->where('duplicate',0)
             ->get();
     }
 
@@ -40,6 +41,7 @@ class AntagContest
             ->select(DB::raw('character_faction, count(1) as faction_missions'))
             ->groupBy('character_faction')
             ->where('objective_outcome',1)
+            ->where('duplicate',0)
             ->get();
     }
 
@@ -50,6 +52,7 @@ class AntagContest
             ->select(DB::raw('character_faction, count(1) as faction_missions'))
             ->groupBy('character_faction')
             ->where('objective_outcome',0)
+            ->where('duplicate',0)
             ->get();
     }
 
@@ -61,6 +64,7 @@ class AntagContest
             ->select(DB::raw('objective_type, count(1) as type_missions'))
             ->groupBy('objective_type')
             ->where('objective_outcome',1)
+            ->where('duplicate',0)
             ->get();
     }
 
@@ -71,6 +75,7 @@ class AntagContest
             ->select(DB::raw('objective_type, count(1) as type_missions'))
             ->groupBy('objective_type')
             ->where('objective_outcome',0)
+            ->where('duplicate',0)
             ->get();
     }
 
@@ -82,6 +87,7 @@ class AntagContest
             ->select(DB::raw('objective_side, count(1) as side_missions'))
             ->groupBy('objective_side')
             ->where('objective_outcome',1)
+            ->where('duplicate',0)
             ->get();
     }
 
@@ -92,6 +98,7 @@ class AntagContest
             ->select(DB::raw('objective_side, count(1) as side_missions'))
             ->groupBy('objective_side')
             ->where('objective_outcome',0)
+            ->where('duplicate',0)
             ->get();
     }
 }
