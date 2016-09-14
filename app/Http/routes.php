@@ -140,7 +140,8 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/data', ['as' => 'server.players.data', 'uses'=>'Server\PlayerController@getPlayerData']);
         });
 
-        Route::get('', ['as' => 'server.stats.index', 'uses'=>'Server\StatsController@index']);
+        Route::get('/stats', ['as' => 'server.stats.index', 'uses'=>'Server\StatsController@index']);
+        Route::get('/whitelist/log', ['as' => 'server.whitelist.log', 'uses'=>'Server\WhitelistLogController@getLog']);
     });
 
     //Website Stuff

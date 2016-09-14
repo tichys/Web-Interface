@@ -172,6 +172,9 @@
                                         <li @cannot('syndie_contest_show')class="disabled"@endcannot>
                                             <a href="{{route('syndie.contest.view')}}"><i class="fa fa-btn"></i>Contest Stats</a>
                                         </li>
+                                        <li @cannot('server_whitelist_log_show')class="disabled"@endcannot>
+                                            <a href="{{route('server.whitelist.log')}}"><i class="fa fa-btn"></i>Whitelist Log</a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
