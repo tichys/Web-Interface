@@ -30,7 +30,6 @@ class AntagContest
         return DB::connection('server')->table('contest_participants')
             ->select(DB::raw('contest_faction, count(1) as char_count'))
             ->groupBy('contest_faction')
-            ->where('duplicate',0)
             ->get();
     }
 
