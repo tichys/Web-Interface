@@ -24,7 +24,14 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Server Options</div>
                     <div class="panel-body">
+                        <p>Please select one of the options below to use Live Control</p>
+                        @can('server_remote_coms')
+                            <p><a href="{{route("server.live.coms")}}">Communication Options</a></p>
+                        @endcan
 
+                        @can('server_remote_ghosts')
+                            <p><a href="{{route("server.live.ghosts")}}">Ghost Options</a></p>
+                        @endcan
                     </div>
                 </div>
             </div>

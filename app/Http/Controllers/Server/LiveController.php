@@ -118,8 +118,8 @@ class LiveController extends Controller
         } catch (\Exception $e) {
             abort(500, $e->getMessage());
         }
-        if ($query->response->statuscode == "200") {
-            return $query->response->data;
+        if ($query->response->statuscode == 200) {
+            return json_encode($query->response->data);
         } else {
             abort($query->response->statuscode);
         }
