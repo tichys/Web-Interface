@@ -25,12 +25,12 @@ use Auth;
 
 class ServerPlayer extends Model
 {
+    public $timestamps = FALSE;
     protected $connection = 'server';
     protected $table = 'player';
     protected $fillable = ['ckey', 'ip', 'whitelist_status'];
     protected $primaryKey = 'id';
     protected $dates = ['firstseen', 'lastseen'];
-    public $timestamps = FALSE;
 
     public function serverrank()
     {
@@ -67,7 +67,7 @@ class ServerPlayer extends Model
                     'datetime' => date("Y-m-d H:i:s", time()),
                     'user' => $adminname,
                     'action_method' => 'Website2',
-                    'action' => 'Added whitelistflag: '.$flag_input.' to player: '.$this->ckey,
+                    'action' => 'Added whitelistflag: ' . $flag_input . ' to player: ' . $this->ckey,
                 ]
             );
 
@@ -86,7 +86,7 @@ class ServerPlayer extends Model
                     'datetime' => date("Y-m-d H:i:s", time()),
                     'user' => $adminname,
                     'action_method' => 'Website2',
-                    'action' => 'Added whitelist flags: '.impode(";",$flag_input).' to player: '.$this->ckey,
+                    'action' => 'Added whitelist flags: ' . impode(";", $flag_input) . ' to player: ' . $this->ckey,
                 ]
             );
 
@@ -108,7 +108,7 @@ class ServerPlayer extends Model
                     'datetime' => date("Y-m-d H:i:s", time()),
                     'user' => $adminname,
                     'action_method' => 'Website2',
-                    'action' => 'Added whitelist: '.$flag_input.' to player: '.$this->ckey,
+                    'action' => 'Added whitelist: ' . $flag_input . ' to player: ' . $this->ckey,
                 ]
             );
 
@@ -117,6 +117,17 @@ class ServerPlayer extends Model
         } else {
             return NULL;
         }
+    }
+
+    /**
+     * Returns a array with all available whitelists (name and status flag)
+     *
+     * @return array
+     */
+    public function get_available_whitelists()
+    {
+        //Get Whitelist Status
+        return DB::connection('server')->table('whitelist_statuses')->pluck('status_name', 'flag');
     }
 
     /**
@@ -148,7 +159,7 @@ class ServerPlayer extends Model
                     'datetime' => date("Y-m-d H:i:s", time()),
                     'user' => $adminname,
                     'action_method' => 'Website2',
-                    'action' => 'Removed whitelistflag: '.$flag_input.' from player: '.$this->ckey,
+                    'action' => 'Removed whitelistflag: ' . $flag_input . ' from player: ' . $this->ckey,
                 ]
             );
 
@@ -167,7 +178,7 @@ class ServerPlayer extends Model
                     'datetime' => date("Y-m-d H:i:s", time()),
                     'user' => $adminname,
                     'action_method' => 'Website2',
-                    'action' => 'Removed whitelist flags: '.impode(";",$flag_input).' from player: '.$this->ckey,
+                    'action' => 'Removed whitelist flags: ' . impode(";", $flag_input) . ' from player: ' . $this->ckey,
                 ]
             );
 
@@ -189,7 +200,7 @@ class ServerPlayer extends Model
                     'datetime' => date("Y-m-d H:i:s", time()),
                     'user' => $adminname,
                     'action_method' => 'Website2',
-                    'action' => 'Remove whitelist: '.$flag_input.' from player: '.$this->ckey,
+                    'action' => 'Remove whitelist: ' . $flag_input . ' from player: ' . $this->ckey,
                 ]
             );
 
@@ -198,17 +209,6 @@ class ServerPlayer extends Model
         } else {
             return NULL;
         }
-    }
-
-    /**
-     * Returns a array with all available whitelists (name and status flag)
-     *
-     * @return array
-     */
-    public function get_available_whitelists()
-    {
-        //Get Whitelist Status
-        return DB::connection('server')->table('whitelist_statuses')->pluck('status_name', 'flag');
     }
 
     /**
@@ -237,5 +237,22 @@ class ServerPlayer extends Model
         }
 
         return $whitelists;
+    }
+
+    /**
+     * Checks if the player holds a specific whitelist
+     */
+    public function check_whitelist($required_whitelist)
+    {
+        if ($this->ckey == NULL) return NULL;
+        $whitelist = DB::connection('server')->table('whitelist_statuses')->where('status_name', $required_whitelist)->first();
+
+        if (($this->whitelist_status & $whitelist->flag) != 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+
+
     }
 }

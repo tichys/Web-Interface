@@ -21,6 +21,7 @@
 
 namespace App\Services\Auth;
 
+use App\Models\ServerPlayer;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticateableContract;
 use Illuminate\Database\Eloquent\Model;
@@ -124,7 +125,6 @@ class ForumUserModel extends Model implements AuthenticateableContract
         return $this->belongsToMany(SiteRole::class,'role_user','user_id','role_id');
     }
 
-
     /**
      * Checks if the user has a role. String or object accepted
      *
@@ -142,12 +142,33 @@ class ForumUserModel extends Model implements AuthenticateableContract
         return !! $role->intersect($this->roles)->count();
     }
 
+    /**
+     * Returns the Numeric Player ID from the Server
+     *
+     * @return integer
+     */
     public function getServerPlayerID()
     {
         if($this->user_byond_linked == 1)
         {
             $player = \App\Models\ServerPlayer::where('ckey',$this->user_byond)->first();
             return $player->id;
+        }
+        else{
+            return NULL;
+        }
+    }
+
+    /**
+     * Returns the ServerPlayer if the byond account is linked
+     *
+     * @return ServerPlayer
+     */
+    public function serverplayer()
+    {
+        if($this->user_byond_linked == 1)
+        {
+            return \App\Models\ServerPlayer::where('ckey',$this->user_byond)->first();
         }
         else{
             return NULL;

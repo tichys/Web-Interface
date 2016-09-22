@@ -29,7 +29,7 @@ return [
     | This might need to be disabled for the initial migration of the database
     |
     */
-    "registerPhpbbAuthProvider" => env('AURORA_REGISTER_PHPBB_AUTH_PROVIDER', true),
+    "registerPhpbbAuthProvider" => env('AURORA_REGISTER_PHPBB_AUTH_PROVIDER', TRUE),
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return [
     | column in the phpbb_users table on the forum database.
     |
     */
-    "enable_remember_me" => env('AURORA_ENABLE_REMEBER_ME', false),
+    "enable_remember_me" => env('AURORA_ENABLE_REMEBER_ME', FALSE),
 
 
     /*
@@ -52,7 +52,7 @@ return [
     | Because phpbb 3.0 uses a hashing function that does not support php 7
     |
     */
-    "hash_password" => env('AURORA_HASH_PASSWORD', false),
+    "hash_password" => env('AURORA_HASH_PASSWORD', FALSE),
 
 
     /*
@@ -82,10 +82,10 @@ return [
     | Contract Moderator ID
     |--------------------------------------------------------------------------
     |
-    | The id of the contract mod group
+    | The id of the contract mod role
     |
     */
-    "syndie_contract_mods_id" => env('SYNDIE_CONTRACT_MODS_ID', 5),
+    "role_syndie_contract_mods_id" => env('SYNDIE_CONTRACT_MODS_ID', 5),
 
 
     /*

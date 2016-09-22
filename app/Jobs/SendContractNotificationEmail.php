@@ -67,7 +67,7 @@ class SendContractNotificationEmail extends Job implements ShouldQueue
         //Also notifiy the contract Moderators for new contracts
         if($this->type == 'new')
         {
-            $contract_mods_role = SiteRole::findOrFail(config('aurora.syndie_contract_mods_id'));
+            $contract_mods_role = SiteRole::findOrFail(config('aurora.role_syndie_contract_mods_id'));
             $contract_mods_users = $contract_mods_role->get_users();
             foreach($contract_mods_users as $mod)
             {

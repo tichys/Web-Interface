@@ -79,7 +79,19 @@
                                     <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>
                                     <li><a href="{{route('user.warnings')}}"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>
                                     <li><a href="{{route('server.library.index')}}"><i class="fa fa-btn"></i>Library</a></li>
-                                    <li><a href="{{route('ccia.generalnotice.index')}}"><i class="fa fa-btn"></i>CCIA General Notices</a></li>
+                                    @can('_heads-of-staff')
+                                        <li class="dropdown-submenu">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Head of Staff</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a href="{{route('ccia.actions.index')}}"><i class="fa fa-btn"></i>DO Actions</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{route('ccia.generalnotice.index')}}"><i class="fa fa-btn"></i>CCIA General Notice </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    @endcan()
                                 @else
                                     <li><a href="{{route('user.link')}}"><i class="fa fa-btn"></i>Link Byond</a></li>
                                 @endcan
