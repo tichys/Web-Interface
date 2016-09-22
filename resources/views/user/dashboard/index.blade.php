@@ -24,7 +24,7 @@
                 useraccount on the server
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">Warning Status</div>
 
@@ -39,18 +39,40 @@
                             <td><span class="label label-warning">{{$warnings->get_major_count()}}</span></td>
                         </tr>
                         <tr>
-                            <td>Unacknowledged Warnings</td>
+                            <td>Unackd Warnings</td>
                             <td><span class="label label-danger">{{$warnings->get_unack_count()}}</span></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">Whitelist Status</div>
-
                     @include('components.whiteliststatustable')
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Pending CCIA Actions per Character</div>
+
+                    <table class="table table-bordered">
+                        <tbody>
+                        @foreach($chars as $char)
+                            @if($char->cciaactions()->count() > 0)
+                            <tr>
+                                <td colspan="2"><b>{{$char->name}}</b></td>
+                            </tr>
+                            @foreach($char->cciaactions()->get() as $cciaaction)
+                                <tr>
+                                    <td>{{$cciaaction->id}}</td>
+                                    <td>{{$cciaaction->title}}</td>
+                                </tr>
+                            @endforeach
+                            @endif()
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

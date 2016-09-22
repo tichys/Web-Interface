@@ -34,7 +34,7 @@ class ServerPlayer extends Model
 
     public function serverrank()
     {
-        return $this->hasOne('App\Models\ServerAdmin','ckey','ckey');
+        return $this->hasOne('App\Models\ServerAdmin', 'ckey', 'ckey');
     }
 
     /**
@@ -241,18 +241,56 @@ class ServerPlayer extends Model
 
     /**
      * Checks if the player holds a specific whitelist
+     *
+     * @param string|int $required_whitelist String of the required whitelist or integer of the required flag
+     *
+     * @return bool True if the player holds the specified whitelist
      */
     public function check_whitelist($required_whitelist)
     {
         if ($this->ckey == NULL) return NULL;
-        $whitelist = DB::connection('server')->table('whitelist_statuses')->where('status_name', $required_whitelist)->first();
 
-        if (($this->whitelist_status & $whitelist->flag) != 0) {
-            return TRUE;
+        if (is_string($required_whitelist)) {
+            $whitelist = DB::connection('server')->table('whitelist_statuses')->where('status_name', $required_whitelist)->first();
+            if (($this->whitelist_status & $whitelist->flag) != 0) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        } elseif (is_int($required_whitelist)) {
+            if (($this->whitelist_status & $required_whitelist) != 0) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
         } else {
             return FALSE;
         }
+    }
 
+    /**
+     * Get the chars of a player
+     */
+    public function get_chars()
+    {
+        return \App\Models\ServerCharacter::where('ckey',$this->ckey)->get();
+    }
 
+    /**
+     * Get the char ids of a player
+     */
+    public function get_char_ids()
+    {
+        return \App\Models\ServerCharacter::where('ckey',$this->ckey)->pluck('id');
+    }
+
+    /**
+     * Check if the player "owns" a specific char
+     * @param int char_id The id of the char that should be checked
+     *
+     * @returns bool
+     */
+    public function check_player_char($char_id){
+        return \App\Models\ServerCharacter::where('ckey',$this->ckey)->where('id',$char_id)->count() > 0;
     }
 }
