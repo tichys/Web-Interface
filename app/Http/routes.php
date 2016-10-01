@@ -117,7 +117,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::group(['prefix' => 'live'], function () {
             Route::get('', ['as' => 'server.live.index', 'uses'=>'Server\LiveController@index']);
             Route::get('/coms', ['as' => 'server.live.coms', 'uses'=>'Server\LiveController@getComoptions']);
-            Route::get('/ghosts', ['as' => 'server.live.coms', 'uses'=>'Server\LiveController@getGhostoptions']);
+            Route::get('/ghosts', ['as' => 'server.live.ghosts', 'uses'=>'Server\LiveController@getGhostoptions']);
         });
 
         Route::group(['prefix' => 'permissions'], function () {

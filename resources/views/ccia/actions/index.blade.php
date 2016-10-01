@@ -27,7 +27,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#active">Active Actions</a></li>
-                    @can('ccia_actions_show')<li><a data-toggle="tab" href="#all">All Actions</a></li>@endcan()
+                    @can('ccia_action_show')<li><a data-toggle="tab" href="#all">All Actions</a></li>@endcan()
                 </ul>
 
                 <div class="tab-content">

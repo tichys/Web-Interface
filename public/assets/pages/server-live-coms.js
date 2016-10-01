@@ -28,6 +28,18 @@ new Vue({
         faxtargets: "",
         faxmachines: ["Loading Faxmachines..."],
         faxresponse: null,
+        faxccia: false,
+        faxcciareceivername: "",
+        faxcciareceiverrank: "",
+        faxcciareceiverstation: "NSS Exodus",
+        faxcciasendername: "",
+        faxcciasenderrank: "",
+        faxcciasenderstation: "NMS Odin",
+        faxcciasignature: "",
+        faxcciasignaturei: false,
+        faxcciasignatureb: false,
+        faxcciasignatureu: false,
+        faxcciaroundtime: "",
 
         report: "Ready",
         reporttitle: "",
@@ -36,6 +48,51 @@ new Vue({
         reportsender: "",
         reportannounce: true
 
+    },
+
+    computed: {
+        faxcciasender: function(){
+            return this.faxcciasendername + ", " + this.faxcciasenderrank + ", " + this.faxcciasenderstation;
+        },
+
+        faxcciareceiver: function(){
+            return this.faxcciareceivername + ", " + this.faxcciareceiverrank + ", " + this.faxcciareceiverstation;
+        },
+
+        faxdtgstring: function(){
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            var yyyy = today.getFullYear()+442;
+
+            return dd + "-" + this.faxcciaroundtime + "-TAU CETI STANDARD-" + mm + "-" + yyyy
+        },
+
+        cciafaxready: function(){
+            return  this.faxtitle != "" &&
+                this.faxbody != "" &&
+                this.faxtargets != "" &&
+                this.faxcciareceivername != "" &&
+                this.faxcciareceiverrank != "" &&
+                this.faxcciareceiverstation != "" &&
+                this.faxcciasendername != "" &&
+                this.faxcciasenderrank != "" &&
+                this.faxcciasenderstation != "" &&
+                this.faxcciasignature != "" &&
+                this.faxcciaroundtime != ""
+        },
+
+        faxcciabody: function(){
+            return  'TO: <b>'+this.faxcciareceiver +'</b>\r\n' +
+                    'FROM: <b>'+this.faxcciasender +'</b>\r\n' +
+                    'SUBJECT: <b>'+this.faxtitle+'</b>\r\n' +
+                    '<hr />' +
+                    'BODY: \r\n' +
+                    this.faxbody +
+                    '<hr />' +
+                    'DTG: <b>'+this.faxdtgstring+'</b>\r\n' +
+                    'SIGN: <i>'+this.faxcciasignature+'</i>'
+        }
     },
 
     ready: function(){
@@ -61,22 +118,44 @@ new Vue({
         sendfax: function()
         {
             this.$set('faxstatus','Sending the fax ...');
-            this.$http.post('/api/server/live/sendfax', {
-                'faxtitle':this.faxtitle,
-                'faxbody':this.faxbody,
-                'faxtargets': this.faxtargets,
-                'faxannounce': this.faxannounce
-            }).then(
-            function(response){
-                this.$set('faxstatus','Fax has been sent');
-                this.$set('faxresponse',response.json())
-                console.log("Fax Sent");
-                console.log(response.json());
-            },
-            function(response){
-                this.$set('faxstatus','Failed to send the fax');
-                console.log("Failed to send the fax");
-            });
+            if(this.faxccia)
+            {
+                this.$http.post('/api/server/live/sendfax', {
+                    'faxtitle':this.faxtitle,
+                    'faxbody':this.faxcciabody,
+                    'faxtargets': this.faxtargets,
+                    'faxannounce': this.faxannounce
+                }).then(
+                    function(response){
+                        this.$set('faxstatus','Fax has been sent');
+                        this.$set('faxresponse',response.json())
+                        console.log("Fax Sent");
+                        console.log(response.json());
+                    },
+                    function(response){
+                        this.$set('faxstatus','Failed to send the fax');
+                        console.log("Failed to send the fax");
+                    });
+            }
+            else
+            {
+                this.$http.post('/api/server/live/sendfax', {
+                    'faxtitle':this.faxtitle,
+                    'faxbody':this.faxbody,
+                    'faxtargets': this.faxtargets,
+                    'faxannounce': this.faxannounce
+                }).then(
+                    function(response){
+                        this.$set('faxstatus','Fax has been sent');
+                        this.$set('faxresponse',response.json())
+                        console.log("Fax Sent");
+                        console.log(response.json());
+                    },
+                    function(response){
+                        this.$set('faxstatus','Failed to send the fax');
+                        console.log("Failed to send the fax");
+                    });
+            }
         },
         sendreport: function()
         {
