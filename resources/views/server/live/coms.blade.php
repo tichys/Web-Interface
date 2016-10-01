@@ -227,9 +227,9 @@
         </div>
     </div>
     <pre>
-@{{ $data | json }}
-@{{ faxcciabody | json }}
-    </pre>
+{{--@{{ $data | json }}--}}
+{{--@{{ faxcciabody | json }}--}}
+    {{--</pre>--}}
 </div>
 @endsection
 
