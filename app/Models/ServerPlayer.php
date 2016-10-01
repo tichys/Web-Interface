@@ -248,10 +248,12 @@ class ServerPlayer extends Model
      */
     public function check_whitelist($required_whitelist)
     {
+        if (!$this->whitelist_status) return NULL;
         if ($this->ckey == NULL) return NULL;
 
         if (is_string($required_whitelist)) {
             $whitelist = DB::connection('server')->table('whitelist_statuses')->where('status_name', $required_whitelist)->first();
+            if(!isset($whitelist->flag)) return FALSE;
             if (($this->whitelist_status & $whitelist->flag) != 0) {
                 return TRUE;
             } else {

@@ -172,9 +172,9 @@
                                         <li>
                                             <a href="{{route('server.library.index')}}"><i class="fa fa-btn"></i>Library</a>
                                         </li>
-                                        <li @cannot('server_permissions_show')class="disabled"@endcannot>
-                                            <a href="{{route('server.permissions.index')}}"><i class="fa fa-btn"></i>Server Permissions</a>
-                                        </li>
+                                        {{--<li @cannot('server_permissions_show')class="disabled"@endcannot>--}}
+                                            {{--<a href="{{route('server.permissions.index')}}"><i class="fa fa-btn"></i>Server Permissions</a>--}}
+                                        {{--</li>--}}
                                         <li @cannot('server_stats_show')class="disabled"@endcannot>
                                             <a href="{{route('server.stats.index')}}"><i class="fa fa-btn"></i>Statistics <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                         </li>

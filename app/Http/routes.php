@@ -120,15 +120,15 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/ghosts', ['as' => 'server.live.ghosts', 'uses'=>'Server\LiveController@getGhostoptions']);
         });
 
-        Route::group(['prefix' => 'permissions'], function () {
-            Route::any('', ['as' => 'server.permissions.index', 'uses'=>'Server\PermissionController@index']);
-            Route::get('/{permission_id}/', ['as' => 'server.permissions.show', 'uses'=>'Server\PermissionController@show']);
-            Route::get('/add', ['as' => 'server.permissions.add.get', 'uses'=>'Server\PermissionController@getAdd']);
-            Route::post('/add', ['as' => 'server.permissions.add.get', 'uses'=>'Server\PermissionController@postAdd']);
-            Route::get('/{permission_id}/remove', ['as' => 'server.permissions.remove', 'uses'=>'Server\PermissionController@remove']);
-            Route::get('/{permission_id}/add_flag/{flag}', ['as' => 'servers.permissions.flag.add', 'uses'=>'Server\PermissionController@addFlag']);
-            Route::get('/{permission_id}/remove_flag/{flag}', ['as' => 'servers.permissions.flag.remove', 'uses'=>'Server\PermissionController@removeFlag']);
-        });
+//        Route::group(['prefix' => 'permissions'], function () {
+//            Route::any('', ['as' => 'server.permissions.index', 'uses'=>'Server\PermissionController@index']);
+//            Route::get('/{permission_id}/', ['as' => 'server.permissions.show', 'uses'=>'Server\PermissionController@show']);
+//            Route::get('/add', ['as' => 'server.permissions.add.get', 'uses'=>'Server\PermissionController@getAdd']);
+//            Route::post('/add', ['as' => 'server.permissions.add.get', 'uses'=>'Server\PermissionController@postAdd']);
+//            Route::get('/{permission_id}/remove', ['as' => 'server.permissions.remove', 'uses'=>'Server\PermissionController@remove']);
+//            Route::get('/{permission_id}/add_flag/{flag}', ['as' => 'servers.permissions.flag.add', 'uses'=>'Server\PermissionController@addFlag']);
+//            Route::get('/{permission_id}/remove_flag/{flag}', ['as' => 'servers.permissions.flag.remove', 'uses'=>'Server\PermissionController@removeFlag']);
+//        });
 
         Route::group(['prefix' => 'player'], function () {
             Route::get('', ['as' => 'server.players.index', 'uses'=>'Server\PlayerController@index']);
