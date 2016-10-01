@@ -79,7 +79,19 @@
                                     <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>
                                     <li><a href="{{route('user.warnings')}}"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>
                                     <li><a href="{{route('server.library.index')}}"><i class="fa fa-btn"></i>Library</a></li>
-                                    <li><a href="{{route('ccia.generalnotice.index')}}"><i class="fa fa-btn"></i>CCIA General Notices</a></li>
+                                    @can('_heads-of-staff')
+                                        <li class="dropdown-submenu">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Head of Staff</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a href="{{route('ccia.actions.index')}}"><i class="fa fa-btn"></i>DO Actions</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{route('ccia.generalnotice.index')}}"><i class="fa fa-btn"></i>CCIA General Notice </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    @endcan()
                                 @else
                                     <li><a href="{{route('user.link')}}"><i class="fa fa-btn"></i>Link Byond</a></li>
                                 @endcan
@@ -98,7 +110,7 @@
                             </ul>
                         </li>
 
-                        @can('admin_menu_view')
+                        @can('site_admin_menu_view')
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 Admin Menu <span class="caret"></span>
@@ -108,10 +120,10 @@
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Player</a>
                                     <ul class="dropdown-menu">
-                                        <li @cannot('admin_players_show')class="disabled"@endcannot>
-                                            <a href="{{route('admin.players.index')}}"><i class="fa fa-btn"></i>Players</a>
+                                        <li @cannot('server_players_show')class="disabled"@endcannot>
+                                            <a href="{{route('server.players.index')}}"><i class="fa fa-btn"></i>Players</a>
                                         </li>
-                                        <li @cannot('admin_char_show')class="disabled"@endcannot>
+                                        <li @cannot('server_chars_show')class="disabled"@endcannot>
                                             <a href="{{route('server.chars.index.all')}}"><i class="fa fa-btn"></i>Character Records</a>
                                         </li>
                                     </ul>
@@ -133,16 +145,16 @@
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Site</a>
                                     <ul class="dropdown-menu">
-                                        <li @cannot('admin_site_roles_show')class="disabled"@endcannot>
-                                            <a href="{{route('admin.roles.index')}}"><i class="fa fa-btn"></i>Site Roles</a>
+                                        <li @cannot('site_roles_show')class="disabled"@endcannot>
+                                            <a href="{{route('site.roles.index')}}"><i class="fa fa-btn"></i>Site Roles</a>
                                         </li>
-                                        <li @cannot('admin_site_permissions_show')class="disabled"@endcannot>
+                                        <li @cannot('site_permissions_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>Site Permissions <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                         </li>
-                                        <li @cannot('admin_site_logs_show')class="disabled"@endcannot>
-                                            <a href="{{route('admin.site.log.index')}}"><i class="fa fa-btn"></i>WebSite Logs</a>
+                                        <li @cannot('site_logs_show')class="disabled"@endcannot>
+                                            <a href="{{route('site.log.index')}}"><i class="fa fa-btn"></i>WebSite Logs</a>
                                         </li>
-                                        <li @cannot('admin_staff_roster_show')class="disabled"@endcannot>
+                                        <li @cannot('site_staff_roster_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>Staff Roster <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                         </li>
                                     </ul>
@@ -150,23 +162,30 @@
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Server</a>
                                     <ul class="dropdown-menu">
-                                        <li @cannot('admin_forms_show')class="disabled"@endcannot>
+                                        {{--<li @cannot('server_forms_show')class="disabled"@endcannot>--}}
+                                        <li>
+                                            <a href="{{route('server.live.index')}}"><i class="fa fa-btn"></i>Online-Control</a>
+                                        </li>
+                                        <li @cannot('server_forms_show')class="disabled"@endcannot>
                                             <a href="{{route('admin.forms.index')}}"><i class="fa fa-btn"></i>Forms</a>
                                         </li>
                                         <li>
                                             <a href="{{route('server.library.index')}}"><i class="fa fa-btn"></i>Library</a>
                                         </li>
-                                        <li @cannot('admin_server_permissions_show')class="disabled"@endcannot>
-                                            <a href="#"><i class="fa fa-btn"></i>Server Permissions <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                        {{--<li @cannot('server_permissions_show')class="disabled"@endcannot>--}}
+                                            {{--<a href="{{route('server.permissions.index')}}"><i class="fa fa-btn"></i>Server Permissions</a>--}}
+                                        {{--</li>--}}
+                                        <li @cannot('server_stats_show')class="disabled"@endcannot>
+                                            <a href="{{route('server.stats.index')}}"><i class="fa fa-btn"></i>Statistics <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                         </li>
-                                        <li @cannot('admin_server_stats_show')class="disabled"@endcannot>
-                                            <a href="{{route('admin.stats.index')}}"><i class="fa fa-btn"></i>Statistics <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                                        </li>
-                                        <li @cannot('admin_server_logs_show')class="disabled"@endcannot>
+                                        <li @cannot('server_logs_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>Server Logs <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                         </li>
-                                        <li @cannot('admin_server_contest_show')class="disabled"@endcannot>
+                                        <li @cannot('syndie_contest_show')class="disabled"@endcannot>
                                             <a href="{{route('syndie.contest.view')}}"><i class="fa fa-btn"></i>Contest Stats</a>
+                                        </li>
+                                        <li @cannot('server_whitelist_log_show')class="disabled"@endcannot>
+                                            <a href="{{route('server.whitelist.log')}}"><i class="fa fa-btn"></i>Whitelist Log</a>
                                         </li>
                                     </ul>
                                 </li>

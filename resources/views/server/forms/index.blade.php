@@ -29,7 +29,7 @@
                     <div class="panel-heading">Form Overview</div>
 
                     <div class="panel-body">
-                        @can('admin_forms_edit')<p><a href="{{route('admin.forms.add.post')}}" class="btn btn-success" role="button">Add new Form</a></p>@endcan()
+                        @can('server_forms_edit')<p><a href="{{route('admin.forms.add.post')}}" class="btn btn-success" role="button">Add new Form</a></p>@endcan()
                         <table id="forms-table" class="table table-condensed">
                             <thead>
                             <tr>

@@ -23,6 +23,7 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Services\Server\PlayerWarning;
 use App\Models\ServerPlayer;
+use App\Models\CCIAAction;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -41,6 +42,10 @@ class DashboardController extends Controller
         //Get player warning data
         $playerwarning = new PlayerWarning($request->user()->user_byond);
 
-        return view('user.dashboard.index',array("whitelists"=> $player->get_player_whitelists() , "warnings" => $playerwarning));
+        return view('user.dashboard.index',array(
+            "whitelists"=> $player->get_player_whitelists(),
+            "warnings" => $playerwarning,
+            "chars" => $player->get_chars()
+            ));
     }
 }

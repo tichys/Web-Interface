@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Http\Requests;
 
-class SiteLogViewerController extends \Rap2hpoutre\LaravelLogViewer\LogViewerController
+class LogViewerController extends \Rap2hpoutre\LaravelLogViewer\LogViewerController
 {
     public function index()
     {

@@ -48,13 +48,13 @@
                         </tr>
                         <tr>
                             <td>Rank</td>
-                            <td>{{$player->lastadminrank}}</td>
+                            <td>@if(count($player->serverrank())) {{$player->serverrank->rank}} @else Player @endif</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            @can('admin_whitelists_show')
+            @can('server_players_whitelists_show')
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">User Whitelists</div>
@@ -70,9 +70,9 @@
                                             <span class="glyphicon glyphicon-ok"></span>
                                         </span>
                                     </td>
-                                    @can('admin_whitelists_edit')
+                                    @can('server_players_whitelists_edit')
                                     <td>
-                                        <a href="{{route('admin.players.whitelist.remove',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
+                                        <a href="{{route('server.players.whitelist.remove',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
                                            class="btn btn-danger" role="button">Remove Whitelist</a>
                                     </td>
                                     @endcan
@@ -82,9 +82,9 @@
                                             <span class="glyphicon glyphicon-remove"></span>
                                         </span>
                                     </td>
-                                    @can('admin_whitelists_edit')
+                                    @can('server_players_whitelists_edit')
                                     <td>
-                                        <a href="{{route('admin.players.whitelist.add',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
+                                        <a href="{{route('server.players.whitelist.add',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
                                            class="btn btn-success" role="button">Add Whitelist</a>
                                     </td>
                                     @endcan
@@ -98,7 +98,7 @@
             @endcan()
         </div>
         {{-- Warnings and Notes Row--}}
-        @can('admin_warnings_show')
+        @can('server_players_warnings_show')
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
@@ -122,7 +122,7 @@
             </div>
         </div>
         @endcan()
-        @can('admin_notes_show')
+        @can('server_players_notes_show')
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
@@ -152,18 +152,18 @@
     <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
     <script>
         $(function() {
-            @can('admin_warnings_show')
+            @can('server_players_warnings_show')
             $('#user-warnings-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.players.warnings.data',["player_id"=>$player->id]) }}'
+                ajax: '{{ route('server.players.warnings.data',["player_id"=>$player->id]) }}'
             });
             @endcan()
-            @can('admin_notes_show')
+            @can('server_players_notes_show')
             $('#user-notes-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.players.notes.data',["player_id"=>$player->id]) }}'
+                ajax: '{{ route('server.players.notes.data',["player_id"=>$player->id]) }}'
             });
             @endcan()
         });

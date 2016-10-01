@@ -80,53 +80,53 @@ class CreatePermissionRolesTables extends Migration
             $table->primary(['role_id','user_id']);
         });
 
-//        contract_moderate -> Allows to moderate Syndicate Contracts
-        $contract_moderate = new SitePermission();
-        $contract_moderate->name = "contract_moderate";
-        $contract_moderate->label = "Allows to moderate Syndicate Contracts";
-        $contract_moderate->save();
+//        syndie_contract_moderate -> Allows to moderate Syndicate Contracts
+        $syndie_contract_moderate = new SitePermission();
+        $syndie_contract_moderate->name = "syndie_contract_moderate";
+        $syndie_contract_moderate->label = "Allows to moderate Syndicate Contracts";
+        $syndie_contract_moderate->save();
 
-//        admin_menu_view -> Show the admin menu
-        $admin_menu_view = new SitePermission();
-        $admin_menu_view->name = "admin_menu_view";
-        $admin_menu_view->label = "Show the admin menu";
-        $admin_menu_view->save();
+//        site_admin_menu_view -> Show the admin menu
+        $site_admin_menu_view = new SitePermission();
+        $site_admin_menu_view->name = "site_admin_menu_view";
+        $site_admin_menu_view->label = "Show the admin menu";
+        $site_admin_menu_view->save();
 
-//        admin_whitelists_show -> Show the whitelists
-        $admin_whitelists_show = new SitePermission();
-        $admin_whitelists_show->name = "admin_whitelists_show";
-        $admin_whitelists_show->label = "Show the whitelists";
-        $admin_whitelists_show->save();
+//        server_players_whitelists_show -> Show the whitelists
+        $server_players_whitelists_show = new SitePermission();
+        $server_players_whitelists_show->name = "server_players_whitelists_show";
+        $server_players_whitelists_show->label = "Show the whitelists";
+        $server_players_whitelists_show->save();
 
-//        admin_whitelists_edit ->  Edit the whitelists
-        $admin_whitelists_edit = new SitePermission();
-        $admin_whitelists_edit->name = "admin_whitelists_edit";
-        $admin_whitelists_edit->label = "Edit the whitelists";
-        $admin_whitelists_edit->save();
+//        server_players_whitelists_edit ->  Edit the whitelists
+        $server_players_whitelists_edit = new SitePermission();
+        $server_players_whitelists_edit->name = "server_players_whitelists_edit";
+        $server_players_whitelists_edit->label = "Edit the whitelists";
+        $server_players_whitelists_edit->save();
 
-//        admin_server_permissions_show -> Show the permissions on the server
-        $admin_server_permissions_show = new SitePermission();
-        $admin_server_permissions_show->name = "admin_server_permissions_show";
-        $admin_server_permissions_show->label = "Show the permissions on the server";
-        $admin_server_permissions_show->save();
+//        server_permissions_show -> Show the permissions on the server
+        $server_permissions_show = new SitePermission();
+        $server_permissions_show->name = "server_permissions_show";
+        $server_permissions_show->label = "Show the permissions on the server";
+        $server_permissions_show->save();
 
-//        admin_server_permissions_edit -> Edit the permissions on the server
-        $admin_server_permissions_edit = new SitePermission();
-        $admin_server_permissions_edit->name = "admin_server_permissions_edit";
-        $admin_server_permissions_edit->label = "Edit the permissions on the server";
-        $admin_server_permissions_edit->save();
+//        server_permissions_edit -> Edit the permissions on the server
+        $server_permissions_edit = new SitePermission();
+        $server_permissions_edit->name = "server_permissions_edit";
+        $server_permissions_edit->label = "Edit the permissions on the server";
+        $server_permissions_edit->save();
 
-//        admin_staff_roster_show -> Show the staff roster
-        $admin_staff_roster_show = new SitePermission();
-        $admin_staff_roster_show->name = "admin_staff_roster_show";
-        $admin_staff_roster_show->label = "Show the staff roster";
-        $admin_staff_roster_show->save();
+//        site_staff_roster_show -> Show the staff roster
+        $site_staff_roster_show = new SitePermission();
+        $site_staff_roster_show->name = "site_staff_roster_show";
+        $site_staff_roster_show->label = "Show the staff roster";
+        $site_staff_roster_show->save();
 
-//        admin_staff_roster_edit -> Edit the staff roster
-        $admin_staff_roster_edit = new SitePermission();
-        $admin_staff_roster_edit->name = "admin_staff_roster_edit";
-        $admin_staff_roster_edit->label = "Edit the staff roster";
-        $admin_staff_roster_edit->save();
+//        site_staff_roster_edit -> Edit the staff roster
+        $site_staff_roster_edit = new SitePermission();
+        $site_staff_roster_edit->name = "site_staff_roster_edit";
+        $site_staff_roster_edit->label = "Edit the staff roster";
+        $site_staff_roster_edit->save();
 
 //        admin_character_records_show -> Show the Character Records
         $admin_character_records_show = new SitePermission();
@@ -146,89 +146,89 @@ class CreatePermissionRolesTables extends Migration
         $admin_do_recorder_logs_show->label = "Show the DO recorder logs";
         $admin_do_recorder_logs_show->save();
 
-//        admin_server_stats_show -> Show the admin stats
-        $admin_server_stats_show = new SitePermission();
-        $admin_server_stats_show->name = "admin_server_stats_show";
-        $admin_server_stats_show->label = "Show the admin stats";
-        $admin_server_stats_show->save();
+//        server_stats_show -> Show the admin stats
+        $server_stats_show = new SitePermission();
+        $server_stats_show->name = "server_stats_show";
+        $server_stats_show->label = "Show the admin stats";
+        $server_stats_show->save();
 
-//        admin_site_roles_show -> Show the site roles
-        $admin_site_roles_show = new SitePermission();
-        $admin_site_roles_show->name = "admin_site_roles_show";
-        $admin_site_roles_show->label = "Show the site roles";
-        $admin_site_roles_show->save();
+//        site_roles_show -> Show the site roles
+        $site_roles_show = new SitePermission();
+        $site_roles_show->name = "site_roles_show";
+        $site_roles_show->label = "Show the site roles";
+        $site_roles_show->save();
 
-//        admin_site_roles_edit -> Edit the site roles
-        $admin_site_roles_edit = new SitePermission();
-        $admin_site_roles_edit->name = "admin_site_roles_edit";
-        $admin_site_roles_edit->label = "Edit the site roles";
-        $admin_site_roles_edit->save();
+//        site_roles_edit -> Edit the site roles
+        $site_roles_edit = new SitePermission();
+        $site_roles_edit->name = "site_roles_edit";
+        $site_roles_edit->label = "Edit the site roles";
+        $site_roles_edit->save();
 
-//        admin_site_permissions_show -> Show the site permissions
-        $admin_site_permissions_show = new SitePermission();
-        $admin_site_permissions_show->name = "admin_site_permissions_show";
-        $admin_site_permissions_show->label = "Show the site permissions";
-        $admin_site_permissions_show->save();
+//        site_permissions_show -> Show the site permissions
+        $site_permissions_show = new SitePermission();
+        $site_permissions_show->name = "site_permissions_show";
+        $site_permissions_show->label = "Show the site permissions";
+        $site_permissions_show->save();
 
-//        admin_site_permissions_edit -> Edit the site permissions
-        $admin_site_permissions_edit = new SitePermission();
-        $admin_site_permissions_edit->name = "admin_site_permissions_edit";
-        $admin_site_permissions_edit->label = "Edit the site permissions";
-        $admin_site_permissions_edit->save();
+//        site_permissions_edit -> Edit the site permissions
+        $site_permissions_edit = new SitePermission();
+        $site_permissions_edit->name = "site_permissions_edit";
+        $site_permissions_edit->label = "Edit the site permissions";
+        $site_permissions_edit->save();
 
-//        admin_site_logs_show -> Show the site logs
-        $admin_site_logs_show = new SitePermission();
-        $admin_site_logs_show->name = "admin_site_logs_show";
-        $admin_site_logs_show->label = "Show the site logs";
-        $admin_site_logs_show->save();
+//        site_logs_show -> Show the site logs
+        $site_logs_show = new SitePermission();
+        $site_logs_show->name = "site_logs_show";
+        $site_logs_show->label = "Show the site logs";
+        $site_logs_show->save();
 
-//        admin_server_logs_show -> Show the server logs
-        $admin_server_logs_show = new SitePermission();
-        $admin_server_logs_show->name = "admin_server_logs_show";
-        $admin_server_logs_show->label = "Show the server logs";
-        $admin_server_logs_show->save();
+//        server_logs_show -> Show the server logs
+        $server_logs_show = new SitePermission();
+        $server_logs_show->name = "server_logs_show";
+        $server_logs_show->label = "Show the server logs";
+        $server_logs_show->save();
 
-//        admin_forms_show -> Show the corporate Form Database
-        $admin_forms_show = new SitePermission();
-        $admin_forms_show->name = "admin_forms_show";
-        $admin_forms_show->label = "Show the corporate Form Database";
-        $admin_forms_show->save();
+//        server_forms_show -> Show the corporate Form Database
+        $server_forms_show = new SitePermission();
+        $server_forms_show->name = "server_forms_show";
+        $server_forms_show->label = "Show the corporate Form Database";
+        $server_forms_show->save();
 
-//        admin_forms_edit -> Edit the corporate Form Database
-        $admin_forms_edit = new SitePermission();
-        $admin_forms_edit->name = "admin_forms_edit";
-        $admin_forms_edit->label = "Edit the corporate Form Database";
-        $admin_forms_edit->save();
+//        server_forms_edit -> Edit the corporate Form Database
+        $server_forms_edit = new SitePermission();
+        $server_forms_edit->name = "server_forms_edit";
+        $server_forms_edit->label = "Edit the corporate Form Database";
+        $server_forms_edit->save();
 
-//        admin_players_show -> Show the player page (Alone Useless -> Needs some of the perms below)
-        $admin_players_show = new SitePermission();
-        $admin_players_show->name = "admin_players_show";
-        $admin_players_show->label = "Show the player page";
-        $admin_players_show->save();
+//        server_players_show -> Show the player page (Alone Useless -> Needs some of the perms below)
+        $server_players_show = new SitePermission();
+        $server_players_show->name = "server_players_show";
+        $server_players_show->label = "Show the player page";
+        $server_players_show->save();
 
-//        admin_warnings_show -> Show a players warnings
-        $admin_warnings_show = new SitePermission();
-        $admin_warnings_show->name = "admin_warnings_show";
-        $admin_warnings_show->label = "Show a players warnings";
-        $admin_warnings_show->save();
+//        server_players_warnings_show -> Show a players warnings
+        $server_players_warnings_show = new SitePermission();
+        $server_players_warnings_show->name = "server_players_warnings_show";
+        $server_players_warnings_show->label = "Show a players warnings";
+        $server_players_warnings_show->save();
 
-//        admin_warnings_edit -> Edit a players warnings
-        $admin_warnings_edit = new SitePermission();
-        $admin_warnings_edit->name = "admin_warnings_edit";
-        $admin_warnings_edit->label = "Edit a players warnings";
-        $admin_warnings_edit->save();
+//        server_players_warnings_edit -> Edit a players warnings
+        $server_players_warnings_edit = new SitePermission();
+        $server_players_warnings_edit->name = "server_players_warnings_edit";
+        $server_players_warnings_edit->label = "Edit a players warnings";
+        $server_players_warnings_edit->save();
 
-//        admin_notes_show -> Show a players notes
-        $admin_notes_show = new SitePermission();
-        $admin_notes_show->name = "admin_notes_show";
-        $admin_notes_show->label = "Show a players notes";
-        $admin_notes_show->save();
+//        server_players_notes_show -> Show a players notes
+        $server_players_notes_show = new SitePermission();
+        $server_players_notes_show->name = "server_players_notes_show";
+        $server_players_notes_show->label = "Show a players notes";
+        $server_players_notes_show->save();
 
-//        admin_notes_edit -> Edit a players notes
-        $admin_notes_edit = new SitePermission();
-        $admin_notes_edit->name = "admin_notes_edit";
-        $admin_notes_edit->label = "Edit a players notes";
-        $admin_notes_edit->save();
+//        server_players_notes_edit -> Edit a players notes
+        $server_players_notes_edit = new SitePermission();
+        $server_players_notes_edit->name = "server_players_notes_edit";
+        $server_players_notes_edit->label = "Edit a players notes";
+        $server_players_notes_edit->save();
 
 //        admin_do_actions_show -> Show the DO Actions
         $admin_do_actions_show = new SitePermission();
@@ -255,31 +255,31 @@ class CreatePermissionRolesTables extends Migration
         $administrators->description = "Can do everything";
         $administrators->save();
 
-        $administrators->givePermissionTo($contract_moderate);
-        $administrators->givePermissionTo($admin_menu_view);
-        $administrators->givePermissionTo($admin_server_permissions_show);
-        $administrators->givePermissionTo($admin_server_permissions_edit);
-        $administrators->givePermissionTo($admin_staff_roster_show);
-        $administrators->givePermissionTo($admin_staff_roster_edit);
+        $administrators->givePermissionTo($syndie_contract_moderate);
+        $administrators->givePermissionTo($site_admin_menu_view);
+        $administrators->givePermissionTo($server_permissions_show);
+        $administrators->givePermissionTo($server_permissions_edit);
+        $administrators->givePermissionTo($site_staff_roster_show);
+        $administrators->givePermissionTo($site_staff_roster_edit);
         $administrators->givePermissionTo($admin_character_records_show);
         $administrators->givePermissionTo($admin_character_records_edit);
         $administrators->givePermissionTo($admin_do_recorder_logs_show);
-        $administrators->givePermissionTo($admin_server_stats_show);
-        $administrators->givePermissionTo($admin_site_roles_show);
-        $administrators->givePermissionTo($admin_site_roles_edit);
-        $administrators->givePermissionTo($admin_site_permissions_show);
-        $administrators->givePermissionTo($admin_site_permissions_edit);
-        $administrators->givePermissionTo($admin_site_logs_show);
-        $administrators->givePermissionTo($admin_server_logs_show);
-        $administrators->givePermissionTo($admin_forms_show);
-        $administrators->givePermissionTo($admin_forms_edit);
-        $administrators->givePermissionTo($admin_players_show);
-        $administrators->givePermissionTo($admin_whitelists_show);
-        $administrators->givePermissionTo($admin_whitelists_edit);
-        $administrators->givePermissionTo($admin_warnings_show);
-        $administrators->givePermissionTo($admin_warnings_edit);
-        $administrators->givePermissionTo($admin_notes_show);
-        $administrators->givePermissionTo($admin_notes_edit);
+        $administrators->givePermissionTo($server_stats_show);
+        $administrators->givePermissionTo($site_roles_show);
+        $administrators->givePermissionTo($site_roles_edit);
+        $administrators->givePermissionTo($site_permissions_show);
+        $administrators->givePermissionTo($site_permissions_edit);
+        $administrators->givePermissionTo($site_logs_show);
+        $administrators->givePermissionTo($server_logs_show);
+        $administrators->givePermissionTo($server_forms_show);
+        $administrators->givePermissionTo($server_forms_edit);
+        $administrators->givePermissionTo($server_players_show);
+        $administrators->givePermissionTo($server_players_whitelists_show);
+        $administrators->givePermissionTo($server_players_whitelists_edit);
+        $administrators->givePermissionTo($server_players_warnings_show);
+        $administrators->givePermissionTo($server_players_warnings_edit);
+        $administrators->givePermissionTo($server_players_notes_show);
+        $administrators->givePermissionTo($server_players_notes_edit);
         $administrators->givePermissionTo($admin_do_actions_show);
         $administrators->givePermissionTo($admin_do_actions_edit);
         $administrators->givePermissionTo($ccia_general_notice_edit);
@@ -290,20 +290,20 @@ class CreatePermissionRolesTables extends Migration
         $moderators->description = "Like a admin but not as powerful";
         $moderators->save();
 
-        $moderators->givePermissionTo($contract_moderate);
-        $moderators->givePermissionTo($admin_menu_view);
-        $moderators->givePermissionTo($admin_staff_roster_show);
+        $moderators->givePermissionTo($syndie_contract_moderate);
+        $moderators->givePermissionTo($site_admin_menu_view);
+        $moderators->givePermissionTo($site_staff_roster_show);
         $moderators->givePermissionTo($admin_character_records_show);
-        $moderators->givePermissionTo($admin_server_stats_show);
-        $moderators->givePermissionTo($admin_site_roles_show);
-        $moderators->givePermissionTo($admin_site_permissions_show);
-        $moderators->givePermissionTo($admin_forms_show);
-        $moderators->givePermissionTo($admin_players_show);
-        $moderators->givePermissionTo($admin_whitelists_show);
-        $moderators->givePermissionTo($admin_warnings_show);
-        $moderators->givePermissionTo($admin_warnings_edit);
-        $moderators->givePermissionTo($admin_notes_show);
-        $moderators->givePermissionTo($admin_notes_edit);
+        $moderators->givePermissionTo($server_stats_show);
+        $moderators->givePermissionTo($site_roles_show);
+        $moderators->givePermissionTo($site_permissions_show);
+        $moderators->givePermissionTo($server_forms_show);
+        $moderators->givePermissionTo($server_players_show);
+        $moderators->givePermissionTo($server_players_whitelists_show);
+        $moderators->givePermissionTo($server_players_warnings_show);
+        $moderators->givePermissionTo($server_players_warnings_edit);
+        $moderators->givePermissionTo($server_players_notes_show);
+        $moderators->givePermissionTo($server_players_notes_edit);
 
         $duty_offiers = new SiteRole();
         $duty_offiers->name = "duty_officers";
@@ -311,14 +311,14 @@ class CreatePermissionRolesTables extends Migration
         $duty_offiers->description = "Something between a moderator and a paper pusher";
         $duty_offiers->save();
 
-        $duty_offiers->givePermissionTo($admin_menu_view);
+        $duty_offiers->givePermissionTo($site_admin_menu_view);
         $duty_offiers->givePermissionTo($admin_character_records_show);
         $duty_offiers->givePermissionTo($admin_character_records_edit);
         $duty_offiers->givePermissionTo($admin_do_recorder_logs_show);
-        $duty_offiers->givePermissionTo($admin_forms_show);
-        $duty_offiers->givePermissionTo($admin_forms_edit);
-        $duty_offiers->givePermissionTo($admin_players_show);
-        $duty_offiers->givePermissionTo($admin_whitelists_show);
+        $duty_offiers->givePermissionTo($server_forms_show);
+        $duty_offiers->givePermissionTo($server_forms_edit);
+        $duty_offiers->givePermissionTo($server_players_show);
+        $duty_offiers->givePermissionTo($server_players_whitelists_show);
         $duty_offiers->givePermissionTo($admin_do_actions_show);
         $duty_offiers->givePermissionTo($admin_do_actions_edit);
         $duty_offiers->givePermissionTo($ccia_general_notice_edit);
@@ -329,10 +329,10 @@ class CreatePermissionRolesTables extends Migration
         $whitelist_managers->description = "Manages the White-Lists";
         $whitelist_managers->save();
 
-        $whitelist_managers->givePermissionTo($admin_menu_view);
-        $whitelist_managers->givePermissionTo($admin_players_show);
-        $whitelist_managers->givePermissionTo($admin_whitelists_show);
-        $whitelist_managers->givePermissionTo($admin_whitelists_edit);
+        $whitelist_managers->givePermissionTo($site_admin_menu_view);
+        $whitelist_managers->givePermissionTo($server_players_show);
+        $whitelist_managers->givePermissionTo($server_players_whitelists_show);
+        $whitelist_managers->givePermissionTo($server_players_whitelists_edit);
 
         $contract_managers = new Siterole();
         $contract_managers->name = "contract_managers";
@@ -340,7 +340,7 @@ class CreatePermissionRolesTables extends Migration
         $contract_managers->description = "Manages the Syndicate Contracts";
         $contract_managers->save();
 
-        $contract_managers->givePermissionTo($contract_moderate);
+        $contract_managers->givePermissionTo($syndie_contract_moderate);
 
     }
 

@@ -67,6 +67,16 @@ class AuthServiceProvider extends ServiceProvider
             });
         }
 
+        $gate->define('_heads-of-staff',function($user){
+            if($user->user_byond_linked){
+                $serverplayer = $user->serverplayer();
+                return $serverplayer->check_whitelist("Heads of Staff");
+            }else{
+                return FALSE;
+            }
+
+        });
+
     }
 
     protected function getPermissions()

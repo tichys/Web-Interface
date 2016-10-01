@@ -25,12 +25,17 @@ use Auth;
 
 class ServerPlayer extends Model
 {
+    public $timestamps = FALSE;
     protected $connection = 'server';
     protected $table = 'player';
-    protected $fillable = ['ckey', 'ip', 'lastadminrank', 'whitelist_status'];
+    protected $fillable = ['ckey', 'ip', 'whitelist_status'];
     protected $primaryKey = 'id';
     protected $dates = ['firstseen', 'lastseen'];
-    public $timestamps = FALSE;
+
+    public function serverrank()
+    {
+        return $this->hasOne('App\Models\ServerAdmin', 'ckey', 'ckey');
+    }
 
     /**
      * Adds flags to a player
@@ -62,7 +67,7 @@ class ServerPlayer extends Model
                     'datetime' => date("Y-m-d H:i:s", time()),
                     'user' => $adminname,
                     'action_method' => 'Website2',
-                    'action' => 'Added whitelistflag: '.$flag_input.' to player: '.$this->ckey,
+                    'action' => 'Added whitelistflag: ' . $flag_input . ' to player: ' . $this->ckey,
                 ]
             );
 
@@ -81,7 +86,7 @@ class ServerPlayer extends Model
                     'datetime' => date("Y-m-d H:i:s", time()),
                     'user' => $adminname,
                     'action_method' => 'Website2',
-                    'action' => 'Added whitelist flags: '.impode(";",$flag_input).' to player: '.$this->ckey,
+                    'action' => 'Added whitelist flags: ' . impode(";", $flag_input) . ' to player: ' . $this->ckey,
                 ]
             );
 
@@ -103,7 +108,7 @@ class ServerPlayer extends Model
                     'datetime' => date("Y-m-d H:i:s", time()),
                     'user' => $adminname,
                     'action_method' => 'Website2',
-                    'action' => 'Added whitelist: '.$flag_input.' to player: '.$this->ckey,
+                    'action' => 'Added whitelist: ' . $flag_input . ' to player: ' . $this->ckey,
                 ]
             );
 
@@ -112,6 +117,17 @@ class ServerPlayer extends Model
         } else {
             return NULL;
         }
+    }
+
+    /**
+     * Returns a array with all available whitelists (name and status flag)
+     *
+     * @return array
+     */
+    public function get_available_whitelists()
+    {
+        //Get Whitelist Status
+        return DB::connection('server')->table('whitelist_statuses')->pluck('status_name', 'flag');
     }
 
     /**
@@ -143,7 +159,7 @@ class ServerPlayer extends Model
                     'datetime' => date("Y-m-d H:i:s", time()),
                     'user' => $adminname,
                     'action_method' => 'Website2',
-                    'action' => 'Removed whitelistflag: '.$flag_input.' from player: '.$this->ckey,
+                    'action' => 'Removed whitelistflag: ' . $flag_input . ' from player: ' . $this->ckey,
                 ]
             );
 
@@ -162,7 +178,7 @@ class ServerPlayer extends Model
                     'datetime' => date("Y-m-d H:i:s", time()),
                     'user' => $adminname,
                     'action_method' => 'Website2',
-                    'action' => 'Removed whitelist flags: '.impode(";",$flag_input).' from player: '.$this->ckey,
+                    'action' => 'Removed whitelist flags: ' . impode(";", $flag_input) . ' from player: ' . $this->ckey,
                 ]
             );
 
@@ -184,7 +200,7 @@ class ServerPlayer extends Model
                     'datetime' => date("Y-m-d H:i:s", time()),
                     'user' => $adminname,
                     'action_method' => 'Website2',
-                    'action' => 'Remove whitelist: '.$flag_input.' from player: '.$this->ckey,
+                    'action' => 'Remove whitelist: ' . $flag_input . ' from player: ' . $this->ckey,
                 ]
             );
 
@@ -193,17 +209,6 @@ class ServerPlayer extends Model
         } else {
             return NULL;
         }
-    }
-
-    /**
-     * Returns a array with all available whitelists (name and status flag)
-     *
-     * @return array
-     */
-    public function get_available_whitelists()
-    {
-        //Get Whitelist Status
-        return DB::connection('server')->table('whitelist_statuses')->pluck('status_name', 'flag');
     }
 
     /**
@@ -232,5 +237,62 @@ class ServerPlayer extends Model
         }
 
         return $whitelists;
+    }
+
+    /**
+     * Checks if the player holds a specific whitelist
+     *
+     * @param string|int $required_whitelist String of the required whitelist or integer of the required flag
+     *
+     * @return bool True if the player holds the specified whitelist
+     */
+    public function check_whitelist($required_whitelist)
+    {
+        if (!$this->whitelist_status) return NULL;
+        if ($this->ckey == NULL) return NULL;
+
+        if (is_string($required_whitelist)) {
+            $whitelist = DB::connection('server')->table('whitelist_statuses')->where('status_name', $required_whitelist)->first();
+            if(!isset($whitelist->flag)) return FALSE;
+            if (($this->whitelist_status & $whitelist->flag) != 0) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        } elseif (is_int($required_whitelist)) {
+            if (($this->whitelist_status & $required_whitelist) != 0) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * Get the chars of a player
+     */
+    public function get_chars()
+    {
+        return \App\Models\ServerCharacter::where('ckey',$this->ckey)->get();
+    }
+
+    /**
+     * Get the char ids of a player
+     */
+    public function get_char_ids()
+    {
+        return \App\Models\ServerCharacter::where('ckey',$this->ckey)->pluck('id');
+    }
+
+    /**
+     * Check if the player "owns" a specific char
+     * @param int char_id The id of the char that should be checked
+     *
+     * @returns bool
+     */
+    public function check_player_char($char_id){
+        return \App\Models\ServerCharacter::where('ckey',$this->ckey)->where('id',$char_id)->count() > 0;
     }
 }
