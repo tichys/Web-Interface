@@ -34,7 +34,7 @@ new Vue({
         faxcciareceiverstation: "NSS Exodus",
         faxcciasendername: "",
         faxcciasenderrank: "",
-        faxcciasenderstation: "NMS Odin",
+        faxcciasenderstation: "NTCC Odin",
         faxcciasignature: "",
         faxcciasignaturei: false,
         faxcciasignatureb: false,
