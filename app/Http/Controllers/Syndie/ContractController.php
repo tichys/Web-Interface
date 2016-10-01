@@ -56,7 +56,7 @@ class ContractController extends Controller
     {
         $contracts = SyndieContract::select(['contract_id', 'title', 'contractee_name', 'status']);
         //For contract mods: Show all contracts
-        if ($request->user()->can('contract_moderate')) {
+        if ($request->user()->can('syndie_contract_moderate')) {
 
         } else //For normal users: Show all contracts that have a status of open, assigned, completed, confirmed or that they own
         {
@@ -108,7 +108,7 @@ class ContractController extends Controller
         $SyndieContract = SyndieContract::find($contract);
 
         //Check if the user is the contract owner or a moderator
-        if ($request->user()->cannot('contract_moderate') && $request->user()->user_id != $SyndieContract->contractee_id) {
+        if ($request->user()->cannot('syndie_contract_moderate') && $request->user()->user_id != $SyndieContract->contractee_id) {
             abort(502,"You do not have the permission to edit the contract");
         }
 
@@ -120,7 +120,7 @@ class ContractController extends Controller
         $SyndieContract = SyndieContract::find($contract);
 
         //Check if the user is the contract owner or a moderator
-        if ($request->user()->cannot('contract_moderate') && $request->user()->user_id != $SyndieContract->contractee_id) {
+        if ($request->user()->cannot('syndie_contract_moderate') && $request->user()->user_id != $SyndieContract->contractee_id) {
             abort(502,"You do not have the permission to edit the contract");
         }
 
@@ -138,7 +138,7 @@ class ContractController extends Controller
     public function approve(Request $request, $contract)
     {
         //Check if player is contract mod
-        if ($request->user()->can('contract_moderate')) {
+        if ($request->user()->can('syndie_contract_moderate')) {
             $SyndieContract = SyndieContract::find($contract);
             $SyndieContract->status = "open";
             $SyndieContract->save();
@@ -157,7 +157,7 @@ class ContractController extends Controller
     public function reject(Request $request, $contract)
     {
         //Check if player is contract mod
-        if ($request->user()->can('contract_moderate')) {
+        if ($request->user()->can('syndie_contract_moderate')) {
             $SyndieContract = SyndieContract::find($contract);
             $SyndieContract->status = "mod-nok";
             $SyndieContract->save();
@@ -200,7 +200,7 @@ class ContractController extends Controller
 //        }
 //
 //        //Check if player is mod or contract owner
-//        if ($request->user()->can('contract_moderate') || $request->user()->user_id == $SyndieContract->contractee_id) {
+//        if ($request->user()->can('syndie_contract_moderate') || $request->user()->user_id == $SyndieContract->contractee_id) {
 //            $SyndieContract->status = "closed";
 //            $SyndieContract->completer_id = $SyndieComment->commentor_id;
 //            $SyndieContract->completer_name = strip_tags($SyndieComment->commentor_name);
@@ -243,7 +243,7 @@ class ContractController extends Controller
 //        }
 //
 //        //Check if player is mod or contract owner
-//        if ($request->user()->can('contract_moderate') || $request->user()->user_id == $SyndieContract->contractee_id) {
+//        if ($request->user()->can('syndie_contract_moderate') || $request->user()->user_id == $SyndieContract->contractee_id) {
 //            $contr = SyndieContract::find($SyndieComment->contract_id);
 //            $contr->status = "open";
 //            $contr->save();
@@ -295,7 +295,7 @@ class ContractController extends Controller
 //        $comment = $request->input('comment');
 //
 //        //Check if the user is contractee, mod or just user and allow them to use the various pm types
-//        if ($request->user()->can('contract_moderate')) { //User is a contract moderator
+//        if ($request->user()->can('syndie_contract_moderate')) { //User is a contract moderator
 //            //User can use every message type and specify name. Just check that all fields are filled out
 //        } elseif ($request->user()->user_id == $SyndieContract->contractee_id) { //Use is contract author
 //            //User can not specify a name and can use only the following message types: 'ic'=>'IC Comment','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM'
@@ -368,7 +368,7 @@ class ContractController extends Controller
 
 //    public function deleteMessage($comment, Request $request)
 //    {
-//        if($request->user()->cannot('contract_moderate'))
+//        if($request->user()->cannot('syndie_contract_moderate'))
 //        {
 //            abort('403','You do not have the required permission');
 //        }
@@ -385,7 +385,7 @@ class ContractController extends Controller
 
     public function delete($contract , Request $request)
     {
-        if($request->user()->cannot('contract_moderate'))
+        if($request->user()->cannot('syndie_contract_moderate'))
         {
             abort('403','You do not have the required permission');
         }

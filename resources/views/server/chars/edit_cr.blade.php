@@ -43,7 +43,7 @@
                             <td><b>Blood Type:</b></td>
                             <td>{{$char->b_type}}</td>
                         </tr>
-                        @can('admin_char_show')
+                        @can('server_chars_show')
                             <tr>
                                 <td><b>Owner ckey:</b></td>
                                 <td>{{$char->ckey}}</td>

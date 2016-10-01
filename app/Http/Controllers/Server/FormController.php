@@ -18,7 +18,7 @@
  *
  */
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Server;
 
 use Illuminate\Http\Request;
 
@@ -32,7 +32,7 @@ class FormController extends Controller
 {
     public function __construct(Request $request)
     {
-        if($request->user()->cannot('admin_forms_show'))
+        if($request->user()->cannot('server_forms_show'))
         {
             abort('403','You do not have the required permission');
         }
@@ -40,18 +40,18 @@ class FormController extends Controller
 
     public function index()
     {
-        return view('admin.forms.index');
+        return view('server.forms.index');
     }
 
     public function getEdit($form_id)
     {
         $form = ServerForm::findOrFail($form_id);
-        return view('admin.forms.edit', ['form' => $form]);
+        return view('server.forms.edit', ['form' => $form]);
     }
 
     public function postEdit($form_id, Request $request)
     {
-        if($request->user()->cannot('admin_forms_edit'))
+        if($request->user()->cannot('server_forms_edit'))
         {
             abort('403','You do not have the required permission');
         }
@@ -78,7 +78,7 @@ class FormController extends Controller
 
     public function delete($form_id, Request $request)
     {
-        if($request->user()->cannot('admin_forms_edit'))
+        if($request->user()->cannot('server_forms_edit'))
         {
             abort('403','You do not have the required permission');
         }
@@ -93,17 +93,17 @@ class FormController extends Controller
 
     public function getAdd(Request $request)
     {
-        if($request->user()->cannot('admin_forms_edit'))
+        if($request->user()->cannot('server_forms_edit'))
         {
             abort('403','You do not have the required permission');
         }
 
-        return view('admin.forms.add');
+        return view('server.forms.add');
     }
 
     public function postAdd(Request $request)
     {
-        if($request->user()->cannot('admin_forms_edit'))
+        if($request->user()->cannot('server_forms_edit'))
         {
             abort('403','You do not have the required permission');
         }
@@ -137,7 +137,7 @@ class FormController extends Controller
         return Datatables::of($forms)
             ->removeColumn('form_id')
             ->editColumn('name', '<a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}">{{$name}}</a>')
-            ->addColumn('action','<p><a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'admin_forms_edit\')<a href="{{route(\'admin.forms.delete\',[\'form\'=>$form_id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->addColumn('action','<p><a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'server_forms_edit\')<a href="{{route(\'admin.forms.delete\',[\'form\'=>$form_id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
             ->make();
     }
 }

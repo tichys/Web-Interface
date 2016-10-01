@@ -18,7 +18,7 @@
  *
  */
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Server;
 
 use Illuminate\Http\Request;
 use MongoDB\Driver\Server;
@@ -35,7 +35,7 @@ class PlayerController extends Controller
 
     public function __construct(Request $request)
     {
-        if($request->user()->cannot('admin_players_show'))
+        if($request->user()->cannot('server_players_show'))
         {
             abort('403','You do not have the required permission');
         }
@@ -46,7 +46,7 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        return view('admin.player.index');
+        return view('server.player.index');
     }
 
     /**
@@ -60,13 +60,13 @@ class PlayerController extends Controller
     {
         $player = ServerPlayer::findOrFail($player_id);
 
-        return view('admin.player.show',['player'=>$player,'whitelists'=>$player->get_player_whitelists()]);
+        return view('server.player.show',['player'=>$player,'whitelists'=>$player->get_player_whitelists()]);
     }
 
 
     public function addWhitelist($player_id, $whitelist, Request $request)
     {
-        if($request->user()->cannot('admin_whitelists_edit'))
+        if($request->user()->cannot('server_players_whitelists_edit'))
         {
             abort('403','You do not have the required permission');
         }
@@ -78,12 +78,12 @@ class PlayerController extends Controller
 
         Log::notice('perm.whitelist.add - Whitelist has been added',['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
 
-        return redirect()->route('admin.players.show', ['player_id' => $player_id]);
+        return redirect()->route('server.players.show', ['player_id' => $player_id]);
     }
 
     public function removeWhitelist($player_id, $whitelist, Request $request)
     {
-        if($request->user()->cannot('admin_whitelists_edit'))
+        if($request->user()->cannot('server_players_whitelists_edit'))
         {
             abort('403','You do not have the required permission');
         }
@@ -95,13 +95,13 @@ class PlayerController extends Controller
 
         Log::notice('perm.whitelist.remove - Whitelist has been removed',['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
 
-        return redirect()->route('admin.players.show', ['player_id' => $player_id]);
+        return redirect()->route('server.players.show', ['player_id' => $player_id]);
     }
 
 
     public function getPlayerWarningsData($player_id, Request $request)
     {
-        if($request->user()->cannot('admin_warnings_show'))
+        if($request->user()->cannot('server_players_warnings_show'))
         {
             abort('403','You do not have the required permission');
         }
@@ -119,7 +119,7 @@ class PlayerController extends Controller
 
     public function getPlayerNotesData($player_id, Request $request)
     {
-        if($request->user()->cannot('admin_notes_show'))
+        if($request->user()->cannot('server_players_notes_show'))
         {
             abort('403','You do not have the required permission');
         }
@@ -141,7 +141,7 @@ class PlayerController extends Controller
         $players = ServerPlayer::select(['id','ckey']);
 
         return Datatables::of($players)
-            ->editColumn('ckey','<a href="{{route(\'admin.players.show\',[\'player_id\'=>$id])}}">{{$ckey}}</a>')
+            ->editColumn('ckey','<a href="{{route(\'server.players.show\',[\'player_id\'=>$id])}}">{{$ckey}}</a>')
             ->make();
     }
 }

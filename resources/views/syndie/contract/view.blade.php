@@ -75,7 +75,7 @@
                             <td><b>Base Reward:</b></td>
                             <td>{{$contract->reward_other}}</td>
                         </tr>
-                        @if((Auth::user()->user_id == $contract->contractee_id && $contract->status = "new") || Auth::user()->can('contract_moderate') )
+                        @if((Auth::user()->user_id == $contract->contractee_id && $contract->status = "new") || Auth::user()->can('syndie_contract_moderate') )
                             <tr>
                                 <td><a href="{{route('syndie.contracts.edit.get',['contract'=>$contract->contract_id])}}" class="btn btn-warning" role="button">Edit the Contract</a></td>
                                 <td></td>
@@ -93,7 +93,7 @@
                     </table>
                 </div>
             </div>
-            @if(Auth::user()->cannot('contract_moderate'))<div class="col-md-8">@else() <div class="col-md-6"> @endif()
+            @if(Auth::user()->cannot('syndie_contract_moderate'))<div class="col-md-8">@else() <div class="col-md-6"> @endif()
                     <div class="panel panel-default">
                         <div class="panel-heading">Contract Description:</div>
 
@@ -103,13 +103,13 @@
                     </div>
                 </div>
                  {{--Management Panel--}}
-                @if(Auth::user()->can('contract_moderate'))
+                @if(Auth::user()->can('syndie_contract_moderate'))
                     <div class="col-md-2">
                         <div class="panel panel-default">
                             <div class="panel-heading">Actions</div>
                             <div class="panel-body">
                                  {{--Check if user is a contract mod--}}
-                                @can('contract_moderate')
+                                @can('syndie_contract_moderate')
                                     <p><b>Contract Mod</b></p>
                                     <p><a href="{{route('syndie.contracts.approve',['contract'=>$contract->contract_id])}}" class="btn btn-success @if(!in_array($contract->status,['new','mod-nok'])) disabled @endif" role="button">Approve</a></p>
                                     <p><a href="{{route('syndie.contracts.reject',['contract'=>$contract->contract_id])}}" class="btn btn-warning @if($contract->status != 'new') disabled @endif" role="button">Reject </a></p>
@@ -161,7 +161,7 @@
                                                         {{--<span class="glyphicon glyphicon-question-sign"></span>--}}
                                                     </a>
 
-                                                    @if($contract->contractee_id == Auth::user()->id || Auth::user()->can('contract_moderate'))
+                                                    @if($contract->contractee_id == Auth::user()->id || Auth::user()->can('syndie_contract_moderate'))
                                                         <a class="btn btn-warning" href="{{route('syndie.objectives.edit.get',['objective'=>$objective->objective_id])}}">
                                                             Edit
                                                             {{--<span class="glyphicon glyphicon-pencil"></span>--}}

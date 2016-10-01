@@ -1,3 +1,19 @@
+{{--Copyright (c) 2016 "Werner Maisl"--}}
+
+{{--This file is part of the Aurora Webinterface--}}
+
+{{--The Aurora Webinterface is free software: you can redistribute it and/or modify--}}
+{{--it under the terms of the GNU Affero General Public License as--}}
+{{--published by the Free Software Foundation, either version 3 of the--}}
+{{--License, or (at your option) any later version.--}}
+
+{{--This program is distributed in the hope that it will be useful,--}}
+{{--but WITHOUT ANY WARRANTY; without even the implied warranty of--}}
+{{--MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the--}}
+{{--GNU Affero General Public License for more details.--}}
+
+{{--You should have received a copy of the GNU Affero General Public License--}}
+{{--along with this program. If not, see <http://www.gnu.org/licenses/>.<!DOCTYPE html>--}}
 @extends('layouts.app')
 
 @section('content')
@@ -9,7 +25,7 @@
                 <div class="panel-heading">Add a Role: {{$role->label}}</div>
 
                 <div class="panel-body">
-                    {{Form::model($role, array('route' => array('admin.roles.edit.post', $role->id),'method' => 'post')) }}
+                    {{Form::model($role, array('route' => array('site.roles.edit.post', $role->id),'method' => 'post')) }}
                     {{Form::token()}}
 
                     {{Form::bsText('name')}}
@@ -36,7 +52,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <form action="{{route('admin.roles.addperm',['role_id'=>$role->id])}}" method="post">
+                            <form action="{{route('site.roles.addperm',['role_id'=>$role->id])}}" method="post">
                                 <td>
                                     <select class="form-control" name="permission">
                                         @foreach($avail_permissions as $perm_id => $perm_name)
@@ -52,7 +68,7 @@
                         </tr>
                         @foreach($role->permissions()->get() as $permission)
                             <tr>
-                                <form action="{{route('admin.roles.remperm',['role_id'=>$role->id])}}" method="post">
+                                <form action="{{route('site.roles.remperm',['role_id'=>$role->id])}}" method="post">
                                     <td><input class="form-control" type="text" disabled value="{{$permission->name}}"></td>
                                     <td>
                                         <input type="hidden" name="permission" value="{{$permission->id}}">
@@ -79,7 +95,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <form action="{{route('admin.roles.adduser',['role_id'=>$role->id])}}" method="post">
+                            <form action="{{route('site.roles.adduser',['role_id'=>$role->id])}}" method="post">
                                 <td><input type="text" class="form-control" id="user_id" name="user_id" placeholder="Forum user id (numeric)"></td>
                                 <td>
                                     {{Form::token()}}
@@ -89,7 +105,7 @@
                         </tr>
                         @foreach($assigned_users as $user)
                             <tr>
-                                <form action="{{route('admin.roles.remuser',['role_id'=>$role->id])}}" method="post">
+                                <form action="{{route('site.roles.remuser',['role_id'=>$role->id])}}" method="post">
                                     <td><input class="form-control" type="text" disabled value="{{$user->username}}"></td>
                                     <td>
                                         <input type="hidden" name="user" value="{{$user->user_id}}">

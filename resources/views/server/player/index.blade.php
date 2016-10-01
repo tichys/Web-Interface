@@ -52,7 +52,7 @@
             $('#users-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.players.data') }}'
+                ajax: '{{ route('server.players.data') }}'
             });
         });
     </script>

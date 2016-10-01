@@ -18,7 +18,7 @@
  *
  */
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Server;
 
 use Illuminate\Http\Request;
 
@@ -29,6 +29,6 @@ class StatsController extends Controller
 {
     public function index()
     {
-        return view("admin.stats");
+        return view("server.stats.index");
     }
 }

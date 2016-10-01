@@ -34,7 +34,7 @@ class ActionController extends Controller
 {
     public function __construct(Request $request)
     {
-        if ($request->user()->cannot('ccia_action_show')) {
+        if ($request->user()->cannot('ccia_action_show') && $request->user()->cannot('_heads-of-staff')) {
             abort('403', 'You do not have permission to view CCIA Actions.');
         }
     }
@@ -199,6 +199,9 @@ class ActionController extends Controller
     }
     public function getDataAll(Request $request)
     {
+        if ($request->user()->cannot('ccia_action_show')) {
+            abort('403', 'You do not have permission to edit CCIA Actions.');
+        }
         $data = CCIAAction::select(['id', 'title','expires_at']);
 
         return Datatables::of($data)

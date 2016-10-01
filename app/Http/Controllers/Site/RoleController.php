@@ -18,7 +18,7 @@
  *
  */
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Site;
 
 use App\Services\Auth\ForumUserModel;
 use Illuminate\Http\Request;
@@ -33,7 +33,7 @@ class RoleController extends Controller
 {
     public function __construct(Request $request)
     {
-        if ($request->user()->cannot('admin_site_roles_show')) {
+        if ($request->user()->cannot('site_roles_show')) {
             abort('403', 'You do not have the required permission');
         }
     }
@@ -41,21 +41,21 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $roles = SiteRole::get();
-        return view('/admin/roles/index', ['roles' => $roles]);
+        return view('site.roles.index', ['roles' => $roles]);
     }
 
     public function getAdd(Request $request)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
 
-        return view('/admin/roles/add');
+        return view('site.roles.add');
     }
 
     public function postAdd(Request $request)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $this->validate($request, [
@@ -69,7 +69,7 @@ class RoleController extends Controller
 
         Log::notice('perm.site_role.add - Site Role has been added',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
 
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('site.roles.index');
     }
 
     public function getEdit(Request $request, $role_id)
@@ -83,12 +83,12 @@ class RoleController extends Controller
 
         $assigned_users = $role->get_users(true);
 
-        return view('/admin/roles/edit', ['role' => $role,'avail_permissions'=>$avail_permissions,'assigned_users'=>$assigned_users]);
+        return view('site.roles.edit', ['role' => $role,'avail_permissions'=>$avail_permissions,'assigned_users'=>$assigned_users]);
     }
 
     public function postEdit(Request $request, $role_id)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $this->validate($request, [
@@ -105,12 +105,12 @@ class RoleController extends Controller
 
         Log::notice('perm.site_role.edit - Site Role has been edited',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
 
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('site.roles.index');
     }
 
     public function delete(Request $request, $role_id)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
 
@@ -120,12 +120,12 @@ class RoleController extends Controller
 
         $role->delete();
 
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('site.roles.index');
     }
 
     public function addPermission(Request $request, $role_id)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $role = SiteRole::findOrFail($role_id);
@@ -134,12 +134,12 @@ class RoleController extends Controller
 
         Log::notice('perm.site_role.attach_permission - Site Role Permission attached',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'permission_id' => $permission->id, 'permission_name' => $permission->name]);
 
-        return redirect()->route('admin.roles.edit.get',['role_id' => $role_id]);
+        return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
     }
 
     public function removePermission(Request $request, $role_id)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $role = SiteRole::findOrFail($role_id);
@@ -149,7 +149,7 @@ class RoleController extends Controller
         Log::notice('perm.site_role.detach_permission - Site Role Permission detached',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'permission_id' => $permission->id, 'permission_name' => $permission->name]);
 
 
-        return redirect()->route('admin.roles.edit.get',['role_id' => $role_id]);
+        return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
     }
 
     public function addUser(Request $request, $role_id)
@@ -157,7 +157,7 @@ class RoleController extends Controller
         $this->validate($request, [
             'user_id' => 'numeric'
         ]);
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $role = SiteRole::findOrFail($role_id);
@@ -167,12 +167,12 @@ class RoleController extends Controller
 
         Log::notice('perm.site_role.add_user - Site Role User added',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->username_clean]);
 
-        return redirect()->route('admin.roles.edit.get',['role_id' => $role_id]);
+        return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
     }
 
     public function removeUser(Request $request, $role_id)
     {
-        if ($request->user()->cannot('admin_site_roles_edit')) {
+        if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $role = SiteRole::findOrFail($role_id);
@@ -182,6 +182,6 @@ class RoleController extends Controller
 
         Log::notice('perm.site_role.remove_user - Site Role User removed',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->username_clean]);
 
-        return redirect()->route('admin.roles.edit.get',['role_id' => $role_id]);
+        return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
     }
 }

@@ -1,5 +1,22 @@
 <?php
-
+/**
+ * Copyright (c) 2016 "Werner Maisl"
+ *
+ * This file is part of Aurorastation-Wi
+ * Aurorastation-Wi is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 namespace App\Http\Controllers\Server;
 
 use Illuminate\Http\Request;
@@ -24,7 +41,7 @@ class CharController extends Controller
 
     public function indexAll(Request $request)
     {
-        if($request->user()->cannot('admin_char_show'))
+        if($request->user()->cannot('server_chars_show'))
         {
             abort('403','You do not have the required permission');
         }
@@ -81,7 +98,7 @@ class CharController extends Controller
     public function getCharDataAll(Request $request)
     {
 
-        if($request->user()->cannot('admin_char_show'))
+        if($request->user()->cannot('server_chars_show'))
         {
             abort('403','You do not have the required permission');
         }
@@ -113,7 +130,7 @@ class CharController extends Controller
             return true;
 
         //Check if the user has the permission to view characters
-        if($request->user()->can('admin_char_show'))
+        if($request->user()->can('server_chars_show'))
             return true;
 
         return false;

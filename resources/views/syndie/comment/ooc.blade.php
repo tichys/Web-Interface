@@ -25,7 +25,7 @@
         <div class="timeline-body">
             <p>@parsedown($comment->comment)</p>
             @include('syndie.comment.image')
-            @if(Auth::user()->can('contract_moderate'))<br><p><a href="{{route('syndie.comments.delete',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
+            @if(Auth::user()->can('syndie_contract_moderate'))<br><p><a href="{{route('syndie.comments.delete',['comment'=>$comment->comment_id])}}" class="btn btn-danger" role="button">Delete Comment</a></p>@endif
         </div>
     </div>
 </li>
