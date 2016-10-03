@@ -48,7 +48,7 @@
                         </tr>
                         <tr>
                             <td>Rank</td>
-                            <td>@if(count($player->serverrank())) {{$player->serverrank->rank}} @else Player @endif</td>
+                            <td>@if(count($player->serverrank)) {{$player->serverrank->rank}} @else Player @endif</td>
                         </tr>
                         </tbody>
                     </table>
