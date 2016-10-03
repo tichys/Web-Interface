@@ -168,14 +168,14 @@ new Vue({
                 'reportannounce': this.reportannounce
             }).then(
                 function(response){
-                    this.$set('faxstatus','Fax has been sent');
-                    this.$set('faxresponse',response.json())
-                    console.log("Fax Sent");
+                    //this.$set('faxstatus','Fax has been sent');
+                    //this.$set('faxresponse',response.json())
+                    console.log("Report Sent");
                     console.log(response.json());
                 },
                 function(response){
-                    this.$set('faxstatus','Failed to send the fax');
-                    console.log("Failed to send the fax");
+                    //this.$set('faxstatus','Failed to send the command Report');
+                    console.log("Failed to send the Report");
                 });
         }
     }
