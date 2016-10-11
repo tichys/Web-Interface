@@ -25,7 +25,9 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\ServerCharacter;
 use App\Models\ServerCharacterFlavour;
+use phpDocumentor\Reflection\Types\Null_;
 use Yajra\Datatables\Facades\Datatables;
+use Log;
 
 class CharController extends Controller
 {
@@ -82,12 +84,15 @@ class CharController extends Controller
             abort('403','You do not have the required permission');
         }
 
-        $this->validate($request,[
-            'records_ccia' => 'required'
-        ]);
+        $input = $request->all();
+
+        if(!isset($input["records_ccia"]) || $input["records_ccia"] == "" || $input["records_ccia"] == NULL)
+        {
+            $input["records_ccia"] = "";
+        }
 
         $char_flavour = ServerCharacterFlavour::findOrFail($char_id);
-        $char_flavour->records_ccia = $request->input('records_ccia');
+        $char_flavour->records_ccia = $input["records_ccia"];
         $char_flavour->save();
         Log::notice('perm.server.char.editcciarecord - CCIA Record has been edited',['user_id' => $request->user()->user_id, 'char_id' => $char_id]);
         return redirect()->route('server.chars.show.get',['char_id'=>$char_id]);
