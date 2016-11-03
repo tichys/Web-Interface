@@ -119,23 +119,44 @@ class ContractComment extends Controller
                 break;
 
             case "ic-comprep":
-                $this->validate($request, [
-                    'title' => 'required|max:50',
-                    'comment' => 'required',
-                    'commentor_name' => 'required|max:50',
-                    'objectives' => 'required',
-                    'agents' => 'required'
-                ]);
+                if($contract->objectives()->count() > 0){
+                    $this->validate($request, [
+                        'title' => 'required|max:50',
+                        'comment' => 'required',
+                        'commentor_name' => 'required|max:50',
+                        'objectives' => 'required',
+                        'agents' => 'required'
+                    ]);
 
-                $comment->title = $request->input('title');
-                $comment->comment = $request->input('comment');
-                $comment->commentor_name = $request->input('commentor_name');
-                $comment->report_status = "waiting-approval";
-                $comment->save();
+                    $comment->title = $request->input('title');
+                    $comment->comment = $request->input('comment');
+                    $comment->commentor_name = $request->input('commentor_name');
+                    $comment->report_status = "waiting-approval";
+                    $comment->save();
 
-                //Now sync the objectives and agents
-                $comment->objectives()->sync($request->input('objectives'));
-                $comment->completers()->sync($request->input('agents'));
+                    //Now sync the objectives and agents
+                    $comment->objectives()->sync($request->input('objectives'));
+                    $comment->completers()->sync($request->input('agents'));
+                }
+                else
+                {
+                    $this->validate($request, [
+                        'title' => 'required|max:50',
+                        'comment' => 'required',
+                        'commentor_name' => 'required|max:50',
+                        'agents' => 'required'
+                    ]);
+
+                    $comment->title = $request->input('title');
+                    $comment->comment = $request->input('comment');
+                    $comment->commentor_name = $request->input('commentor_name');
+                    $comment->report_status = "waiting-approval";
+                    $comment->save();
+
+                    //Now sync the objectives and agents
+                    $comment->completers()->sync($request->input('agents'));
+                }
+
                 break;
         }
         $this->dispatch(new SendContractNotificationEmail($contract, $type));
