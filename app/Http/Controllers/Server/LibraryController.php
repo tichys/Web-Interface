@@ -31,13 +31,17 @@ use HTMLPurifier;
 
 class LibraryController extends Controller
 {
-    public function __construct(Request $request)
+    public function __construct()
     {
-        //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
-        if($request->user()->user_byond_linked == 0 && $request->user()->cannot('server_library_edit'))
-        {
-            abort('403','Your byond account is not linked to your forum account.');
-        }
+        $this->middleware(function($request, $next){
+            //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
+            if($request->user()->user_byond_linked == 0 && $request->user()->cannot('server_library_edit'))
+            {
+                abort('403','Your byond account is not linked to your forum account.');
+            }
+            return $next($request);
+        });
+
     }
 
     public function index()

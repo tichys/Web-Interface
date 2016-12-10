@@ -31,10 +31,6 @@ use Log;
 
 class CharController extends Controller
 {
-    public function __construct(Request $request)
-    {
-
-    }
 
     public function index()
     {

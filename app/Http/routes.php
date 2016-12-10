@@ -46,7 +46,8 @@ Route::group(['middleware' => 'web'], function () {
         });
     });
 
-    Route::auth(); //Auth Routes
+    Auth::routes(); //Auth Routes
+    Route::get('/logout', 'Auth\LoginController@logout');
 
     //Route for SSO
     Route::any('/login/sso_server/', ['as' => 'login.sso', 'uses'=>'Auth\AuthController@sso_server']);

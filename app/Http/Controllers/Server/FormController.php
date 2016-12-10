@@ -30,12 +30,15 @@ Use Illuminate\Support\Facades\Log;
 
 class FormController extends Controller
 {
-    public function __construct(Request $request)
+    public function __construct()
     {
-        if($request->user()->cannot('server_forms_show'))
-        {
-            abort('403','You do not have the required permission');
-        }
+        $this->middleware(function($request, $next){
+            if($request->user()->cannot('server_forms_show'))
+            {
+                abort('403','You do not have the required permission');
+            }
+            return $next($request);
+        });
     }
 
     public function index()
