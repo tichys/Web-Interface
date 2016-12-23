@@ -33,12 +33,16 @@ use App\Http\Controllers\Controller;
 class PlayerController extends Controller
 {
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        if($request->user()->cannot('server_players_show'))
-        {
-            abort('403','You do not have the required permission');
-        }
+        $this->middleware(function($request, $next){
+            if($request->user()->cannot('server_players_show'))
+            {
+                abort('403','You do not have the required permission');
+            }
+            return $next($request);
+        });
+
     }
 
     /**
@@ -47,6 +51,17 @@ class PlayerController extends Controller
     public function index()
     {
         return view('server.player.index');
+    }
+
+    public function getCkey($ckey, Request $request)
+    {
+        $id = ServerPlayer::where('ckey',$ckey)->select('id')->first();
+        if($id != NULL)
+        {
+            return redirect()->route('server.players.show', ['player_id' => $id]);
+        }else{
+            return redirect()->route('server.players.index');
+        }
     }
 
     /**
@@ -90,11 +105,9 @@ class PlayerController extends Controller
 
         //Get Server Player
         $player = ServerPlayer::findOrFail($player_id);
-
         $player->strip_player_whitelist_flag($whitelist,$request->user()->username_clean);
 
         Log::notice('perm.whitelist.remove - Whitelist has been removed',['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
-
         return redirect()->route('server.players.show', ['player_id' => $player_id]);
     }
 

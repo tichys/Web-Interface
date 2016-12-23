@@ -46,7 +46,12 @@
                     @can('server_chars_show')
                         <tr>
                             <td><b>Owner ckey:</b></td>
-                            <td>{{$char->ckey}}</td>
+
+                            <td>
+                                @can('server_players_show')<a href="{{route('server.players.ckey',["ckey"=>$char->ckey])}}">@endcan()
+                                    {{$char->ckey}}
+                                @can('server_players_show')</a>@endcan()
+                            </td>
                         </tr>
                     @endcan()
                     </tbody>
@@ -280,9 +285,44 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Incident Overview</div>
 
+                <div class="panel-body">
+                    <table id="incidents-table" class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th width="20px">ID</th>
+                            <th width="20px">DateTime</th>
+                            <th>Notes</th>
+                            <th width="50px">Brig Sentence</th>
+                            <th width="50px">Fine</th>
+                            <th width="20px">Status</th>
+                            <th width="20px">Actions</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+@endsection
+
+@section('javascripts')
+    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+    <script>
+        $(function() {
+            $('#incidents-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('server.incidents.data.char',["char_id" => $char->id]) }}'
+            });
+        });
+    </script>
 @endsection
