@@ -32,11 +32,14 @@ use Illuminate\Support\Facades\Log;
 
 class ActionController extends Controller
 {
-    public function __construct(Request $request)
+    public function __construct()
     {
-        if ($request->user()->cannot('ccia_action_show') && $request->user()->cannot('_heads-of-staff')) {
-            abort('403', 'You do not have permission to view CCIA Actions.');
-        }
+        $this->middleware(function($request, $next){
+            if ($request->user()->cannot('ccia_action_show') && $request->user()->cannot('_heads-of-staff')) {
+                abort('403', 'You do not have permission to view CCIA Actions.');
+            }
+            return $next($request);
+        });
     }
 
     public function index()

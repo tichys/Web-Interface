@@ -31,29 +31,29 @@
 
                     {{Form::bsText('game_id')}}
 
-                    {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                    Form::submit('Submit', array('class'=>'btn btn-default'))}}
 
                     {{ Form::close() }}
                 </div>
             </div>
         </div>
-        {{--<div class="col-md-5">--}}
-            {{--@include('components.formerrors')--}}
-            {{--<div class="panel panel-default">--}}
-                {{--<div class="panel-heading">Duration Stats</div>--}}
+        <div class="col-md-5">
+            @include('components.formerrors')
+            <div class="panel panel-default">
+                <div class="panel-heading">Duration Stats</div>
 
-                {{--<div class="panel-body">--}}
-                    {{--{{Form::open(array('route' => 'server.stats.round','method' => 'post')) }}--}}
-                    {{--{{Form::token()}}--}}
+                <div class="panel-body">
+                    {{Form::open(array('route' => 'server.stats.round','method' => 'post')) }}
+                    {{Form::token()}}
 
-                    {{--{{Form::bsDate('start')}}--}}
-                    {{--{{Form::bsDate('end')}}--}}
+                    {{Form::bsDate('start')}}
+                    {{Form::bsDate('end')}}
 
-                    {{--{{Form::submit('Submit', array('class'=>'btn btn-default'))}}--}}
+                    {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
 
-                    {{--{{ Form::close() }}--}}
-                {{--</div>--}}
-            {{--</div>--}}
+                    {{ Form::close() }}
+                </div>
+            </div>
         </div>
     </div>
 </div>

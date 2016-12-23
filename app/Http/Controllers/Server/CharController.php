@@ -31,10 +31,6 @@ use Log;
 
 class CharController extends Controller
 {
-    public function __construct(Request $request)
-    {
-
-    }
 
     public function index()
     {
@@ -125,6 +121,23 @@ class CharController extends Controller
             ->removeColumn('id')
             ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action','<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
+            ->make();
+    }
+
+    public function getCharDataCkey($ckey, Request $request)
+    {
+
+        if($request->user()->cannot('server_chars_show'))
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        $chars = ServerCharacter::where('ckey',$ckey)->select(['id','name','ckey']);
+
+        return Datatables::of($chars)
+            ->removeColumn('id')
+            ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
+            ->addColumn('action','<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a>@can(\'ccia_record_edit\')<a href="{{route(\'server.chars.edit.cr.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Edit CCIA Record</a>@endcan()</p>')
             ->make();
     }
 

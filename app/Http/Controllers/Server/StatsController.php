@@ -27,8 +27,48 @@ use App\Http\Controllers\Controller;
 
 class StatsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function($request, $next){
+            //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
+            if($request->user()->user_byond_linked == 0 && $request->user()->cannot('server_stats_show'))
+            {
+                abort('403','Your byond account is not linked to your forum account.');
+            }
+            return $next($request);
+        });
+    }
+
+    /**
+     * Index File - With search function for details for a single game id and a time range
+     * Single Game ID - Shows detailed stats gathered for a single game id
+     * Time Range - Shows statistics for a time range
+     */
+
     public function index()
     {
         return view("server.stats.index");
+    }
+
+    public function round(Request $request)
+    {
+        $game_id = $request->input("game_id");
+        //Query the db for the game id
+        $game_details = \DB::connection('server')->table('feedback')->where('game_id',$game_id)->get();
+        //Prep the stats for display
+//        dd($game_details);
+
+        $details = array();
+        $details[""] = $game_details->contains('var_name','blackbox_destroyed');
+
+        $details["game_details"] = $game_details;
+        return view("server.stats.round",$details);
+    }
+
+    public function duration(Request $request)
+    {
+        //Get a total of rounds in the duration
+        //Get counts of the various game_modes for the duration
+        //Get how often the blackbox has been destroyed
     }
 }

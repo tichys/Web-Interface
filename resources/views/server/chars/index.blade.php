@@ -29,7 +29,7 @@
                     <div class="panel-heading">Char Overview</div>
 
                     <div class="panel-body">
-                        <table id="forms-table" class="table table-condensed">
+                        <table id="char-table" class="table table-condensed">
                             <thead>
                             <tr>
                                 <th>Name</th>
@@ -49,7 +49,7 @@
     <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
     <script>
         $(function() {
-            $('#forms-table').DataTable({
+            $('#char-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('server.chars.data.own') }}'
