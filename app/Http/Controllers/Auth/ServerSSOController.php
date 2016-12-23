@@ -22,50 +22,23 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Services\Auth\ForumUserModel;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class ServerSSOController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
     | Login Controller
     |--------------------------------------------------------------------------
     |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
+    | This controller handles authenticating users that come from the server
+    | and redirects them to the requested page.
     |
     */
-
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/user';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest', ['except' => 'logout']);
-    }
-
-    public function username()
-    {
-        return 'username';
-    }
-
     /**
      * Logs the user in by supplying a username and a login token
      */
@@ -80,11 +53,6 @@ class LoginController extends Controller
         $token_in = $request->input('token');
         $location = $request->input('location');
         $user_ip = $_SERVER['REMOTE_ADDR'];
-
-        if(Auth::check())
-        {
-            $this->redirect_after_sso($location,$request);
-        }
 
         if ($ckey_in == NULL | $token_in == NULL) abort(404);
 
@@ -112,11 +80,6 @@ class LoginController extends Controller
         //Delete the sso entry from the db
         DB::connection('server')->table('web_sso')->where('ckey', $ckey_in)->delete();
 
-        $this->redirect_after_sso($location,$request);
-    }
-
-    private function redirect_after_sso($location, Request $request)
-    {
         //Redirect User to Destination
         switch ($location) {
             case "user_dashboard":

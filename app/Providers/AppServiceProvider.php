@@ -15,11 +15,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::directive('parsedown', function ($expression) {
-            return "<?php \$Parsedown = new \Parsedown(); echo \$Parsedown->text(strip_tags(with{$expression})) ?>";
+            return "<?php \$Parsedown = new \Parsedown(); echo \$Parsedown->text(strip_tags(($expression))) ?>";
         });
 
         Blade::directive('striptags', function ($expression) {
-            return "<?php echo nl2br(strip_tags(with{$expression})) ?>";
+            return "<?php echo nl2br(strip_tags($expression)) ?>";
         });
     }
 

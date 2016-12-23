@@ -144,6 +144,26 @@
             </div>
         </div>
         @endcan()
+        @can('server_chars_show')
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Char Overview</div>
+
+                    <div class="panel-body">
+                        <table id="char-table" class="table table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endcan()
     </div>
 @endsection
 
@@ -164,6 +184,13 @@
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('server.players.notes.data',["player_id"=>$player->id]) }}'
+            });
+            @endcan()
+            @can('server_chars_show')
+            $('#char-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('server.chars.data.ckey',['ckey'=>$player->ckey]) }}'
             });
             @endcan()
         });

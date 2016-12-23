@@ -35,13 +35,12 @@ class LibraryController extends Controller
     {
         $this->middleware(function($request, $next){
             //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
-            if($request->user()->user_byond_linked == 0 && $request->user()->cannot('server_library_edit'))
+            if($request->user()->user_byond_linked == 0)
             {
                 abort('403','Your byond account is not linked to your forum account.');
             }
             return $next($request);
         });
-
     }
 
     public function index()
@@ -54,7 +53,6 @@ class LibraryController extends Controller
         $book = ServerLibrary::findOrFail($book_id);
 
         $canedit = $this->can_edit($book,$request->user());
-
         return view('server.library.show', ['book' => $book, 'canedit' => $canedit]);
     }
 
@@ -62,7 +60,7 @@ class LibraryController extends Controller
     {
         $book = ServerLibrary::findOrFail($book_id);
 
-        if($request->user()->cannot('server_library_edit') && $request->user()->user_byond != $book->uploader)
+        if(!$this->can_edit($book,$request->user()))
         {
             abort('403','You do not have the required permission');
         }
@@ -73,7 +71,7 @@ class LibraryController extends Controller
     public function postEdit($book_id, Request $request)
     {
         $book = ServerLibrary::findOrFail($book_id);
-        if($request->user()->cannot('server_library_edit') && $request->user()->user_byond != $book->uploader)
+        if(!$this->can_edit($book,$request->user()))
         {
             abort('403','You do not have the required permission');
         }
@@ -114,21 +112,11 @@ class LibraryController extends Controller
 
     public function getAdd(Request $request)
     {
-//        if($request->user()->cannot('server_library_edit'))
-//        {
-//            abort('403','You do not have the required permission');
-//        }
-
         return view('server.library.add');
     }
 
     public function postAdd(Request $request)
     {
-//        if($request->user()->cannot('server_library_edit'))
-//        {
-//            abort('403','You do not have the required permission');
-//        }
-
         $this->validate($request,[
             'author' => 'required|max:50',
             'title' => 'required|max:50',

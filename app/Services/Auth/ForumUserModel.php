@@ -174,4 +174,23 @@ class ForumUserModel extends Model implements AuthenticateableContract
             return NULL;
         }
     }
+
+    /**
+     * Checks if a user has a specific char
+     */
+    public function checkPlayerChar($char_id)
+    {
+        if($this->user_byond_linked == 1)
+        {
+            $char_count = \App\Models\ServerCharacter::where('id',$char_id)->where('ckey',$this->user_byond)->count();
+            if($char_count == 1)
+                return TRUE;
+            else
+                return FALSE;
+        }
+        else{
+            return NULL;
+        }
+
+    }
 }

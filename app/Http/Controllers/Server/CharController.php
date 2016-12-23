@@ -124,6 +124,23 @@ class CharController extends Controller
             ->make();
     }
 
+    public function getCharDataCkey($ckey, Request $request)
+    {
+
+        if($request->user()->cannot('server_chars_show'))
+        {
+            abort('403','You do not have the required permission');
+        }
+
+        $chars = ServerCharacter::where('ckey',$ckey)->select(['id','name','ckey']);
+
+        return Datatables::of($chars)
+            ->removeColumn('id')
+            ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
+            ->addColumn('action','<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a>@can(\'ccia_record_edit\')<a href="{{route(\'server.chars.edit.cr.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Edit CCIA Record</a>@endcan()</p>')
+            ->make();
+    }
+
     private function can_view_char(Request $request,$char)
     {
         //Check if the user is the owner of the char
