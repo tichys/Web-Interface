@@ -127,7 +127,7 @@ class ServerPlayer extends Model
     public function get_available_whitelists()
     {
         //Get Whitelist Status
-        return DB::connection('server')->table('whitelist_statuses')->pluck('status_name', 'flag');
+        return DB::connection('server')->table('whitelist_statuses')->pluck('status_name', 'flag')->toArray();
     }
 
     /**

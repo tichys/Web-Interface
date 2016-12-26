@@ -34,7 +34,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         if ($request->user()->cannot('byond_linked')) {
-            abort(403, 'Byond Account not linked');
+            return redirect()->route('user.link');
         }
 
         $player = ServerPlayer::where('ckey',$request->user()->user_byond)->first();
