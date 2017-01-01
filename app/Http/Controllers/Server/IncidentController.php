@@ -22,7 +22,7 @@ namespace App\Http\Controllers\Server;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ServerIncident;
-use MongoDB\Driver\Server;
+use Illuminate\Support\Collection;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Log;
 
@@ -73,14 +73,13 @@ class IncidentController extends Controller
 
     public function getIncidentDataChar($char_id, Request $request)
     {
-        if (!$this->can_see($char_id, $request->user())) {
-            abort('403', 'You do not have the required permission');
-        }
 
-        if ($request->user()->can('server_players_incidents_show')) {
+        if ($request->user()->can('server_players_incidents_show')) { //Is admin -> Can see deleted incidents
             $incidents = ServerIncident::withTrashed()->where('char_id', $char_id)->select(['id', 'char_id', 'datetime', 'notes', 'brig_sentence', 'fine', 'deleted_at']);
-        } else {
+        } else if ($request->user()->checkPlayerChar($char_id) == TRUE) { //Is owner -> Can active incidents
             $incidents = ServerIncident::where('char_id', $char_id)->select(['id', 'char_id', 'datetime', 'notes', 'brig_sentence', 'fine', 'deleted_at']);
+        } else { //Is soneone else -> Can see no incidents
+            $incidents = new Collection;
         }
 
 
@@ -91,14 +90,14 @@ class IncidentController extends Controller
             ->editColumn('notes', '{{substr($notes,0,150)}}')
             ->editColumn('brig_sentence', '{{$brig_sentence}} minutes')
             ->editColumn('fine', '{{$fine}} Credits')
-            ->addColumn('status','@if(isset($deleted_at)) Active @else() Deleted @endif()')
+            ->addColumn('status','@if(isset($deleted_at)) Deleted @else() Active @endif()')
             ->addColumn('action', '<p><a href="{{route(\'server.incidents.show.get\',[\'incident_id\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
             ->make();
     }
 
     private function can_edit($char_id, $user)
     {
-        //Check if user has library edit persm
+        //Check if user has char edit persm or is the owner of the car
         if ($user->can('server_players_incidents_edit'))
             return TRUE;
         if ($user->checkPlayerChar($char_id) == TRUE)
@@ -109,7 +108,7 @@ class IncidentController extends Controller
 
     private function can_see($char_id, $user)
     {
-        //Check if user has library edit persm
+        //Check if user has char show persm or is the owner of the char
         if ($user->can('server_players_incidents_show'))
             return TRUE;
         if ($user->checkPlayerChar($char_id) == TRUE)
