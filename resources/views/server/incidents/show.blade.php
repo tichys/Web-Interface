@@ -20,11 +20,11 @@
 @section('content')
 <div class="container">
     <div class="row">
+        @if(isset($incident->deleted_at))
+            <div class="alert alert-danger"><b>This incident has been deleted by (the) {{$incident->deleted_by}} and is only displayed to staff members</b></div>
+        @endif()
         <div class="col-md-6 col-md-offset-1">
             @include('components.formerrors')
-            @if(isset($incident->deleted_at))
-                <div class="alert alert-danger"><b>This incident has been deleted by (the) {{$incident->deleted_by}} and is only displayed to staff members</b></div>
-            @endif()
             <div class="panel panel-default">
                 <div class="panel-heading"><b>Incident: </b>{{$incident->UID}}</div>
 
@@ -63,7 +63,7 @@
                         <td><b>Game ID:</b></td>
                         <td>{{$incident->game_id}}</td>
                     </tr>
-                    @if($can_edit)
+                    @if($can_edit && !isset($incident->deleted_at))
                         <tr>
                             <td><b>Actions</b></td>
                             <td><a href="{{route('server.incidents.delete.get',['incident_id'=>$incident->id])}}" class="btn btn-danger" role="button">Delete</a></td>
