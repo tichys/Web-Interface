@@ -5,7 +5,6 @@ D - ccia_general_notice_edit -> Edit DO Notices
 
 D - ccia_action_show -> Show the ccia actions
 D - ccia_action_edit -> Edit the ccia actions
-D - ccia_record_edit -> Edit the ccia char record
 
 ccia_recorderlogs_show -> Show the ccia recorder logs
 ccia_recorderlogs_edit -> Edit the ccia recorder logs
@@ -15,8 +14,7 @@ ccia_recorderlogs_edit -> Edit the ccia recorder logs
 # Server Stuff
 #
 D - server_chars_show -> Show the Character Records (admin_char_show)
-server_chars_edit -> Edit the Characters
-server_chars_edit_records -> Edit the Char Records
+D - server_chars_edit -> Edit the Characters
 
 D - server_forms_show -> Show the corporate Form Database (admin_forms_show)
 D - server_forms_edit -> Edit the corporate Form Database (admin_forms_edit)

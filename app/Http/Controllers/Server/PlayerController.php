@@ -75,7 +75,7 @@ class PlayerController extends Controller
     {
         $player = ServerPlayer::findOrFail($player_id);
 
-        return view('server.player.show',['player'=>$player,'whitelists'=>$player->get_player_whitelists()]);
+        return view('server.player.show',['player'=>$player,'whitelists'=>$player->get_player_whitelists(0)]);
     }
 
 

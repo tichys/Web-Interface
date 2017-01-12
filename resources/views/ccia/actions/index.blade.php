@@ -29,7 +29,6 @@
                     <li class="active"><a data-toggle="tab" href="#active">Active Actions</a></li>
                     @can('ccia_action_show')<li><a data-toggle="tab" href="#all">All Actions</a></li>@endcan()
                 </ul>
-
                 <div class="tab-content">
                     <div id="active" class="tab-pane fade in active">
                         <div class="panel panel-default">
@@ -47,7 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    @can('ccia_actions_show')
+                    @can('ccia_action_show')
                     <div id="all" class="tab-pane fade in">
                         <div class="tab-pane fade in ">
                             <div class="panel panel-default">
@@ -84,7 +83,7 @@
                 serverSide: true,
                 ajax: '{{ route('ccia.actions.data.active') }}'
             });
-            @can('ccia_actions_show')
+            @can('ccia_action_show')
             $('#all-actions-table').DataTable({
                 processing: true,
                 serverSide: true,
