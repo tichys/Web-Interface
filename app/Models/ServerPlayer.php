@@ -222,9 +222,9 @@ class ServerPlayer extends Model
     {
         if ($this->ckey == NULL) return NULL;
         if($with_subspecies){
-            $whitelists = DB::connection('server')->table('whitelist_statuses')->orderBy('flag')->get()->toArray();
+            $whitelists = DB::connection('server')->table('whitelist_statuses')->orderBy('flag')->orderBy('subspecies')->get()->toArray();
         }else{
-            $whitelists = DB::connection('server')->table('whitelist_statuses')->orderBy('flag')->where('subspecies',0)->get()->toArray();
+            $whitelists = DB::connection('server')->table('whitelist_statuses')->orderBy('flag')->orderBy('subspecies')->where('subspecies',0)->get()->toArray();
         }
 
         foreach ($whitelists as $whitelist) {
