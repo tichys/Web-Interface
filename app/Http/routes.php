@@ -88,8 +88,7 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('', ['as' => 'server.chars.index', 'uses' => 'Server\CharController@index']);
             Route::get('/all', ['as' => 'server.chars.index.all', 'uses' => 'Server\CharController@indexAll']);
             Route::get('/{char_id}/show', ['as' => 'server.chars.show.get', 'uses' => 'Server\CharController@getShow']);
-            Route::get('/{char_id}/edit/cr', ['as' => 'server.chars.edit.cr.get', 'uses' => 'Server\CharController@getEditCR']);
-            Route::post('/{char_id}/edit/cr', ['as' => 'server.chars.edit.cr.post', 'uses' => 'Server\CharController@postEditCR']);
+            Route::post('/{char_id}/edit/text', ['as' => 'server.chars.edit.text.post', 'uses' => 'Server\CharController@postEditText']);
             Route::get('/data/own', ['as' => 'server.chars.data.own', 'uses' => 'Server\CharController@getCharDataOwn']);
             Route::get('/data/all', ['as' => 'server.chars.data.all', 'uses' => 'Server\CharController@getCharDataAll']);
             Route::get('/data/ckey/{ckey}', ['as' => 'server.chars.data.ckey', 'uses' => 'Server\CharController@getCharDataCkey']);
