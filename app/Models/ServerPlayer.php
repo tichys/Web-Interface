@@ -56,7 +56,7 @@ class ServerPlayer extends Model
 
 
         //Check if its a string or a arrray
-        if (is_integer($flag_input)) {
+        if (intval($flag_input != 0)) {
 
             $this->whitelist_status |= $flag_input;
             $this->save();
@@ -148,7 +148,7 @@ class ServerPlayer extends Model
         if ($this->ckey == NULL) return NULL;
 
         //Check if its a string or a arrray
-        if (is_integer($flag_input)) {
+        if (intval($flag_input != 0)) {
 
             $this->whitelist_status -= $flag_input;
             $this->save();
@@ -214,28 +214,26 @@ class ServerPlayer extends Model
     /**
      * Returns a array with all available whitelists and a true/false value for each one
      *
+     * @param bool $with_subspecies
+     *
      * @return array|null
      */
-    public function get_player_whitelists()
+    public function get_player_whitelists($with_subspecies = TRUE)
     {
         if ($this->ckey == NULL) return NULL;
-        //Get Whitelist Status
-        $statuses = DB::connection('server')->table('whitelist_statuses')->get();
-
-        $status_list = array();
-        foreach ($statuses as $whitelist) {
-            $status_list[$whitelist->status_name] = $whitelist->flag;
+        if($with_subspecies){
+            $whitelists = DB::connection('server')->table('whitelist_statuses')->orderBy('flag')->get()->toArray();
+        }else{
+            $whitelists = DB::connection('server')->table('whitelist_statuses')->orderBy('flag')->where('subspecies',0)->get()->toArray();
         }
 
-        $whitelists = array();
-        foreach ($status_list as $key => $value) {
-            if (($this->whitelist_status & $value) != 0) {
-                $whitelists[$key] = TRUE;
+        foreach ($whitelists as $whitelist) {
+            if (($this->whitelist_status & $whitelist->flag) != 0) {
+                $whitelist->active = 1;
             } else {
-                $whitelists[$key] = FALSE;
+                $whitelist->active = 0;
             }
         }
-
         return $whitelists;
     }
 
@@ -253,7 +251,7 @@ class ServerPlayer extends Model
 
         if (is_string($required_whitelist)) {
             $whitelist = DB::connection('server')->table('whitelist_statuses')->where('status_name', $required_whitelist)->first();
-            if(!isset($whitelist->flag)) return FALSE;
+            if (!isset($whitelist->flag)) return FALSE;
             if (($this->whitelist_status & $whitelist->flag) != 0) {
                 return TRUE;
             } else {
@@ -275,7 +273,7 @@ class ServerPlayer extends Model
      */
     public function get_chars()
     {
-        return \App\Models\ServerCharacter::where('ckey',$this->ckey)->get();
+        return \App\Models\ServerCharacter::where('ckey', $this->ckey)->get();
     }
 
     /**
@@ -283,16 +281,18 @@ class ServerPlayer extends Model
      */
     public function get_char_ids()
     {
-        return \App\Models\ServerCharacter::where('ckey',$this->ckey)->pluck('id');
+        return \App\Models\ServerCharacter::where('ckey', $this->ckey)->pluck('id');
     }
 
     /**
      * Check if the player "owns" a specific char
+     *
      * @param int char_id The id of the char that should be checked
      *
      * @returns bool
      */
-    public function check_player_char($char_id){
-        return \App\Models\ServerCharacter::where('ckey',$this->ckey)->where('id',$char_id)->count() > 0;
+    public function check_player_char($char_id)
+    {
+        return \App\Models\ServerCharacter::where('ckey', $this->ckey)->where('id', $char_id)->count() > 0;
     }
 }

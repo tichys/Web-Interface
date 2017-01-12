@@ -65,7 +65,7 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
+                    {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
                     @if(Auth::check())
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -228,7 +228,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.11.3</p></small>
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.12.0</p></small>
     </div>
 </footer>
 </html>
