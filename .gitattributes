@@ -1,3 +1,5 @@
 * text=auto
 *.css linguist-vendored
 *.less linguist-vendored
+public/assets/js linguist-vendored
+public/vendor linguist-vendored

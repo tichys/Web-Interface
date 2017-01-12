@@ -179,35 +179,86 @@
                 <div id="recemploy" class="tab-pane fade in active">
                     <div class="panel panel-default">
                         <div class="panel-heading">Employment Records</div>
-                        <div class="panel-body">@striptags($char_flavour->records_employment)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('records_employment',$char_flavour->records_employment)}}
+                                {{Form::hidden('type','records_employment')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('records_employment',$char_flavour->records_employment,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
                 <div id="recmed" class="tab-pane fade in">
                     <div class="panel panel-default">
                         <div class="panel-heading">Medical Records</div>
-                        <div class="panel-body">@striptags($char_flavour->records_medical)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('records_medical',$char_flavour->records_medical)}}
+                                {{Form::hidden('type','records_medical')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('records_medical',$char_flavour->records_medical,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
                 <div id="recsec" class="tab-pane fade in">
                     <div class="panel panel-default">
                         <div class="panel-heading">Security Records</div>
-                        <div class="panel-body">@striptags($char_flavour->records_security)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('records_security',$char_flavour->records_security)}}
+                                {{Form::hidden('type','records_security')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('records_security',$char_flavour->records_security,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
                 <div id="recccia" class="tab-pane fade in">
                     <div class="panel panel-default">
                         <div class="panel-heading">CCIA Records</div>
-                        <div class="panel-body">@striptags($char_flavour->records_ccia)
-                            <p>
-                                @can('server_chars_show')<a href="{{route('server.chars.edit.cr.get',['char_id'=>$char->id])}}" class="btn btn-info" role="button">Edit CCIA Record</a>@endcan()
-                            </p>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('records_employment',$char_flavour->records_ccia)}}
+                                {{Form::hidden('type','records_ccia')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('records_ccia',$char_flavour->records_ccia,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
                         </div>
                     </div>
                 </div>
                 <div id="recexploit" class="tab-pane fade in">
                     <div class="panel panel-default">
                         <div class="panel-heading">Exploitable Information</div>
-                        <div class="panel-body">@striptags($char_flavour->records_exploit)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('records_exploit',$char_flavour->records_exploit)}}
+                                {{Form::hidden('type','records_exploit')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('records_exploit',$char_flavour->records_exploit,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -228,60 +279,158 @@
                 <li><a data-toggle="tab" href="#flavlegs">Legs</a></li>
                 <li><a data-toggle="tab" href="#flavfeet">Feet</a></li>
             </ul>
-
             <div class="tab-content">
                 <div id="flavgen" class="tab-pane fade in active">
                     <div class="panel panel-default">
                         <div class="panel-heading">Flavourtext - General</div>
-                        <div class="panel-body">@striptags($char_flavour->flavour_general)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('flavour_general',$char_flavour->flavour_general)}}
+                                {{Form::hidden('type','flavour_general')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('flavour_general',$char_flavour->flavour_general,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
                 <div id="flavhead" class="tab-pane fade in">
                     <div class="panel panel-default">
                         <div class="panel-heading">Flavourtext - Head</div>
-                        <div class="panel-body">@striptags($char_flavour->flavour_head)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('flavour_head',$char_flavour->flavour_head)}}
+                                {{Form::hidden('type','flavour_head')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('flavour_head',$char_flavour->flavour_head,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
                 <div id="flavface" class="tab-pane fade in">
                     <div class="panel panel-default">
                         <div class="panel-heading">Flavourtext - Face</div>
-                        <div class="panel-body">@striptags($char_flavour->flavour_face)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('flavour_face',$char_flavour->flavour_face)}}
+                                {{Form::hidden('type','flavour_face')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('flavour_face',$char_flavour->flavour_face,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
                 <div id="flaveyes" class="tab-pane fade in">
                     <div class="panel panel-default">
                         <div class="panel-heading">Flavourtext - Eyes</div>
-                        <div class="panel-body">@striptags($char_flavour->flavour_eyes)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('flavour_eyes',$char_flavour->flavour_eyes)}}
+                                {{Form::hidden('type','flavour_eyes')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('flavour_eyes',$char_flavour->flavour_eyes,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
                 <div id="flavtorso" class="tab-pane fade in">
                     <div class="panel panel-default">
                         <div class="panel-heading">Flavourtext - Torso</div>
-                        <div class="panel-body">@striptags($char_flavour->flavour_torso)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('flavour_torso',$char_flavour->flavour_torso)}}
+                                {{Form::hidden('type','flavour_torso')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('flavour_torso',$char_flavour->flavour_torso,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
                 <div id="flavarms" class="tab-pane fade in">
                     <div class="panel panel-default">
                         <div class="panel-heading">Flavourtext - Arms</div>
-                        <div class="panel-body">@striptags($char_flavour->flavour_arms)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('flavour_arms',$char_flavour->flavour_arms)}}
+                                {{Form::hidden('type','flavour_arms')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('flavour_arms',$char_flavour->flavour_arms,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
                 <div id="flavhands" class="tab-pane fade in">
                     <div class="panel panel-default">
                         <div class="panel-heading">Flavourtext - Hands</div>
-                        <div class="panel-body">@striptags($char_flavour->flavour_hands)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('flavour_hands',$char_flavour->flavour_hands)}}
+                                {{Form::hidden('type','flavour_hands')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('flavour_hands',$char_flavour->flavour_hands,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
                 <div id="flavlegs" class="tab-pane fade in">
                     <div class="panel panel-default">
                         <div class="panel-heading">Flavourtext - Legs</div>
-                        <div class="panel-body">@striptags($char_flavour->flavour_legs)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('flavour_legs',$char_flavour->flavour_legs)}}
+                                {{Form::hidden('type','flavour_legs')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('flavour_legs',$char_flavour->flavour_legs,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
                 <div id="flavfeet" class="tab-pane fade in">
                     <div class="panel panel-default">
                         <div class="panel-heading">Flavourtext - Feet</div>
-                        <div class="panel-body">@striptags($char_flavour->flavour_feet)</div>
+                        <div class="panel-body">
+                            {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
+                            {{Form::token()}}
+                            @if( $can_edit )
+                                {{Form::bsTextArea('flavour_feet',$char_flavour->flavour_feet)}}
+                                {{Form::hidden('type','flavour_feet')}}
+                                {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+                            @else()
+                                {{Form::bsTextArea('flavour_feet',$char_flavour->flavour_feet,["disabled"])}}
+                            @endif()
+                            {{Form::close()}}
+                        </div>
                     </div>
                 </div>
             </div>

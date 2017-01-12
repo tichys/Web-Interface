@@ -17,10 +17,10 @@
 
 <table class="table table-bordered">
     <tbody>
-    @foreach($whitelists as $whitelist=>$status)
+    @foreach($whitelists as $whitelist)
         <tr>
-            <td>{{$whitelist}}</td>
-            @if($status == TRUE)
+            <td>@if($whitelist->subspecies == 1)-->  @endif(){{$whitelist->status_name}}</td>
+            @if($whitelist->active == 1)
                 <td><span class="label label-success"><span class="glyphicon glyphicon-ok"></span></span></td>
             @else
                 <td><span class="label label-danger"><span class="glyphicon glyphicon-remove"></span></span></td>
