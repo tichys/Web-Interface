@@ -61,20 +61,22 @@
 
                     <table class="table table-bordered">
                         <tbody>
-                        @foreach($whitelists as $whitelist=>$status)
+                        @foreach($whitelists as $whitelist)
                             <tr>
-                                <td>{{$whitelist}}</td>
-                                @if($status == TRUE)
+                                <td>@if($whitelist->subspecies)-->  @endif{{$whitelist->status_name}}</td>
+                                @if($whitelist->active == TRUE)
                                     <td>
                                         <span class="label label-success">
                                             <span class="glyphicon glyphicon-ok"></span>
                                         </span>
                                     </td>
                                     @can('server_players_whitelists_edit')
-                                    <td>
-                                        <a href="{{route('server.players.whitelist.remove',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
-                                           class="btn btn-danger" role="button">Remove Whitelist</a>
-                                    </td>
+                                        <td>
+                                            @if($whitelist->subspecies == 0)
+                                                <a href="{{route('server.players.whitelist.remove',['player_id'=>$player->id,'whitelist'=>$whitelist->flag])}}"
+                                                   class="btn btn-danger" role="button">Remove Whitelist</a>
+                                            @endif
+                                        </td>
                                     @endcan
                                 @else
                                     <td>
@@ -84,8 +86,10 @@
                                     </td>
                                     @can('server_players_whitelists_edit')
                                     <td>
-                                        <a href="{{route('server.players.whitelist.add',['player_id'=>$player->id,'whitelist'=>$whitelist])}}"
-                                           class="btn btn-success" role="button">Add Whitelist</a>
+                                        @if($whitelist->subspecies == 0)
+                                            <a href="{{route('server.players.whitelist.add',['player_id'=>$player->id,'whitelist'=>$whitelist->flag])}}"
+                                               class="btn btn-success" role="button">Add Whitelist</a>
+                                        @endif
                                     </td>
                                     @endcan
                                 @endif
