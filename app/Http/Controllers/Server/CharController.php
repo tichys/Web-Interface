@@ -70,6 +70,9 @@ class CharController extends Controller
             $request->get('type') => 'bail|required|string'
         ]);
 
+        if($request->input('type') == 'records_ccia' && $request->user()->cannot('server_chars_edit'))
+            abort('403','You do not have the required permission to edit this record');
+
         $type = $request->input('type');
 
         $char_flavour = ServerCharacterFlavour::findOrFail($char_id);

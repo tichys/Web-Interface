@@ -233,13 +233,13 @@
                         <div class="panel-body">
                             {{Form::open(array('route' => array('server.chars.edit.text.post', $char_flavour->char_id),'method' => 'post')) }}
                             {{Form::token()}}
-                            @if( $can_edit )
-                                {{Form::bsTextArea('records_employment',$char_flavour->records_ccia)}}
+                            @can('server_chars_edit')
+                                {{Form::bsTextArea('records_ccia',$char_flavour->records_ccia)}}
                                 {{Form::hidden('type','records_ccia')}}
                                 {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
                             @else()
                                 {{Form::bsTextArea('records_ccia',$char_flavour->records_ccia,["disabled"])}}
-                            @endif()
+                            @endcan
                             {{Form::close()}}
                         </div>
                     </div>
