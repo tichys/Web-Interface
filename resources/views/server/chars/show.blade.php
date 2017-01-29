@@ -487,6 +487,28 @@
             </div>
         </div>
     </div>
+    @can('server_chars_edit')
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Character Log</div>
+
+                    <div class="panel-body">
+                        <table id="character-log-table" class="table table-condensed">
+                            <thead>
+                            <tr>
+                                <th width="20px">Game ID</th>
+                                <th width="20px">DateTime</th>
+                                <th width="50px">Job Name</th>
+                                <th width="50px">Special Role</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endcan()
 </div>
 @endsection
 
@@ -500,6 +522,13 @@
                 serverSide: true,
                 ajax: '{{ route('server.incidents.data.char',["char_id" => $char->id]) }}'
             });
+            @can('server_chars_show')
+                $('#character-log-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('server.chars.data.log',["char_id" => $char->id]) }}'
+            });
+            @endcan()
         });
     </script>
 @endsection

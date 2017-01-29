@@ -26,6 +26,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\ServerCharacter;
 use App\Models\ServerCharacterFlavour;
+use App\Models\ServerCharacterLog;
 use phpDocumentor\Reflection\Types\Null_;
 use Yajra\Datatables\Facades\Datatables;
 use Log;
@@ -59,6 +60,32 @@ class CharController extends Controller
         return view('server.chars.show', ['char' => $char, 'char_flavour' => $char_flavour, 'can_edit' => $this->can_edit_char($request, $char)]);
     }
 
+    private function can_view_char(Request $request, $char)
+    {
+        //Check if the user is the owner of the char
+        if ($request->user()->user_byond == $char->ckey)
+            return TRUE;
+
+        //Check if the user has the permission to view characters
+        if ($request->user()->can('server_chars_show'))
+            return TRUE;
+
+        return FALSE;
+    }
+
+    private function can_edit_char(Request $request, $char)
+    {
+        //Check if the user is the owner of the char
+        if ($request->user()->user_byond == $char->ckey)
+            return TRUE;
+
+        //Check if the user has the permission to view characters
+        if ($request->user()->can('server_chars_edit'))
+            return TRUE;
+
+        return FALSE;
+    }
+
     public function postEditText(Request $request, $char_id)
     {
         $char = ServerCharacter::findOrFail($char_id);
@@ -84,7 +111,7 @@ class CharController extends Controller
 
     public function postEditName(Request $request, $char_id)
     {
-        if($request->user()->cannot('server_chars_edit'))
+        if ($request->user()->cannot('server_chars_edit'))
             abort('403', 'You do not have the required permission to perform this action');
 
         $this->validate($request, [
@@ -95,14 +122,24 @@ class CharController extends Controller
         $new_name = $request->input('name');
         $char->name = $new_name;
         $char->save();
-        Log::notice('perm.server.char.name.edit - Char Name has been edited', ['user_id' => $request->user()->user_id, 'char_id' => $char_id, 'old_name' => $old_name,'new_name'=>$new_name]);
+        Log::notice('perm.server.char.name.edit - Char Name has been edited', ['user_id' => $request->user()->user_id, 'char_id' => $char_id, 'old_name' => $old_name, 'new_name' => $new_name]);
         return redirect()->route('server.chars.show.get', ['char_id' => $char_id]);
     }
 
+    public function getCharDataLog(Request $request, $char_id)
+    {
+        if ($request->user()->cannot('server_chars_show')) {
+            abort('403', 'You do not have the required permission');
+        }
+
+        $charslog = ServerCharacterLog::select(['game_id', 'datetime', 'job_name', 'special_role'])->where('char_id',$char_id);
+
+        return Datatables::of($charslog)
+            ->make();
+    }
 
     public function getCharDataAll(Request $request)
     {
-
         if ($request->user()->cannot('server_chars_show')) {
             abort('403', 'You do not have the required permission');
         }
@@ -141,31 +178,5 @@ class CharController extends Controller
             ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
             ->make();
-    }
-
-    private function can_view_char(Request $request, $char)
-    {
-        //Check if the user is the owner of the char
-        if ($request->user()->user_byond == $char->ckey)
-            return TRUE;
-
-        //Check if the user has the permission to view characters
-        if ($request->user()->can('server_chars_show'))
-            return TRUE;
-
-        return FALSE;
-    }
-
-    private function can_edit_char(Request $request, $char)
-    {
-        //Check if the user is the owner of the char
-        if ($request->user()->user_byond == $char->ckey)
-            return TRUE;
-
-        //Check if the user has the permission to view characters
-        if ($request->user()->can('server_chars_edit'))
-            return TRUE;
-
-        return FALSE;
     }
 }

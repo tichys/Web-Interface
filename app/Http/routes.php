@@ -90,6 +90,7 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/{char_id}/show', ['as' => 'server.chars.show.get', 'uses' => 'Server\CharController@getShow']);
             Route::post('/{char_id}/edit/text', ['as' => 'server.chars.edit.text.post', 'uses' => 'Server\CharController@postEditText']);
             Route::post('/{char_id}/edit/name', ['as' => 'server.chars.edit.name.post', 'uses' => 'Server\CharController@postEditName']);
+            Route::get('/{char_id}/data/log', ['as' => 'server.chars.data.log', 'uses' => 'Server\CharController@getCharDataLog']);
             Route::get('/data/own', ['as' => 'server.chars.data.own', 'uses' => 'Server\CharController@getCharDataOwn']);
             Route::get('/data/all', ['as' => 'server.chars.data.all', 'uses' => 'Server\CharController@getCharDataAll']);
             Route::get('/data/ckey/{ckey}', ['as' => 'server.chars.data.ckey', 'uses' => 'Server\CharController@getCharDataCkey']);
