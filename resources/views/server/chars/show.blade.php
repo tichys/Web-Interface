@@ -58,52 +58,50 @@
                 </table>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">Hair Colour/Style</div>
+        @can('server_chars_edit')
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Change Char Name</div>
 
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <td><b>Hair Colour:</b></td>
-                        <td bgcolor="{{$char->hair_colour}}"></td>
-                    </tr>
-                    <tr>
-                        <td><b>Hair Style:</b></td>
-                        <td>{{$char->hair_style}}</td>
-                    </tr>
-                    <tr>
-                        <td><b>Facial Hair Colour:</b></td>
-                        <td bgcolor="{{$char->facial_colour}}"></td>
-                    </tr>
-                    <tr>
-                        <td><b>Facial Hair Style:</b></td>
-                        <td>{{$char->facial_style}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                    <table class="table">
+                        {{Form::open(array('route' => array('server.chars.edit.name.post', $char_flavour->char_id),'method' => 'post')) }}
+                        {{Form::token()}}
+
+                        <tbody>
+                        <tr>
+                            <td><b>Current Name:</b></td>
+                            <td>{{$char->name}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>New Name:</b></td>
+                            <td>{{ Form::text("name", $char->name, ['class' => 'form-control']) }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{Form::submit('Submit', array('class'=>'btn btn-default'))}}</td>
+                        </tr>
+                        </tbody>
+                        {{Form::close()}}
+                    </table>
+                </div>
             </div>
-        </div>
+        @endcan()
         <div class="col-md-4">
             <div class="panel panel-default">
-                <div class="panel-heading">Skin/Eye Color</div>
+                <div class="panel-heading">Underwear / Undershirt / Backpack</div>
 
                 <table class="table">
                     <tbody>
-                    @if($char->species == "Human")
                     <tr>
-                        <td><b>Skin Tone:</b></td>
-                        <td>{{$char->skin_tone}}</td>
+                        <td><b>Underwear:</b></td>
+                        <td>{{$char->underwear}}</td>
                     </tr>
-                    @else()
                     <tr>
-                        <td><b>Skin Colour:</b></td>
-                        <td bgcolor="{{$char->skin_colour}}"></td>
+                        <td><b>Undershirt:</b></td>
+                        <td>{{$char->undershirt}}</td>
                     </tr>
-                    @endif()
                     <tr>
-                        <td><b>Eye Colour:</b></td>
-                        <td bgcolor="{{$char->eyes_colour}}"></td>
+                        <td><b>Backbag:</b></td>
+                        <td>{{$char->backbag}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -143,21 +141,50 @@
         </div>
         <div class="col-md-4">
             <div class="panel panel-default">
-                <div class="panel-heading">Underwear / Undershirt / Backpack</div>
+                <div class="panel-heading">Hair Colour/Style</div>
 
                 <table class="table">
                     <tbody>
                     <tr>
-                        <td><b>Underwear:</b></td>
-                        <td>{{$char->underwear}}</td>
+                        <td><b>Hair Colour:</b></td>
+                        <td bgcolor="{{$char->hair_colour}}"></td>
                     </tr>
                     <tr>
-                        <td><b>Undershirt:</b></td>
-                        <td>{{$char->undershirt}}</td>
+                        <td><b>Hair Style:</b></td>
+                        <td>{{$char->hair_style}}</td>
                     </tr>
                     <tr>
-                        <td><b>Backbag:</b></td>
-                        <td>{{$char->backbag}}</td>
+                        <td><b>Facial Hair Colour:</b></td>
+                        <td bgcolor="{{$char->facial_colour}}"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Facial Hair Style:</b></td>
+                        <td>{{$char->facial_style}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Skin/Eye Color</div>
+
+                <table class="table">
+                    <tbody>
+                    @if($char->species == "Human")
+                        <tr>
+                            <td><b>Skin Tone:</b></td>
+                            <td>{{$char->skin_tone}}</td>
+                        </tr>
+                    @else()
+                        <tr>
+                            <td><b>Skin Colour:</b></td>
+                            <td bgcolor="{{$char->skin_colour}}"></td>
+                        </tr>
+                    @endif()
+                    <tr>
+                        <td><b>Eye Colour:</b></td>
+                        <td bgcolor="{{$char->eyes_colour}}"></td>
                     </tr>
                     </tbody>
                 </table>
