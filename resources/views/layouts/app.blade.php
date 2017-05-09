@@ -179,13 +179,16 @@
                                             <a href="{{route('server.stats.index')}}"><i class="fa fa-btn"></i>Statistics <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                         </li>
                                         <li @cannot('server_logs_show')class="disabled"@endcannot>
-                                            <a href="#"><i class="fa fa-btn"></i>Server Logs <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                            <a href="{{config("aurora.logserver_address")}}"><i class="fa fa-btn"></i>Server Logs</a>
                                         </li>
                                         <li @cannot('syndie_contest_show')class="disabled"@endcannot>
                                             <a href="{{route('syndie.contest.view')}}"><i class="fa fa-btn"></i>Contest Stats</a>
                                         </li>
                                         <li @cannot('server_whitelist_log_show')class="disabled"@endcannot>
                                             <a href="{{route('server.whitelist.log')}}"><i class="fa fa-btn"></i>Whitelist Log</a>
+                                        </li>
+                                        <li @cannot('server_exterminatus')class="disabled"@endcannot>
+                                            <a href=""><i class="fa fa-btn"></i>Exterminatus</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -228,7 +231,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.13.0</p></small>
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.14.0</p></small>
     </div>
 </footer>
 </html>
