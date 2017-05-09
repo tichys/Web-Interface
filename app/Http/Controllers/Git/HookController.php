@@ -12,12 +12,22 @@ class HookController extends Controller
     public function index(Request $request)
     {
         $event = $request->header("X-GitHub-Event");
-        $sign = $request->header("X-Hub-Signatur");
+        $sign = $request->header("X-Hub-Signature");
 
-        //Auth Request
-        if(!hash_hmac( 'sha1', $request->getContent(),config("aurora.github_hook_secret")))
-        {
-            abort(401);
+        //Verify Github Signature
+        if(!$sign)
+            abort("400","No Signature Provided");
+
+        if(!extension_loaded("hash"))
+            abort("500","Missing 'hash' extension to check the secret code validity.");
+
+        list($algo, $hash) = explode('=', $_SERVER['HTTP_X_HUB_SIGNATURE'], 2) + array('', '');
+        if (!in_array($algo, hash_algos(), TRUE)) {
+            abort("500","Hash algorithm '$algo' is not supported.");
+        }
+
+        if (!hash_equals($hash,hash_hmac($algo, $request->getContent(), config("aurora.github_hook_secret")))) {
+            abort(401,"Secret does not match");
         }
 
         if($event == "ping"){
