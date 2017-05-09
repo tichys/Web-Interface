@@ -12,6 +12,13 @@ class HookController extends Controller
     public function index(Request $request)
     {
         $event = $request->header("X-GitHub-Event");
+        $sign = $request->header("X-Hub-Signatur");
+
+        //Auth Request
+        if(!hash_hmac( 'sha1', $request->getContent(),config("aurora.github_hook_secret")))
+        {
+            abort(401);
+        }
 
         if($event == "ping"){
             return "pong";
