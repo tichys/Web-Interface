@@ -43,6 +43,7 @@ class HookController extends Controller
                 $db_pull->git_id = $number;
                 $db_pull->merged_into = $merged_into;
                 $db_pull->save();
+                echo "new";
             }
             else //If so, then replace the current entry
             {
@@ -53,7 +54,8 @@ class HookController extends Controller
                 $db_pull->save();
 
                 //Drop all the current Pull ToDos
-                GitPullTodos::where('number',$number)->delete();
+                GitPullTodos::where('pull_id',$db_pull->pull_id)->delete();
+                echo "update ".$db_pull->pull_id;
             }
 
             $clean_todo_array = array();
