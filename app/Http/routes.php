@@ -250,4 +250,8 @@ Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
         Route::post('/live/sendreport', ['as' => 'api.server.live.post.sendreport', 'uses' => 'Server\LiveController@postSendreport']);
         Route::post('/live/grantrespawn', ['as' => 'api.server.live.post.grantrespawn', 'uses' => 'Server\LiveController@postGrantrespawn']);
     });
+
+    Route::group(['prefix'=>'git'],function(){
+        Route::any('/',['as'=>'api.git.index','uses'=>'Git\HookCOntroller@index']);
+    });
 });
