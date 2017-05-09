@@ -139,5 +139,14 @@ return [
     */
     "logserver_address" => env('LOGSERVER_ADDRESS', NULL),
 
-
+    /*
+    |--------------------------------------------------------------------------
+    | Github Hook Secret
+    |--------------------------------------------------------------------------
+    |
+    | The secret of the github hook to verify its integrity
+    |
+    */
+    "github_hook_secret" => env('GITHUB_HOOK_SECRET', NULL),
+    
 ];
