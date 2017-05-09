@@ -36,7 +36,7 @@ class CreateGitTables extends Migration
                 ->onDelete('cascade');
         });
 
-        Schema::connection('server')->create('git_pull_stats', function (Blueprint $table) {
+        Schema::connection('server')->create('git_pull_todo_stats', function (Blueprint $table) {
             $table->increments('todo_stat_id')->unsigned();
             $table->integer('todo_id')->unsigned();
             $table->string('ckey');
@@ -59,8 +59,8 @@ class CreateGitTables extends Migration
      */
     public function down()
     {
-        Schema::connection('server')->drop('git_pull_requests');
+        Schema::connection('server')->drop('git_pull_todo_stats');
         Schema::connection('server')->drop('git_pull_todos');
-        Schema::connection('server')->drop('git_pull_stats');
+        Schema::connection('server')->drop('git_pull_requests');
     }
 }

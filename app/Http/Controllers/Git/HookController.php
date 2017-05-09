@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Git;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\GitPullRequests;
+use App\Models\GitPullTodos;
 
 class HookController extends Controller
 {
@@ -28,23 +30,48 @@ class HookController extends Controller
             $todo_string = substr($body,strpos($body,"[TODO]")+9); //Strip everything before the start tag
             $todo_string = substr($todo_string,0,strpos($todo_string,"[/TODO]"));
             $todo_array = explode("\r\n",$todo_string);
-            $clean_array = array();
 
-            //Format ToDo List Properly
+            //Check if it targets development ?
+
+            //Check if a entry with that pull request id alraedy exists
+            $db_pull = GitPullRequests::where("git_id",$number)->first();
+            if($db_pull == NULL) //If not then just add it to the db
+            {
+                $db_pull = new GitPullRequests();
+                $db_pull->title = $title;
+                $db_pull->body = $body;
+                $db_pull->git_id = $number;
+                $db_pull->merged_into = $merged_into;
+                $db_pull->save();
+            }
+            else //If so, then replace the current entry
+            {
+                $db_pull->title = $title;
+                $db_pull->body = $body;
+                $db_pull->git_id = $number;
+                $db_pull->merged_into = $merged_into;
+                $db_pull->save();
+
+                //Drop all the current Pull ToDos
+                GitPullTodos::where('number',$number)->delete();
+            }
+
+            $clean_todo_array = array();
+            //Format ToDo List Properly for it to be mass inserted
+            $i = 1;
             foreach ($todo_array as $key=>$value)
             {
                 $text = trim($value," -\t\n\r\0\x0B");
                 if ($text != "")
-                    $clean_array[] = $text;
+                    $clean_todo_array[] = ["pull_id"=>$number,"number"=>$i,"description"=>$text];
+                $i++;
             }
 
-            //Check if a entry with that pull request id alraedy exists
 
-            //If so, then replace the current entry
+            GitPullTodos::insert($clean_todo_array);
 
-            //If not then just add it to the db
-
-            echo "<pre>".var_dump($clean_array)."</pre>";
+//            echo "<pre>".var_dump($db_pull)."</pre><hr>";
+//            echo "<pre>".var_dump($clean_todo_array)."</pre><hr>";
         } else {
             abort(501);
         }
