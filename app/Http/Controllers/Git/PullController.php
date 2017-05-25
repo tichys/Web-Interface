@@ -51,7 +51,7 @@ class PullController extends Controller
 
     public function getPullData()
     {
-        $git_pulls = GitPullRequests::select(['pull_id','git_id','title','merged_into']);
+        $git_pulls = GitPullRequests::select(['pull_id','git_id','title'])->where('merged_into',config('aurora.github_dev_branch'));
 
         return Datatables::of($git_pulls)
             ->removeColumn('pull_id')
@@ -59,7 +59,7 @@ class PullController extends Controller
             ->addColumn('stats',function(GitPullRequests $pull){
                 return '<span class="label label-success">'.$pull->working.'</span> <span class="label label-danger">'.$pull->broken.'</span> <span class="label label-info">'.$pull->untested.'</span>';
             })
-            ->rawColumns([0, 3])
+            ->rawColumns([0, 2])
             ->make();
     }
 

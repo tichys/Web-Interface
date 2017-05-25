@@ -65,7 +65,9 @@ class HookController extends Controller
             $todo_string = substr($todo_string,0,strpos($todo_string,"[/TODO]"));
             $todo_array = explode("\r\n",$todo_string);
 
-            //Check if it targets development ?
+            //Check if it targets development and if ToDos exist
+            if(count($todo_array) == 0 || $merged_into != config("aurora.github_dev_branch"))
+                echo "Ignored - No ToDos or not targeting dev";
 
             //Check if a entry with that pull request id alraedy exists
             $db_pull = GitPullRequests::where("git_id",$number)->first();
@@ -77,7 +79,7 @@ class HookController extends Controller
                 $db_pull->git_id = $number;
                 $db_pull->merged_into = $merged_into;
                 $db_pull->save();
-                echo "new";
+                echo "Created New Pull Request in DB";
             }
             else //If so, then replace the current entry
             {
@@ -89,7 +91,7 @@ class HookController extends Controller
 
                 //Drop all the current Pull ToDos
                 GitPullTodos::where('pull_id',$db_pull->pull_id)->delete();
-                echo "update ".$db_pull->pull_id;
+                echo "Updated Pull Request in DB ".$db_pull->pull_id;
             }
 
             $clean_todo_array = array();
@@ -105,9 +107,6 @@ class HookController extends Controller
 
 
             GitPullTodos::insert($clean_todo_array);
-
-//            echo "<pre>".var_dump($db_pull)."</pre><hr>";
-//            echo "<pre>".var_dump($clean_todo_array)."</pre><hr>";
         } else {
             abort(501);
         }

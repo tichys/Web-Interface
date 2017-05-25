@@ -38,7 +38,6 @@
                             <tr>
                                 <th>Pull ID</th>
                                 <th>Title</th>
-                                <th>Merged into</th>
                                 <th>Working / Broken / Untested</th>
                             </tr>
                             </thead>
