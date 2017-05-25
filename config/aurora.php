@@ -148,5 +148,14 @@ return [
     |
     */
     "github_hook_secret" => env('GITHUB_HOOK_SECRET', NULL),
-    
+
+    /*
+    |--------------------------------------------------------------------------
+    | Github Dev Branch
+    |--------------------------------------------------------------------------
+    |
+    | Branch that Pull requests need to target for them to be inserted into the db
+    |
+    */
+    "github_dev_branch" => env('GITHUB_DEV_BRANCH', "development"),
 ];
