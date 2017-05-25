@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2016 "Werner Maisl"
+ * Copyright (c) 2016-2017 "Werner Maisl"
  *
  * This file is part of Aurorastation-Wi
  * Aurorastation-Wi is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 namespace App\Http\Controllers\Server;
 
 use Illuminate\Http\Request;
-use MongoDB\Driver\Server;
 use Yajra\Datatables\Datatables;
 use App\Models\ServerPlayer;
 use Illuminate\Support\Facades\DB;
@@ -35,14 +34,12 @@ class PlayerController extends Controller
 
     public function __construct()
     {
-        $this->middleware(function($request, $next){
-            if($request->user()->cannot('server_players_show'))
-            {
-                abort('403','You do not have the required permission');
+        $this->middleware(function ($request, $next) {
+            if ($request->user()->cannot('server_players_show')) {
+                abort('403', 'You do not have the required permission');
             }
             return $next($request);
         });
-
     }
 
     /**
@@ -55,11 +52,10 @@ class PlayerController extends Controller
 
     public function getCkey($ckey, Request $request)
     {
-        $id = ServerPlayer::where('ckey',$ckey)->select('id')->first();
-        if($id != NULL)
-        {
+        $id = ServerPlayer::where('ckey', $ckey)->select('id')->first();
+        if ($id != NULL) {
             return redirect()->route('server.players.show', ['player_id' => $id]);
-        }else{
+        } else {
             return redirect()->route('server.players.index');
         }
     }
@@ -75,56 +71,53 @@ class PlayerController extends Controller
     {
         $player = ServerPlayer::findOrFail($player_id);
 
-        return view('server.player.show',['player'=>$player,'whitelists'=>$player->get_player_whitelists(0)]);
+        return view('server.player.show', ['player' => $player, 'whitelists' => $player->get_player_whitelists(0)]);
     }
 
 
     public function addWhitelist($player_id, $whitelist, Request $request)
     {
-        if($request->user()->cannot('server_players_whitelists_edit'))
-        {
-            abort('403','You do not have the required permission');
+        if ($request->user()->cannot('server_players_whitelists_edit')) {
+            abort('403', 'You do not have the required permission');
         }
 
         //Get Server Player
         $player = ServerPlayer::findOrFail($player_id);
 
-        $player->add_player_whitelist_flag($whitelist,$request->user()->username_clean);
+        $player->add_player_whitelist_flag($whitelist, $request->user()->username_clean);
 
-        Log::notice('perm.whitelist.add - Whitelist has been added',['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
+        Log::notice('perm.whitelist.add - Whitelist has been added', ['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
 
         return redirect()->route('server.players.show', ['player_id' => $player_id]);
     }
 
     public function removeWhitelist($player_id, $whitelist, Request $request)
     {
-        if($request->user()->cannot('server_players_whitelists_edit'))
-        {
-            abort('403','You do not have the required permission');
+        if ($request->user()->cannot('server_players_whitelists_edit')) {
+            abort('403', 'You do not have the required permission');
         }
 
         //Get Server Player
         $player = ServerPlayer::findOrFail($player_id);
-        $player->strip_player_whitelist_flag($whitelist,$request->user()->username_clean);
+        $player->strip_player_whitelist_flag($whitelist, $request->user()->username_clean);
 
-        Log::notice('perm.whitelist.remove - Whitelist has been removed',['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
+        Log::notice('perm.whitelist.remove - Whitelist has been removed', ['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
         return redirect()->route('server.players.show', ['player_id' => $player_id]);
     }
 
 
     public function getPlayerWarningsData($player_id, Request $request)
     {
-        if($request->user()->cannot('server_players_warnings_show'))
-        {
-            abort('403','You do not have the required permission');
+        if ($request->user()->cannot('server_players_warnings_show')) {
+            abort('403', 'You do not have the required permission');
         }
 
         $player = ServerPlayer::findOrFail($player_id);
 
         $warnings = DB::connection('server')
             ->table('warnings')
-            ->where('ckey','=',$player->ckey)
-            ->select(['id','time','severity','acknowledged','a_ckey','reason']);
+            ->where('ckey', '=', $player->ckey)
+            ->select(['id', 'time', 'severity', 'acknowledged', 'a_ckey', 'reason']);
 
         return Datatables::of($warnings)
             ->make();
@@ -132,17 +125,16 @@ class PlayerController extends Controller
 
     public function getPlayerNotesData($player_id, Request $request)
     {
-        if($request->user()->cannot('server_players_notes_show'))
-        {
-            abort('403','You do not have the required permission');
+        if ($request->user()->cannot('server_players_notes_show')) {
+            abort('403', 'You do not have the required permission');
         }
 
         $player = ServerPlayer::findOrFail($player_id);
 
         $notes = DB::connection('server')
             ->table('notes')
-            ->where('ckey','=',$player->ckey)
-            ->select(['id','adddate','a_ckey','content']);
+            ->where('ckey', '=', $player->ckey)
+            ->select(['id', 'adddate', 'a_ckey', 'content']);
 
         return Datatables::of($notes)
             ->make();
@@ -151,10 +143,11 @@ class PlayerController extends Controller
 
     public function getPlayerData()
     {
-        $players = ServerPlayer::select(['id','ckey']);
+        $players = ServerPlayer::select(['id', 'ckey']);
 
         return Datatables::of($players)
-            ->editColumn('ckey','<a href="{{route(\'server.players.show\',[\'player_id\'=>$id])}}">{{$ckey}}</a>')
+            ->editColumn('ckey', '<a href="{{route(\'server.players.show\',[\'player_id\'=>$id])}}">{{$ckey}}</a>')
+            ->rawColumns([1])
             ->make();
     }
 }

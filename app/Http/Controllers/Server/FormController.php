@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2016 "Werner Maisl"
+ * Copyright (c) 2016-2017 "Werner Maisl"
  *
  * This file is part of Aurorastation-Wi
  * Aurorastation-Wi is free software: you can redistribute it and/or modify
@@ -32,10 +32,9 @@ class FormController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(function($request, $next){
-            if($request->user()->cannot('server_forms_show'))
-            {
-                abort('403','You do not have the required permission');
+        $this->middleware(function ($request, $next) {
+            if ($request->user()->cannot('server_forms_show')) {
+                abort('403', 'You do not have the required permission');
             }
             return $next($request);
         });
@@ -54,11 +53,10 @@ class FormController extends Controller
 
     public function postEdit($form_id, Request $request)
     {
-        if($request->user()->cannot('server_forms_edit'))
-        {
-            abort('403','You do not have the required permission');
+        if ($request->user()->cannot('server_forms_edit')) {
+            abort('403', 'You do not have the required permission');
         }
-        $this->validate($request,[
+        $this->validate($request, [
             'id' => 'required|max:9999|numeric',
             'name' => 'required|max:50',
             'department' => 'required|max:32',
@@ -74,20 +72,19 @@ class FormController extends Controller
         $form->info = $request->input('info');
         $form->save();
 
-        Log::notice('perm.forms.edit - Form has been edited',['user_id' => $request->user()->user_id, 'form_id' => $form->form_id]);
+        Log::notice('perm.forms.edit - Form has been edited', ['user_id' => $request->user()->user_id, 'form_id' => $form->form_id]);
 
         return redirect()->route('admin.forms.index');
     }
 
     public function delete($form_id, Request $request)
     {
-        if($request->user()->cannot('server_forms_edit'))
-        {
-            abort('403','You do not have the required permission');
+        if ($request->user()->cannot('server_forms_edit')) {
+            abort('403', 'You do not have the required permission');
         }
         $form = ServerForm::findOrFail($form_id);
 
-        Log::notice('perm.forms.delete - Form has been deleted',['user_id' => $request->user()->user_id, 'form_id' => $form->form_id, 'form_ingameid' => $form->id, 'form_name' => $form->name]);
+        Log::notice('perm.forms.delete - Form has been deleted', ['user_id' => $request->user()->user_id, 'form_id' => $form->form_id, 'form_ingameid' => $form->id, 'form_name' => $form->name]);
 
         $form->delete();
 
@@ -96,9 +93,8 @@ class FormController extends Controller
 
     public function getAdd(Request $request)
     {
-        if($request->user()->cannot('server_forms_edit'))
-        {
-            abort('403','You do not have the required permission');
+        if ($request->user()->cannot('server_forms_edit')) {
+            abort('403', 'You do not have the required permission');
         }
 
         return view('server.forms.add');
@@ -106,12 +102,11 @@ class FormController extends Controller
 
     public function postAdd(Request $request)
     {
-        if($request->user()->cannot('server_forms_edit'))
-        {
-            abort('403','You do not have the required permission');
+        if ($request->user()->cannot('server_forms_edit')) {
+            abort('403', 'You do not have the required permission');
         }
 
-        $this->validate($request,[
+        $this->validate($request, [
             'id' => 'required|max:9999|numeric',
             'name' => 'required|max:50',
             'department' => 'required|max:32',
@@ -128,19 +123,20 @@ class FormController extends Controller
         $form->info = $request->input('info');
         $form->save();
 
-        Log::notice('perm.forms.add - Form has been added',['user_id' => $request->user()->user_id, 'form_id' => $form->form_id]);
+        Log::notice('perm.forms.add - Form has been added', ['user_id' => $request->user()->user_id, 'form_id' => $form->form_id]);
 
         return redirect()->route('admin.forms.index');
     }
 
     public function getFormData()
     {
-        $forms = ServerForm::select(['form_id','id', 'name', 'department']);
+        $forms = ServerForm::select(['form_id', 'id', 'name', 'department']);
 
         return Datatables::of($forms)
             ->removeColumn('form_id')
             ->editColumn('name', '<a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}">{{$name}}</a>')
-            ->addColumn('action','<p><a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'server_forms_edit\')<a href="{{route(\'admin.forms.delete\',[\'form\'=>$form_id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->addColumn('action', '<p><a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'server_forms_edit\')<a href="{{route(\'admin.forms.delete\',[\'form\'=>$form_id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->rawColumns([1,3])
             ->make();
     }
 }

@@ -88,6 +88,9 @@ class ServerSSOController extends Controller
             case "contract_overview":
                 return redirect()->route('syndie.contracts.index');
                 break;
+            case "pull_requests":
+                return redirect()->route('server.git.index');
+                break;
             case "contract_details":
                 return redirect()->route('syndie.contracts.show', ['contract' => $request->input('contract')]);
                 break;

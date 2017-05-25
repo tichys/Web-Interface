@@ -18,8 +18,7 @@ class WhitelistLogController extends Controller
             abort('403','You do not have the required permission');
         }
 
-        DB::connection('server')->setFetchMode(PDO::FETCH_ASSOC);
-        $logs = DB::connection('server')->table('whitelist_log')->get();
+        $logs = DB::connection('server')->table('whitelist_log')->orderby('datetime','desc')->get();
 
         return view('server.whitelist.log', [
             'logs' => $logs,

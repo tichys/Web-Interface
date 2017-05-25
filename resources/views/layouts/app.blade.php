@@ -79,6 +79,7 @@
                                     <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>
                                     <li><a href="{{route('user.warnings')}}"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>
                                     <li><a href="{{route('server.library.index')}}"><i class="fa fa-btn"></i>Library</a></li>
+                                    <li><a href="{{route('server.git.index')}}"><i class="fa fa-btn"></i>Pull Requests</a></li>
                                     @can('_heads-of-staff')
                                         <li class="dropdown-submenu">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Head of Staff</a>
@@ -231,7 +232,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface &copy; 2016 by Werner Maisl - Licensed under the AGPL - Version 0.14.2</p></small>
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2017 by Werner Maisl - Licensed under the AGPL - Version 0.15.0</p></small>
     </div>
 </footer>
 </html>

@@ -1,5 +1,22 @@
 <?php
-
+/**
+ * Copyright (c) 2017 "Werner Maisl"
+ *
+ * This file is part of Aurorastation-Wi
+ * Aurorastation-Wi is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 namespace App\Http\Controllers\Git;
 
 use Illuminate\Http\Request;
@@ -82,7 +99,7 @@ class HookController extends Controller
             {
                 $text = trim($value," -\t\n\r\0\x0B");
                 if ($text != "")
-                    $clean_todo_array[] = ["pull_id"=>$number,"number"=>$i,"description"=>$text];
+                    $clean_todo_array[] = ["pull_id"=>$db_pull->pull_id,"number"=>$i,"description"=>$text];
                 $i++;
             }
 
