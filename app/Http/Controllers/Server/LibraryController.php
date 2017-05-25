@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2016 "Werner Maisl"
+ * Copyright (c) 2016-2017 "Werner Maisl"
  *
  * This file is part of Aurorastation-Wi
  * Aurorastation-Wi is free software: you can redistribute it and/or modify
@@ -148,6 +148,7 @@ class LibraryController extends Controller
             ->removeColumn('id')
             ->editColumn('title', '<a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}">{{$title}}</a>')
             ->addColumn('action','<p><a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}" class="btn btn-success" role="button">Show</a>  @can(\'server_library_edit\')<a href="{{route(\'server.library.edit.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'server.library.delete\',[\'book\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->rawColumns([0, 3])
             ->make();
     }
 

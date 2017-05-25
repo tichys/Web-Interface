@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2016 "Werner Maisl"
+ * Copyright (c) 2016-2017 "Werner Maisl"
  *
  * This file is part of Aurorastation-Wi
  * Aurorastation-Wi is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@ class ActionController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(function($request, $next){
+        $this->middleware(function ($request, $next) {
             if ($request->user()->cannot('ccia_action_show') && $request->user()->cannot('_heads-of-staff')) {
                 abort('403', 'You do not have permission to view CCIA Actions.');
             }
@@ -51,7 +51,7 @@ class ActionController extends Controller
     {
         $action = CCIAAction::findOrFail($action_id);
         $linked_chars = $action->characters()->get();
-        return view('ccia.actions.show', ['action' => $action,'linked_chars' => $linked_chars]);
+        return view('ccia.actions.show', ['action' => $action, 'linked_chars' => $linked_chars]);
     }
 
     public function getEdit(Request $request, $action_id)
@@ -85,12 +85,9 @@ class ActionController extends Controller
         $action->url = $request->input('url');
 
         $expires_at = $request->input('expires_at');
-        if($expires_at == NULL || $expires_at == "" || $expires_at == 0)
-        {
+        if ($expires_at == NULL || $expires_at == "" || $expires_at == 0) {
             $action->expires_at = NULL;
-        }
-        else
-        {
+        } else {
             $action->expires_at = $expires_at;
         }
 
@@ -98,7 +95,7 @@ class ActionController extends Controller
 
         Log::notice('perm.cciaaction.edit - CCIA Action has been edited', ['user_id' => $request->user()->user_id, 'action_id' => $action->id]);
 
-        return redirect()->route('ccia.actions.show.get',['action_id'=>$action->id]);
+        return redirect()->route('ccia.actions.show.get', ['action_id' => $action->id]);
     }
 
     public function getAdd(Request $request)
@@ -132,12 +129,9 @@ class ActionController extends Controller
         $action->url = $request->input('url');
 
         $expires_at = $request->input('expires_at');
-        if($expires_at == NULL || $expires_at == "" || $expires_at == 0)
-        {
+        if ($expires_at == NULL || $expires_at == "" || $expires_at == 0) {
             $action->expires_at = NULL;
-        }
-        else
-        {
+        } else {
             $action->expires_at = $expires_at;
         }
 
@@ -145,7 +139,7 @@ class ActionController extends Controller
 
         Log::notice('perm.cciaaction.add - CCIA Action has been added', ['user_id' => $request->user()->user_id, 'action_id' => $action->id]);
 
-        return redirect()->route('ccia.actions.show.get',['action_id'=>$action->id]);
+        return redirect()->route('ccia.actions.show.get', ['action_id' => $action->id]);
     }
 
     public function linkChar(Request $request, $action_id)
@@ -160,7 +154,7 @@ class ActionController extends Controller
 
         Log::notice('perm.cciaaction.attach - CCIA Action Char has been attached', ['user_id' => $request->user()->user_id, 'action_id' => $action->id, 'char_id' => $char_id]);
 
-        return redirect()->route('ccia.actions.show.get',['action_id' => $action_id]);
+        return redirect()->route('ccia.actions.show.get', ['action_id' => $action_id]);
     }
 
     public function unlinkChar(Request $request, $action_id)
@@ -175,7 +169,7 @@ class ActionController extends Controller
 
         Log::notice('perm.cciaaction.detach - CCIA Action Char has been detached', ['user_id' => $request->user()->user_id, 'action_id' => $action->id, 'char_id' => $char_id]);
 
-        return redirect()->route('ccia.actions.show.get',['action_id' => $action_id]);
+        return redirect()->route('ccia.actions.show.get', ['action_id' => $action_id]);
     }
 
     public function delete(Request $request, $action_id)
@@ -193,23 +187,26 @@ class ActionController extends Controller
 
     public function getDataActive(Request $request)
     {
-        $data = CCIAAction::select(['id', 'title'])->where('expires_at',NULL)->orWhere('expires_at','>=',date("Y-m-d"));
+        $data = CCIAAction::select(['id', 'title'])->where('expires_at', NULL)->orWhere('expires_at', '>=', date("Y-m-d"));
 
         return Datatables::of($data)
             ->editColumn('title', '<a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}">{{$title}}</a>')
             ->addColumn('action', '<p><a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_action_edit\')<a href="{{route(\'ccia.actions.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.actions.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->rawColumns([1, 2])
             ->make();
     }
+
     public function getDataAll(Request $request)
     {
         if ($request->user()->cannot('ccia_action_show')) {
             abort('403', 'You do not have permission to edit CCIA Actions.');
         }
-        $data = CCIAAction::select(['id', 'title','expires_at']);
+        $data = CCIAAction::select(['id', 'title', 'expires_at']);
 
         return Datatables::of($data)
             ->editColumn('title', '<a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}">{{$title}}</a>')
             ->addColumn('action', '<p><a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_action_edit\')<a href="{{route(\'ccia.actions.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.actions.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->rawColumns([1, 3])
             ->make();
     }
 }

@@ -28,10 +28,10 @@
                         <tbody>
                         @foreach($logs as $log)
                             <tr>
-                                <td>{{$log['datetime']}}</td>
-                                <td>{{$log['user']}}</td>
-                                <td>{{$log['action_method']}}</td>
-                                <td>{{$log['action']}}</td>
+                                <td>{{$log->datetime}}</td>
+                                <td>{{$log->user}}</td>
+                                <td>{{$log->action_method}}</td>
+                                <td>{{$log->action}}</td>
                             </tr>
                         @endforeach
                         </tbody>

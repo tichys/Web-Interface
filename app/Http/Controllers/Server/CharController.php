@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2016 "Werner Maisl"
+ * Copyright (c) 2016-2017 "Werner Maisl"
  *
  * This file is part of Aurorastation-Wi
  * Aurorastation-Wi is free software: you can redistribute it and/or modify
@@ -132,7 +132,7 @@ class CharController extends Controller
             abort('403', 'You do not have the required permission');
         }
 
-        $charslog = ServerCharacterLog::select(['game_id', 'datetime', 'job_name', 'special_role'])->where('char_id',$char_id);
+        $charslog = ServerCharacterLog::select(['game_id', 'datetime', 'job_name', 'special_role'])->where('char_id', $char_id);
 
         return Datatables::of($charslog)
             ->make();
@@ -150,6 +150,7 @@ class CharController extends Controller
             ->removeColumn('id')
             ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
+            ->rawColumns([0, 2])
             ->make();
     }
 
@@ -161,6 +162,7 @@ class CharController extends Controller
             ->removeColumn('id')
             ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
+            ->rawColumns([0, 1])
             ->make();
     }
 
@@ -177,6 +179,7 @@ class CharController extends Controller
             ->removeColumn('id')
             ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
+            ->rawColumns([0, 2])
             ->make();
     }
 }

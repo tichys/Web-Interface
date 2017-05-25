@@ -129,6 +129,16 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/ghosts', ['as' => 'server.live.ghosts', 'uses' => 'Server\LiveController@getGhostoptions']);
         });
 
+        Route::group(['prefix' => 'git'], function () {
+            Route::get('', ['as' => 'server.git.index', 'uses' => 'Git\PullController@index']);
+            Route::get('/data', ['as' => 'server.git.data', 'uses' => 'Git\PullController@getPullData']);
+            Route::get('/pull/{pull_id}', ['as' => 'server.git.pull.get', 'uses' => 'Git\PullController@getPull']);
+            Route::get('/pull/{pull_id}/data', ['as' => 'server.git.todo.data', 'uses' => 'Git\PullController@getTodoData']);
+            Route::get('/todo/{todo_id}', ['as' => 'server.git.todo.get', 'uses' => 'Git\PullController@getTodo']);
+            Route::post('/todo/{todo_id}/comment', ['as' => 'server.git.todo.comment.post', 'uses' => 'Git\PullController@postTodoComment']);
+            Route::get('/todo/{todo_id}/data', ['as' => 'server.git.todo.comment.data', 'uses' => 'Git\PullController@getTodoCommentData']);
+        });
+
 //        Route::group(['prefix' => 'permissions'], function () {
 //            Route::any('', ['as' => 'server.permissions.index', 'uses'=>'Server\PermissionController@index']);
 //            Route::get('/{permission_id}/', ['as' => 'server.permissions.show', 'uses'=>'Server\PermissionController@show']);
@@ -251,7 +261,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
         Route::post('/live/grantrespawn', ['as' => 'api.server.live.post.grantrespawn', 'uses' => 'Server\LiveController@postGrantrespawn']);
     });
 
-    Route::group(['prefix'=>'git'],function(){
-        Route::any('/',['as'=>'api.git.index','uses'=>'Git\HookCOntroller@index']);
+    Route::group(['prefix' => 'git'], function () {
+        Route::any('/', ['as' => 'api.git.index', 'uses' => 'Git\HookController@index']);
     });
 });

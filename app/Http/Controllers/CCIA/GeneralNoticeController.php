@@ -2,6 +2,7 @@
     
     /**
      * Copyright (c) 2016 "Sierra Brown"
+     * Copyright (c) 2017 "Werner Maisl"
      *
      * This file is part of Aurorastation-Wi
      * Aurorastation-Wi is free software: you can redistribute it and/or modify
@@ -121,9 +122,10 @@
             $data = CCIAGeneralNotice::select(['id', 'title']);
             
             return Datatables::of($data)
-                             ->editColumn('title', '<a href="{{ route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}">{{$title}}</a>')
-                             ->addColumn('action', '<p><a href="{{ route(\'ccia.generalnotice.show.get\', [\'id\' => $id]) }}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_general_notice_edit\')<a href="{{route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.generalnotice.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
-                             ->make();
+                ->editColumn('title', '<a href="{{ route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}">{{$title}}</a>')
+                ->addColumn('action', '<p><a href="{{ route(\'ccia.generalnotice.show.get\', [\'id\' => $id]) }}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_general_notice_edit\')<a href="{{route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.generalnotice.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+                ->rawColumns([1,2])
+                ->make();
             
         }
     }
