@@ -139,6 +139,10 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/todo/{todo_id}/data', ['as' => 'server.git.todo.comment.data', 'uses' => 'Git\PullController@getTodoCommentData']);
         });
 
+        Route::group(['prefix'=>'exterminatus'],function(){
+            Route::get('', ['as' => 'server.exterminatus.index', 'uses' => 'Server\ExterminatusController@index']);
+        });
+
 //        Route::group(['prefix' => 'permissions'], function () {
 //            Route::any('', ['as' => 'server.permissions.index', 'uses'=>'Server\PermissionController@index']);
 //            Route::get('/{permission_id}/', ['as' => 'server.permissions.show', 'uses'=>'Server\PermissionController@show']);
@@ -151,6 +155,8 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::group(['prefix' => 'player'], function () {
             Route::get('', ['as' => 'server.players.index', 'uses' => 'Server\PlayerController@index']);
+            Route::get('/whitelist_stats', ['as' => 'server.players.whitelist_stats', 'uses' => 'Server\PlayerController@showWhitelistStats']);
+            Route::get('/whitelist_stats/{species}/jobs', ['as' => 'server.players.whitelist_stats.jobs', 'uses' => 'Server\PlayerController@showWhitelistJobStats']);
             Route::get('/ckey/{player_ckey}', ['as' => 'server.players.ckey', 'uses' => 'Server\PlayerController@getCkey']);
             Route::get('/{player_id}/show', ['as' => 'server.players.show', 'uses' => 'Server\PlayerController@show']);
             Route::get('/{player_id}/add_whitelist/{whitelist}', ['as' => 'server.players.whitelist.add', 'uses' => 'Server\PlayerController@addWhitelist']);

@@ -67,7 +67,7 @@ class HookController extends Controller
 
             //Check if it targets development and if ToDos exist
             if(count($todo_array) == 0 || $merged_into != config("aurora.github_dev_branch"))
-                echo "Ignored - No ToDos or not targeting dev";
+                abort(400,"Ignored - No ToDos or not targeting dev");
 
             //Check if a entry with that pull request id alraedy exists
             $db_pull = GitPullRequests::where("git_id",$number)->first();

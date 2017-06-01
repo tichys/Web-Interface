@@ -27,6 +27,7 @@ D - server_permissions_edit -> Edit a users permissions on the server (admin_ser
 D - server_players_show -> Show the player page (Alone Useless -> Needs some of the perms below) (admin_players_show)
 D - server_players_whitelists_show -> Show the whitelists (admin_whitelists_show)
 D - server_players_whitelists_edit ->  Edit the whitelists (admin_whitelists_edit)
+D - server_players_whitelists_stats -> Get some stats about the whitelists and the jobs played by various species
 D - server_players_warnings_show -> Show a players warnings (admin_warnings_show)
 server_players_warnings_edit -> Edit a players warnings (admin_warnings_edit)
 D - server_players_notes_show -> Show a players notes (admin_notes_show)

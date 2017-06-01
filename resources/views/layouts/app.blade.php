@@ -189,7 +189,7 @@
                                             <a href="{{route('server.whitelist.log')}}"><i class="fa fa-btn"></i>Whitelist Log</a>
                                         </li>
                                         <li @cannot('server_exterminatus')class="disabled"@endcannot>
-                                            <a href=""><i class="fa fa-btn"></i>Exterminatus</a>
+                                            <a href="{{route('server.exterminatus.index')}}"><i class="fa fa-btn"></i>Exterminatus</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -232,7 +232,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2017 by Werner Maisl - Licensed under the AGPL - Version 0.15.1</p></small>
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2017 by Werner Maisl - Licensed under the AGPL - Version 0.16.0</p></small>
     </div>
 </footer>
 </html>

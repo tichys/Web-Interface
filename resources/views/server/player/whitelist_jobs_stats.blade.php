@@ -1,4 +1,4 @@
-{{--Copyright (c) 2016 "Werner Maisl"--}}
+{{--Copyright (c) 2016-2017 "Werner Maisl"--}}
 
 {{--This file is part of the Aurora Webinterface--}}
 
@@ -21,24 +21,32 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                @include('components.formerrors')
                 <div class="panel panel-default">
-                    <div class="panel-heading">Add a new CCIA General Notice</div>
+                    <div class="panel-heading">Rounds played as a Specific Job by {{$species}}</div>
 
-                    <div class="panel-body">
-                        {{Form::open(array('route' => 'ccia.generalnotice.add.post','method' => 'post')) }}
-                        {{Form::token()}}
-
-                        {{Form::bsText('title')}}
-                        {{Form::bsTextArea('message')}}
-                        {{Form::bsCheckbox('automatic')}}
-
-                        @can('ccia_general_notice_edit'){{Form::submit('Submit', array('class'=>'btn btn-default'))}}@endcan()
-
-                        {{ Form::close() }}
-                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Job</th>
+                                <th>Rounds Played</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($stats as $stat)
+                                <tr>
+                                    <td>{{$stat->job_name}}</td>
+                                    <td>{{$stat->count}}</td>
+                                </tr>
+                            @endforeach()
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('javascripts')
+    <script src="//cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
+    <script>CKEDITOR.replace('content');</script>
 @endsection
