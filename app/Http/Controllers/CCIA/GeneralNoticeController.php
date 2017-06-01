@@ -67,6 +67,10 @@
             $notice = CCIAGeneralNotice::findOrFail($generalnotice_id);
             $notice->title = $request->input('title');
             $notice->message = $request->input('message');
+            if($request->input('automatic'))
+                $notice->automatic = 1;
+            else
+                $notice->automatic = 0;
             $notice->save();
 
             Log::notice('perm.cciageneralnotice.edit - CCIA General Notice has been edited',['user_id' => $request->user()->user_id, 'notice_id' => $notice->id]);
@@ -97,6 +101,10 @@
             $notice = new CCIAGeneralNotice();
             $notice->title = $request->input('title');
             $notice->message = $request->input('message');
+            if($request->input('automatic'))
+                $notice->automatic = 1;
+            else
+                $notice->automatic = 0;
             $notice->save();
 
             Log::notice('perm.cciageneralnotice.add - CCIA General Notice has been added',['user_id' => $request->user()->user_id, 'notice_id' => $notice->id]);
@@ -119,7 +127,12 @@
         
         public function getData(Request $request)
         {
-            $data = CCIAGeneralNotice::select(['id', 'title']);
+            if ($request->user()->can('ccia_general_notice_edit')) {
+                $data = CCIAGeneralNotice::select(['id', 'title']);
+            }
+            else{
+                $data = CCIAGeneralNotice::select(['id', 'title'])->where('automatic','1');
+            }
             
             return Datatables::of($data)
                 ->editColumn('title', '<a href="{{ route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}">{{$title}}</a>')

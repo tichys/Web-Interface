@@ -32,6 +32,7 @@
 
                     {{Form::bsText('title')}}
                     {{Form::bsTextArea('message')}}
+                    {{Form::bsCheckbox('automatic')}}
 
                     @can('ccia_general_notice_edit'){{Form::submit('Submit', array('class'=>'btn btn-default'))}}@endcan()
 

@@ -74,6 +74,47 @@ class PlayerController extends Controller
         return view('server.player.show', ['player' => $player, 'whitelists' => $player->get_player_whitelists(0)]);
     }
 
+    /**
+     * Show the number of chars and players per whitelist
+     */
+    public function showWhitelistStats()
+    {
+        $this->middleware(function ($request, $next) {
+            if ($request->user()->cannot('server_players_whitelists_stats')) {
+                abort('403', 'You do not have the required permission');
+            }
+            return $next($request);
+        });
+
+        $stats = DB::connection('server')->table('whitelist_statuses')->select(DB::raw('status_name, (SELECT COUNT(*) FROM ss13_player WHERE whitelist_status & flag) as player_count, (SELECT COUNT(*) FROM ss13_characters where species = status_name) as char_count, subspecies, flag'))
+            ->orderBy('flag')
+            ->get();
+
+        return view('server.player.whitelist_stats',["stats"=>$stats]);
+    }
+
+    public function showWhitelistJobStats($species)
+    {
+        $this->middleware(function ($request, $next) {
+            if ($request->user()->cannot('server_players_whitelists_stats')) {
+                abort('403', 'You do not have the required permission');
+            }
+            return $next($request);
+        });
+
+
+        $stats = DB::connection('server')
+            ->table('characters_log')
+            ->select('job_name',DB::raw('COUNT(*) as count'))
+            ->join('characters','characters.id','=','characters_log.char_id')
+            ->groupby('job_name')
+            ->where('characters.species',$species)
+            ->orderby('count','desc')
+            ->get();
+
+        return view('server.player.whitelist_jobs_stats',["stats"=>$stats,'species'=>$species]);
+    }
+
 
     public function addWhitelist($player_id, $whitelist, Request $request)
     {

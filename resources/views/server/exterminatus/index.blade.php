@@ -1,4 +1,4 @@
-{{--Copyright (c) 2016 "Werner Maisl"--}}
+{{--Copyright (c) 2017 "Werner Maisl"--}}
 
 {{--This file is part of the Aurora Webinterface--}}
 
@@ -22,18 +22,26 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 @include('components.formerrors')
+
                 <div class="panel panel-default">
-                    <div class="panel-heading">Add a new CCIA General Notice</div>
+                    <div class="panel-heading">Exterminatus Control Panel</div>
 
                     <div class="panel-body">
-                        {{Form::open(array('route' => 'ccia.generalnotice.add.post','method' => 'post')) }}
+                        {{Form::open(array('route' => 'server.library.add.post','method' => 'post')) }}
                         {{Form::token()}}
 
-                        {{Form::bsText('title')}}
-                        {{Form::bsTextArea('message')}}
-                        {{Form::bsCheckbox('automatic')}}
+                        {{Form::bsText('Name')}}
+                        {{Form::bsSelectList('Race',array(
+                            'Tajara'=>'Tajara',
+                            'Unathi'=>'Unathi',
+                            'Skrell'=>'Skrell',
+                            'Bugs'=>'Bugs',
+                            'Trees'=>'Trees',
+                            'Mice'=>'Mice'))}}
+                        {{Form::bsText('Reason')}}
 
-                        @can('ccia_general_notice_edit'){{Form::submit('Submit', array('class'=>'btn btn-default'))}}@endcan()
+                        {{Form::submit('Exterminate now', array('class'=>'btn btn-danger disabled'))}}
+                        {{Form::submit('Submit Extermination Request', array('class'=>'btn btn-warning'))}}
 
                         {{ Form::close() }}
                     </div>
