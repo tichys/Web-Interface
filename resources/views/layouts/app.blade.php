@@ -127,6 +127,12 @@
                                         <li @cannot('server_chars_show')class="disabled"@endcannot>
                                             <a href="{{route('server.chars.index.all')}}"><i class="fa fa-btn"></i>Character Records</a>
                                         </li>
+                                        <li @cannot('server_whitelist_log_show')class="disabled"@endcannot>
+                                            <a href="{{route('server.whitelist.log')}}"><i class="fa fa-btn"></i>Whitelist Log</a>
+                                        </li>
+                                        <li @cannot('server_players_whitelists_stats')class="disabled"@endcannot>
+                                            <a href="{{route('server.players.whitelist_stats')}}"><i class="fa fa-btn"></i>Whitelist Stats</a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
@@ -185,9 +191,6 @@
                                         <li @cannot('syndie_contest_show')class="disabled"@endcannot>
                                             <a href="{{route('syndie.contest.view')}}"><i class="fa fa-btn"></i>Contest Stats</a>
                                         </li>
-                                        <li @cannot('server_whitelist_log_show')class="disabled"@endcannot>
-                                            <a href="{{route('server.whitelist.log')}}"><i class="fa fa-btn"></i>Whitelist Log</a>
-                                        </li>
                                         <li @cannot('server_exterminatus')class="disabled"@endcannot>
                                             <a href="{{route('server.exterminatus.index')}}"><i class="fa fa-btn"></i>Exterminatus</a>
                                         </li>
@@ -232,7 +235,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2017 by Werner Maisl - Licensed under the AGPL - Version 0.16.0</p></small>
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2017 by Werner Maisl - Licensed under the AGPL - Version 0.16.1</p></small>
     </div>
 </footer>
 </html>
