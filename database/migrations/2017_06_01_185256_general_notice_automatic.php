@@ -14,7 +14,7 @@ class GeneralNoticeAutomatic extends Migration
     public function up()
     {
         Schema::connection('server')->table('ccia_general_notice_list', function (Blueprint $table) {
-            $table->tinyInteger('automatic');
+            $table->tinyInteger('automatic')->default(0);
         });
     }
 
