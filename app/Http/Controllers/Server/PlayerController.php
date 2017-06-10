@@ -83,7 +83,9 @@ class PlayerController extends Controller
             abort('403', 'You do not have the required permission');
         }
 
-        $stats = DB::connection('server')->table('whitelist_statuses')->select(DB::raw('status_name, (SELECT COUNT(*) FROM ss13_player WHERE whitelist_status & flag) as player_count, (SELECT COUNT(*) FROM ss13_characters where species = status_name) as char_count, subspecies, flag'))
+        $stats = DB::connection('server')
+            ->table('whitelist_statuses')
+            ->select(DB::raw('status_name, (SELECT COUNT(*) FROM ss13_player WHERE whitelist_status & flag) as player_count, (SELECT COUNT(*) FROM ss13_characters where species = status_name AND deleted_at IS NULL) as char_count, subspecies, flag'))
             ->orderBy('flag')
             ->get();
 
@@ -103,6 +105,7 @@ class PlayerController extends Controller
             ->join('characters','characters.id','=','characters_log.char_id')
             ->groupby('job_name')
             ->where('characters.species',$species)
+            ->whereNull('characters.deleted_at')
             ->orderby('count','desc')
             ->get();
 
