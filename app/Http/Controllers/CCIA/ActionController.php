@@ -21,6 +21,7 @@
 
 namespace App\Http\Controllers\CCIA;
 
+use App\Services\Auth\ForumUserModel;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -32,24 +33,21 @@ use Illuminate\Support\Facades\Log;
 
 class ActionController extends Controller
 {
-    public function __construct()
+    public function index(Request $request)
     {
-        $this->middleware(function ($request, $next) {
-            if ($request->user()->cannot('ccia_action_show') && $request->user()->cannot('_heads-of-staff')) {
-                abort('403', 'You do not have permission to view CCIA Actions.');
-            }
-            return $next($request);
-        });
-    }
-
-    public function index()
-    {
+        if ($request->user()->cannot('ccia_action_show') && $request->user()->cannot('_heads-of-staff')) {
+            abort('403', 'You do not have permission to view CCIA Actions.');
+        }
         return view('ccia.actions.index');
     }
 
     public function getShow(Request $request, $action_id)
     {
         $action = CCIAAction::findOrFail($action_id);
+        if ($request->user()->cannot('ccia_action_show') && $request->user()->cannot('_heads-of-staff') && !$action->has_linked_char($request->user())) {
+            abort('403', 'You do not have permission to view CCIA Actions.');
+        }
+
         $linked_chars = $action->characters()->get();
         return view('ccia.actions.show', ['action' => $action, 'linked_chars' => $linked_chars]);
     }
@@ -187,6 +185,10 @@ class ActionController extends Controller
 
     public function getDataActive(Request $request)
     {
+        if ($request->user()->cannot('ccia_action_show') && $request->user()->cannot('_heads-of-staff')) {
+            abort('403', 'You do not have permission to view CCIA Actions.');
+        }
+
         $data = CCIAAction::select(['id', 'title'])->where('expires_at', NULL)->orWhere('expires_at', '>=', date("Y-m-d"));
 
         return Datatables::of($data)

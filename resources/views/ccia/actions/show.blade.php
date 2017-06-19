@@ -45,7 +45,7 @@
                 <table class="table table-bordered">
                     <thead>
                     <td><b>Name</b></td>
-                    <td><b>Action</b></td>
+                    @can('ccia_action_edit')<td><b>Action</b></td>@endcan()
                     </thead>
                     <tbody>
                     @can('ccia_action_edit')
@@ -63,13 +63,13 @@
                         <tr>
                             <form action="{{route('ccia.actions.unlinkchar',['action_id'=>$action->id])}}" method="post">
                                 <td><input class="form-control" type="text" disabled value="{{$char->name}}"></td>
+                                @can('ccia_action_edit')
                                 <td>
                                     <input type="hidden" name="char" value="{{$char->id}}">
                                     {{Form::token()}}
-                                    @can('ccia_action_edit')
                                     <button type="submit" class="btn btn-danger">Remove Char</button>
-                                    @endcan()
                                 </td>
+                                @endcan()
                             </form>
                         </tr>
                     @endforeach

@@ -191,6 +191,5 @@ class ForumUserModel extends Model implements AuthenticateableContract
         else{
             return NULL;
         }
-
     }
 }

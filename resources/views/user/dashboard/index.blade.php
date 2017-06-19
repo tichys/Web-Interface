@@ -59,14 +59,14 @@
                     <table class="table table-bordered">
                         <tbody>
                         @foreach($chars as $char)
-                            @if($char->cciaactions()->count() > 0)
+                            @if($char->active_ccia_action_count() > 0)
                             <tr>
                                 <td colspan="2"><b>{{$char->name}}</b></td>
                             </tr>
                             @foreach($char->cciaactions()->get() as $cciaaction)
                                 <tr>
                                     <td>{{$cciaaction->id}}</td>
-                                    <td>{{$cciaaction->title}}</td>
+                                    <td><a href="{{route('ccia.actions.show.get',$cciaaction->id)}}">{{$cciaaction->title}}</a></td>
                                 </tr>
                             @endforeach
                             @endif()
