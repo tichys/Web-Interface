@@ -50,6 +50,10 @@
                             <td>Rank</td>
                             <td>@if(count($player->serverrank)) {{$player->serverrank->rank}} @else Player @endif</td>
                         </tr>
+                        <tr>
+                            <td>Forum User</td>
+                            <td>@if($player_name = $player->check_forum_linked())<span class="label label-success">{{$player_name}}</span>@else<span class="label label-danger">Not Linked</span>@endif</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

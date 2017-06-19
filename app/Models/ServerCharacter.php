@@ -21,6 +21,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\CCIAAction;
+use Illuminate\Support\Facades\DB;
 
 class ServerCharacter extends Model
 {
@@ -33,5 +35,13 @@ class ServerCharacter extends Model
     public function cciaactions()
     {
         return $this->belongsToMany(CCIAAction::class,'ccia_action_char','char_id','action_id');
+    }
+
+    //Get the number of CCIA Actions that are active for this character
+    public function active_ccia_action_count()
+    {
+        return $this->cciaactions()->where(function($query) {
+            $query->where("expires_at", ">=", DB::raw("NOW()"))->orWhereNull('expires_at');
+        })->count();
     }
 }

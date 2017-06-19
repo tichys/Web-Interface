@@ -22,6 +22,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Auth;
+use App\Services\Auth\ForumUserModel;
 
 class ServerPlayer extends Model
 {
@@ -294,5 +295,19 @@ class ServerPlayer extends Model
     public function check_player_char($char_id)
     {
         return \App\Models\ServerCharacter::where('ckey', $this->ckey)->where('id', $char_id)->count() > 0;
+    }
+
+    /**
+     * Check if the Player has a forum account linked
+     *
+     * @returns bool
+     */
+    public function check_forum_linked()
+    {
+        $forum_user = ForumUserModel::where('user_byond',$this->ckey)->first();
+        if($forum_user != NULL)
+            return $forum_user->username_clean;
+        else
+            return false;
     }
 }

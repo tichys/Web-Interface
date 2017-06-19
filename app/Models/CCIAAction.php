@@ -22,6 +22,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Services\Auth\ForumUserModel;
 
 class CCIAAction extends Model
 {
@@ -36,5 +37,21 @@ class CCIAAction extends Model
     public function characters()
     {
         return $this->belongsToMany(ServerCharacter::class,'ccia_action_char','action_id','char_id');
+    }
+
+    public function has_linked_char(ForumUserModel $user)
+    {
+        if($user->user_byond_linked != 1)
+            return false;
+
+        //Get the chars from the user
+        $player = ServerPlayer::where('ckey',$user->user_byond)->first();
+        $char_ids_player = $player->get_char_ids();
+
+        //Chet the chars from the action
+        $char_ids_action = $this->characters()->pluck('id');
+
+        //Check if any of that chars is in the char ids of the action
+        return $char_ids_player->intersect($char_ids_action)->isNotEmpty();
     }
 }
