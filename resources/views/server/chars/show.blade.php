@@ -21,6 +21,7 @@
 <div class="container">
     <div class="row">
         @include('components.formerrors')
+        @if($char->active_ccia_action_count() > 0)
         <div class="alert alert-warning">
             <b>The following CCIA Actions have been linked to this character:</b><hr>
             <ul>
@@ -29,6 +30,7 @@
                 @endforeach
             </ul>
         </div>
+        @endif
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading"><h4><b>{{$char->name}}</b></h4></div>
