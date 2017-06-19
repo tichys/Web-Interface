@@ -21,6 +21,14 @@
 <div class="container">
     <div class="row">
         @include('components.formerrors')
+        <div class="alert alert-warning">
+            <b>The following CCIA Actions have been linked to this character:</b><hr>
+            <ul>
+                @foreach ($char->cciaactions()->where(function($query) {$query->where("expires_at", ">=", DB::raw("NOW()"))->orWhereNull('expires_at');})->get() as $cciaaction)
+                    <li><a href="{{route('ccia.actions.show.get',$cciaaction->id)}}">{{$cciaaction->title}}</a></li>
+                @endforeach
+            </ul>
+        </div>
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading"><h4><b>{{$char->name}}</b></h4></div>

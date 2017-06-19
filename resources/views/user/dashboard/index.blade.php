@@ -63,7 +63,7 @@
                             <tr>
                                 <td colspan="2"><b>{{$char->name}}</b></td>
                             </tr>
-                            @foreach($char->cciaactions()->get() as $cciaaction)
+                            @foreach($char->cciaactions()->where(function($query) {$query->where("expires_at", ">=", DB::raw("NOW()"))->orWhereNull('expires_at');})->get() as $cciaaction)
                                 <tr>
                                     <td>{{$cciaaction->id}}</td>
                                     <td><a href="{{route('ccia.actions.show.get',$cciaaction->id)}}">{{$cciaaction->title}}</a></td>
