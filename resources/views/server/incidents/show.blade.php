@@ -115,12 +115,14 @@
 
                 <table class="table">
                     <tbody>
-                    @foreach(json_decode($incident->arbiters,true)["Witness"] as $witness=>$statement)
-                        <tr>
-                            <td><b>{{$witness}}</b></td>
-                            <td>{{$statement}}</td>
-                        </tr>
-                    @endforeach
+                    @if(json_decode($incident->arbiters,true)["Witness"] != NULL)
+                        @foreach(json_decode($incident->arbiters,true)["Witness"] as $witness=>$statement)
+                            <tr>
+                                <td><b>{{$witness}}</b></td>
+                                <td>{{$statement}}</td>
+                            </tr>
+                        @endforeach
+                    @endif()
                     </tbody>
                 </table>
             </div>
