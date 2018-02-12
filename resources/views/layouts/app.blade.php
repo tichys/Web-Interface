@@ -191,6 +191,9 @@
                                         <li @cannot('syndie_contest_show')class="disabled"@endcannot>
                                             <a href="{{route('syndie.contest.view')}}"><i class="fa fa-btn"></i>Contest Stats</a>
                                         </li>
+                                        <li @cannot('server_cargo_show')class="disabled"@endcannot>
+                                            <a href="{{route('server.cargo.index')}}"><i class="fa fa-btn"></i>Cargo</a>
+                                        </li>
                                         <li @cannot('server_exterminatus')class="disabled"@endcannot>
                                             <a href="{{route('server.exterminatus.index')}}"><i class="fa fa-btn"></i>Exterminatus</a>
                                         </li>
@@ -235,7 +238,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2017 by Werner Maisl - Licensed under the AGPL - Version 0.18.3</p></small>
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2017 by Werner Maisl - Licensed under the AGPL - Version 0.19.0</p></small>
     </div>
 </footer>
 </html>

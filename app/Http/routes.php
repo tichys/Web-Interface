@@ -166,11 +166,18 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/data', ['as' => 'server.players.data', 'uses' => 'Server\PlayerController@getPlayerData']);
         });
 
+        Route::group(['prefix' => 'cargo'], function () {
+            Route::get('/', ['as' => 'server.cargo.index', 'uses' => 'Server\CargoController@index']);
+            Route::get('/item/{item_id}/', ['as' => 'server.cargo.item.show', 'uses' => 'Server\CargoController@getItem']);
+            Route::get('/data', ['as' => 'server.cargo.item.data', 'uses' => 'Server\CargoController@getitemData']);
+        });
+
         Route::group(['prefix' => 'stats'], function () {
             Route::get('/', ['as' => 'server.stats.index', 'uses' => 'Server\StatsController@index']);
-            Route::any('/round/', ['as' => 'server.stats.round', 'uses' => 'Server\StatsController@round']);
-            Route::any('/duration/}', ['as' => 'server.stats.duration', 'uses' => 'Server\StatsController@duration']);
+            Route::any('/item/', ['as' => 'server.stats.round', 'uses' => 'Server\StatsController@round']);
+            Route::any('/duration/', ['as' => 'server.stats.duration', 'uses' => 'Server\StatsController@duration']);
         });
+
         Route::get('/whitelist/log', ['as' => 'server.whitelist.log', 'uses' => 'Server\WhitelistLogController@getLog']);
     });
 

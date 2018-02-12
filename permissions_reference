@@ -41,6 +41,8 @@ server_stats_show -> Show the admin stats
 D - server_remote_coms -> Access to the coms API page
 D - server_remote_ghosts -> Access to the ghosts API page
 
+D - server_cargo_show -> Show the current cargo configuration
+
 server_whitelist_log_show -> Show the Whitelist Log
 
 #
