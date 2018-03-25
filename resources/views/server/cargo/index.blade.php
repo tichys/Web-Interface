@@ -33,6 +33,7 @@
                             <thead>
                             <tr>
                                 <th>Item Name</th>
+                                <th>Supplier</th>
                                 <th>Categories</th>
                                 <th>Action</th>
                             </tr>
