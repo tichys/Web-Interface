@@ -1,4 +1,4 @@
-{{--Copyright (c) 2016 "Werner Maisl"--}}
+{{--Copyright (c) 2016-2018 "Werner Maisl"--}}
 
 {{--This file is part of the Aurora Webinterface--}}
 
@@ -192,6 +192,9 @@
                                         </li>
                                         <li @cannot('server_cargo_show')class="disabled"@endcannot>
                                             <a href="{{route('server.cargo.index')}}"><i class="fa fa-btn"></i>Cargo</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('server.poll.index')}}"><i class="fa fa-btn"></i>Polls</a>
                                         </li>
                                         <li @cannot('server_exterminatus')class="disabled"@endcannot>
                                             <a href="{{route('server.exterminatus.index')}}"><i class="fa fa-btn"></i>Exterminatus</a>
