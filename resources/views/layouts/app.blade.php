@@ -237,7 +237,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2018 by Werner Maisl - Licensed under the AGPL - Version 0.19.1</p></small>
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2018 by Werner Maisl - Licensed under the AGPL - Version 0.20.0</p></small>
     </div>
 </footer>
 </html>
