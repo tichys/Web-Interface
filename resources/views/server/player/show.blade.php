@@ -48,7 +48,8 @@
                         </tr>
                         <tr>
                             <td>Rank</td>
-                            <td>@if(count($player->serverrank)) {{$player->serverrank->rank}} @else Player @endif</td>
+                            {{--<td>@if(count($player->serverrank)) {{$player->serverrank->rank}} @else Player @endif</td>--}}
+                            <td>{{$player->rank}}</td>
                         </tr>
                         <tr>
                             <td>Forum User</td>
@@ -176,29 +177,47 @@
 @endsection
 
 @section('javascripts')
-    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         $(function() {
             @can('server_players_warnings_show')
             $('#user-warnings-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('server.players.warnings.data',["player_id"=>$player->id]) }}'
+                ajax: '{{ route('server.players.warnings.data',["player_id"=>$player->id]) }}',
+                columns:[
+                    { data: 'id', name: 'id'},
+                    { data: 'time', name: 'time'},
+                    { data: 'severity', name: 'severity'},
+                    { data: 'acknowledged', name: 'acknowledged'},
+                    { data: 'a_ckey', name: 'a_ckey'},
+                    { data: 'reason', name: 'reason'}
+                ]
             });
             @endcan()
             @can('server_players_notes_show')
             $('#user-notes-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('server.players.notes.data',["player_id"=>$player->id]) }}'
+                ajax: '{{ route('server.players.notes.data',["player_id"=>$player->id]) }}',
+                columns:[
+                    { data: 'id', name: 'id'},
+                    { data: 'adddate', name: 'adddate'},
+                    { data: 'a_ckey', name: 'a_ckey'},
+                    { data: 'content', name: 'content'}
+                ]
             });
             @endcan()
             @can('server_chars_show')
             $('#char-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('server.chars.data.ckey',['ckey'=>$player->ckey]) }}'
+                ajax: '{{ route('server.chars.data.ckey',['ckey'=>$player->ckey]) }}',
+                columns:[
+                    { data: 'name', name: 'name'},
+                    { data: 'ckey', name: 'ckey'}
+                ]
             });
             @endcan()
         });

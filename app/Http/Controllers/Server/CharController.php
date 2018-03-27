@@ -28,7 +28,7 @@ use App\Models\ServerCharacter;
 use App\Models\ServerCharacterFlavour;
 use App\Models\ServerCharacterLog;
 use phpDocumentor\Reflection\Types\Null_;
-use Yajra\Datatables\Facades\Datatables;
+use Yajra\Datatables\Datatables;
 use Log;
 
 class CharController extends Controller
@@ -138,15 +138,14 @@ class CharController extends Controller
             ->make();
     }
 
-    public function getCharDataAll(Request $request)
+    public function getCharDataAll(Request $request, Datatables $datatables)
     {
         if ($request->user()->cannot('server_chars_show')) {
             abort('403', 'You do not have the required permission');
         }
 
-        $chars = ServerCharacter::select(['id', 'name', 'ckey']);
-
-        return Datatables::of($chars)
+        $builder = ServerCharacter::query()->select(['id', 'name', 'ckey'])->whereNotNull('name');
+        return $datatables->eloquent($builder)
             ->removeColumn('id')
             ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')

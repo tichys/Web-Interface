@@ -18,7 +18,7 @@
 @extends('layouts.app')
 
 @section('styles')
-    <link href="{{ asset('/assets/css/datatables.bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('/DataTables/datatables.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -29,7 +29,7 @@
                     <div class="panel-heading">Cargo Overview</div>
 
                     <div class="panel-body">
-                        <table id="char-table" class="table table-condensed">
+                        <table id="item-table" class="table table-condensed">
                             <thead>
                             <tr>
                                 <th>Item Name</th>
@@ -47,14 +47,20 @@
 @endsection
 
 @section('javascripts')
-    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         $(function() {
-            $('#char-table').DataTable({
+            $('#item-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('server.cargo.item.data') }}'
+                ajax: '{{ route('server.cargo.item.data') }}',
+                columns:[
+                    { data: 'name', name: 'name' },
+                    { data: 'supplier', name: 'supplier' },
+                    { data: 'categories', name: 'categories' },
+                    { data: 'action', name: 'action' }
+                ]
             });
         });
     </script>

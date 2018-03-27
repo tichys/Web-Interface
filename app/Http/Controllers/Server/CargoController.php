@@ -6,7 +6,7 @@ use Grpc\Server;
 use Illuminate\Http\Request;
 use App\Models\ServerCargoItem;
 use App\Http\Controllers\Controller;
-use Datatables;
+use Yajra\Datatables\Datatables;
 
 class CargoController extends Controller
 {
