@@ -18,7 +18,7 @@
 @extends('layouts.app')
 
 @section('styles')
-    <link href="{{ asset('/assets/css/datatables.bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('/DataTables/datatables.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -47,14 +47,20 @@
 @endsection
 
 @section('javascripts')
-    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         $(function() {
             $('#contract-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('syndie.contracts.data') }}'
+                ajax: '{{ route('syndie.contracts.data') }}',
+                columns:[
+                    { data: 'contract_id', name: 'contract_id' },
+                    { data: 'title', name: 'title' },
+                    { data: 'contractee_name', name: 'contractee_name' },
+                    { data: 'status', name: 'status' }
+                ]
             });
         });
     </script>

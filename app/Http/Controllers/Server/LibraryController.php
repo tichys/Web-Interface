@@ -25,7 +25,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\ServerLibrary;
 use MongoDB\Driver\Server;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Log;
 use HTMLPurifier;
 

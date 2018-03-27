@@ -18,7 +18,7 @@
 @extends('layouts.app')
 
 @section('styles')
-    <link href="{{ asset('/assets/css/datatables.bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('/DataTables/datatables.min.css') }}" rel="stylesheet">
     <style>
         th.rotate {
             /* Something you can count on */
@@ -102,6 +102,6 @@
 @endsection
 
 @section('javascripts')
-    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
 @endsection

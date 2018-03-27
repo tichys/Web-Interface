@@ -18,7 +18,7 @@
 @extends('layouts.app')
 
 @section('styles')
-    <link href="{{ asset('/assets/css/datatables.bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('/DataTables/datatables.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -48,14 +48,20 @@
 @endsection
 
 @section('javascripts')
-    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         $(function() {
             $('#forms-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.forms.data') }}'
+                ajax: '{{ route('admin.forms.data') }}',
+                columns:[
+                    { data: 'id', name: 'id' },
+                    { data: 'name', name: 'name' },
+                    { data: 'department', name: 'department' },
+                    { data: 'action', name: 'action' }
+                ]
             });
         });
     </script>

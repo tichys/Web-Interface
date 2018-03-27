@@ -25,7 +25,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\ServerForm;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\Datatables;
 Use Illuminate\Support\Facades\Log;
 
 class FormController extends Controller
@@ -136,7 +136,7 @@ class FormController extends Controller
             ->removeColumn('form_id')
             ->editColumn('name', '<a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'server_forms_edit\')<a href="{{route(\'admin.forms.delete\',[\'form\'=>$form_id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
-            ->rawColumns([1,3])
+            ->rawColumns([0,2])
             ->make();
     }
 }

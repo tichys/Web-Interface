@@ -18,7 +18,7 @@
 @extends('layouts.app')
 
 @section('styles')
-    <link href="{{ asset('/assets/css/datatables.bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('/DataTables/datatables.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -74,20 +74,31 @@
 @endsection
 
 @section('javascripts')
-    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         $(function() {
             $('#active-actions-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('ccia.actions.data.active') }}'
+                ajax: '{{ route('ccia.actions.data.active') }}',
+                columns:[
+                    { data: 'id', name: 'id' },
+                    { data: 'title', name: 'title' },
+                    { data: 'action', name: 'action' }
+                ]
             });
             @can('ccia_action_show')
             $('#all-actions-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('ccia.actions.data.all') }}'
+                ajax: '{{ route('ccia.actions.data.all') }}',
+                columns:[
+                    { data: 'id', name: 'id' },
+                    { data: 'title', name: 'title' },
+                    { data: 'expires_at', name: 'expires_at' },
+                    { data: 'action', name: 'action' }
+                ]
             });
             @endcan()
         });

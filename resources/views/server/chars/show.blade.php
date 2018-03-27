@@ -523,20 +523,34 @@
 @endsection
 
 @section('javascripts')
-    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         $(function() {
             $('#incidents-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('server.incidents.data.char',["char_id" => $char->id]) }}'
+                ajax: '{{ route('server.incidents.data.char',["char_id" => $char->id]) }}',
+                columns:[
+                    { data: 'id', name: 'id' },
+                    { data: 'datetime', name: 'datetime' },
+                    { data: 'notes', name: 'notes' },
+                    { data: 'brig_sentence', name: 'brig_sentence' },
+                    { data: 'fine', name: 'fine' },
+                    { data: 'status', name: 'status' },
+                    { data: 'action', name: 'action' }
+                ]
             });
             @can('server_chars_show')
                 $('#character-log-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('server.chars.data.log',["char_id" => $char->id]) }}'
+                ajax: '{{ route('server.chars.data.log',["char_id" => $char->id]) }}',
+                columns:[
+                    { data: 'game_id', name: 'game_id' },
+                    { data: 'datetime', name: 'datetime' },
+                    { data: 'job_name', name: 'job_name' },
+                    { data: 'special_role', name: 'special_role' }
+                ]
             });
             @endcan()
         });

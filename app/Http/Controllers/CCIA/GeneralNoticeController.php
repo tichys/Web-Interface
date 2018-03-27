@@ -25,7 +25,7 @@
     use Illuminate\Http\Request;
     use App\Http\Requests;
     use App\Http\Controllers\Controller;
-    use Yajra\Datatables\Datatables;
+    use Yajra\DataTables\Datatables;
     Use Illuminate\Support\Facades\Log;
     
     use App\Models\CCIAGeneralNotice;
@@ -137,7 +137,7 @@
             return Datatables::of($data)
                 ->editColumn('title', '<a href="{{ route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}">{{$title}}</a>')
                 ->addColumn('action', '<p><a href="{{ route(\'ccia.generalnotice.show.get\', [\'id\' => $id]) }}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_general_notice_edit\')<a href="{{route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.generalnotice.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
-                ->rawColumns([1,2])
+                ->rawColumns([0,1])
                 ->make();
             
         }
