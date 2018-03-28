@@ -43,6 +43,8 @@ D - server_remote_ghosts -> Access to the ghosts API page
 
 D - server_cargo_show -> Show the current cargo configuration
 
+D - server_poll_show -> Show all polls
+
 server_whitelist_log_show -> Show the Whitelist Log
 
 #

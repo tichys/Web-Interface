@@ -50,9 +50,8 @@ class StatsController extends Controller
         return view("server.stats.index");
     }
 
-    public function round(Request $request)
+    public function round(Request $request, $game_id)
     {
-        $game_id = $request->input("game_id");
         //Query the db for the game id
         $game_details = \DB::connection('server')->table('feedback')->where('game_id',$game_id)->get();
         //Prep the stats for display

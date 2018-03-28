@@ -175,11 +175,21 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::group(['prefix' => 'stats'], function () {
             Route::get('/', ['as' => 'server.stats.index', 'uses' => 'Server\StatsController@index']);
-            Route::any('/item/', ['as' => 'server.stats.round', 'uses' => 'Server\StatsController@round']);
+            Route::any('/round/{game_id}', ['as' => 'server.stats.round', 'uses' => 'Server\StatsController@round']);
             Route::any('/duration/', ['as' => 'server.stats.duration', 'uses' => 'Server\StatsController@duration']);
         });
 
         Route::get('/whitelist/log', ['as' => 'server.whitelist.log', 'uses' => 'Server\WhitelistLogController@getLog']);
+    });
+
+    //Server Suff without Auth
+    Route::group(['prefix' => 'server'], function () {
+        Route::group(['prefix' => 'poll'], function () {
+            Route::get('/', ['as' => 'server.poll.index', 'uses' => 'Server\PollController@index']);
+            Route::get('/data', ['as' => 'server.poll.data', 'uses' => 'Server\PollController@getPollData']);
+            Route::get('/{id}/{key}', ['as' => 'server.poll.showprivate', 'uses' => 'Server\PollController@showPrivate']);
+            Route::get('/{id}', ['as' => 'server.poll.show', 'uses' => 'Server\PollController@show']);
+        });
     });
 
     //Website Stuff
