@@ -21,14 +21,12 @@
 
 namespace App\Http\Controllers\CCIA;
 
-use App\Services\Auth\ForumUserModel;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\CCIAAction;
-use App\Models\ServerCharacter;
-use Yajra\DataTables\Facades\Datatables;
+use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Log;
 
 class ActionController extends Controller
@@ -208,7 +206,7 @@ class ActionController extends Controller
         return Datatables::of($data)
             ->editColumn('title', '<a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}">{{$title}}</a>')
             ->addColumn('action', '<p><a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_action_edit\')<a href="{{route(\'ccia.actions.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.actions.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
-            ->rawColumns([1, 3])
+            ->rawColumns([0, 2])
             ->make();
     }
 }
