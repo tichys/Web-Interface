@@ -32,8 +32,6 @@ use App\Models\SyndieContractObjective;
 use App\Models\ServerPlayer;
 use Yajra\DataTables\Datatables;
 use App\Jobs\SendContractNotificationEmail;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 use App\Services\Server\Helpers;
 use Illuminate\Support\Facades\Log;
 
@@ -51,7 +49,7 @@ class ContractController extends Controller
         $objectives = SyndieContractObjective::where('contract_id', '=', $contract->contract_id)->get();
         $contractee = ForumUserModel::find($contract->contractee_id);
 
-        return view('syndie.contract.view', ['contract' => $contract, 'objectives' => $objectives, 'comments' => $comments, 'contractee'=>$contractee]);
+        return view('syndie.contract.view', ['contract' => $contract, 'objectives' => $objectives, 'comments' => $comments, 'contractee' => $contractee]);
     }
 
     public function getContractData(Request $request)
@@ -100,9 +98,9 @@ class ContractController extends Controller
 
         $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'new'));
 
-        Log::notice('perm.contracts.add - Contract has been added',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
+        Log::notice('perm.contracts.add - Contract has been added', ['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
 
-        return redirect()->route('syndie.contracts.index');
+        return redirect()->route('syndie.contracts.show',["contract"=>$SyndieContract->id]);
     }
 
     public function getEdit(Request $request, $contract)
@@ -111,7 +109,7 @@ class ContractController extends Controller
 
         //Check if the user is the contract owner or a moderator
         if ($request->user()->cannot('syndie_contract_moderate') && $request->user()->user_id != $SyndieContract->contractee_id) {
-            abort(502,"You do not have the permission to edit the contract");
+            abort(502, "You do not have the permission to edit the contract");
         }
 
         return view('syndie.contract.edit', ['contract' => $SyndieContract]);
@@ -123,7 +121,7 @@ class ContractController extends Controller
 
         //Check if the user is the contract owner or a moderator
         if ($request->user()->cannot('syndie_contract_moderate') && $request->user()->user_id != $SyndieContract->contractee_id) {
-            abort(502,"You do not have the permission to edit the contract");
+            abort(502, "You do not have the permission to edit the contract");
         }
 
         $SyndieContract->title = $request->input('title');
@@ -131,32 +129,21 @@ class ContractController extends Controller
         $SyndieContract->reward_other = $request->input('reward');
         $SyndieContract->save();
 
-        Log::notice('perm.contracts.edit - Contract has been edited',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
+        Log::notice('perm.contracts.edit - Contract has been edited', ['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
 
-        return redirect()->route('syndie.contracts.show',['contract'=>$SyndieContract->contract_id]);
+        return redirect()->route('syndie.contracts.show', ['contract' => $SyndieContract->contract_id]);
 
     }
 
     public function approve(Request $request, $contract)
     {
         //Check if player is contract mod
-        if($request->user()->cannot('syndie_contract_moderate'))
-        {
-            abort('403','You do not have the required permission');
+        if ($request->user()->cannot('syndie_contract_moderate')) {
+            abort('403', 'You do not have the required permission');
         }
 
-        $SyndieContract = SyndieContract::find($contract);
-
-        if(!in_array($SyndieContract->status,['new','mod-nok'])){
-            abort(420, "You can only approve open or rejected contracts");
-        }
-
-        $SyndieContract->status = "open";
-        $SyndieContract->save();
-
-        $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'approve'));
-
-        Log::notice('perm.contracts.approve - Contract has been approved',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
+        $SyndieContract = SyndieContract::findOrFail($contract);
+        $SyndieContract->mod_approve($request->user());
 
         return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
 
@@ -164,21 +151,26 @@ class ContractController extends Controller
 
     public function reject(Request $request, $contract)
     {
-        if($request->user()->cannot('syndie_contract_moderate'))
-        {
-            abort('403','You do not have the required permission');
+        if ($request->user()->cannot('syndie_contract_moderate')) {
+            abort('403', 'You do not have the required permission');
         }
 
-        $SyndieContract = SyndieContract::find($contract);
-        $SyndieContract->status = "mod-nok";
-        $SyndieContract->save();
-
-        $this->dispatch(new SendContractNotificationEmail($SyndieContract, 'reject'));
-
-        Log::notice('perm.contracts.reject - Contract has been rejected',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
+        $SyndieContract = SyndieContract::findOrFail($contract);
+        $SyndieContract->mod_reject($request->user());
 
         return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
 
+    }
+
+    public function delete($contract, Request $request)
+    {
+        if ($request->user()->cannot('syndie_contract_moderate')) {
+            abort('403', 'You do not have the required permission');
+        }
+        $SyndieContract = SyndieContract::findOrFail($contract);
+        $SyndieContract->mod_delete($request->user());
+
+        return redirect()->route('syndie.contracts.index');
     }
 
     public function getAgentList(Request $request)
@@ -190,32 +182,11 @@ class ContractController extends Controller
         $search_key = $helpers->sanitize_ckey($term);
 
         //Check for proper input length
-        if(strlen($term) >= 3)
-        {
+        if (strlen($term) >= 3) {
             //Get corresponding ckeys from DB
-            $players = ServerPlayer::where('ckey','like','%'.$search_key.'%')->lists('ckey','id');
+            $players = ServerPlayer::where('ckey', 'like', '%' . $search_key . '%')->lists('ckey', 'id');
             return json_encode($players);
         }
-    }
-
-    public function delete($contract , Request $request)
-    {
-        if($request->user()->cannot('syndie_contract_moderate'))
-        {
-            abort('403','You do not have the required permission');
-        }
-        $SyndieContract = SyndieContract::findOrfail($contract);
-
-        //Check if the contract is marked as rejected
-        if($SyndieContract->status != "mod-nok"){
-            abort(420, "You can only delete rejected contracts");
-        }
-
-        $SyndieContract->delete();
-
-        Log::notice('perm.contracts.delete - Contract has been deleted',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
-
-        return redirect()->route('syndie.contracts.index');
     }
 
     public function subscribe($contract, Request $request)
@@ -223,7 +194,7 @@ class ContractController extends Controller
         $SyndieContract = SyndieContract::findOrfail($contract);
         $SyndieContract->add_subscribers($request->user()->user_id);
 
-        Log::notice('perm.contracts.subscribe - User Subscribed to Contract',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
+        Log::notice('perm.contracts.subscribe - User Subscribed to Contract', ['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
 
         return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
     }
@@ -233,7 +204,7 @@ class ContractController extends Controller
         $SyndieContract = SyndieContract::findOrfail($contract);
         $SyndieContract->remove_subscribers($request->user()->user_id);
 
-        Log::notice('perm.contracts.unsubscribe - User Unsubscribed from Contract',['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
+        Log::notice('perm.contracts.unsubscribe - User Unsubscribed from Contract', ['user_id' => $request->user()->user_id, 'contract_id' => $SyndieContract->contract_id]);
 
         return redirect()->route('syndie.contracts.show', ['contract' => $contract]);
     }
