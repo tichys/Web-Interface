@@ -103,22 +103,21 @@
                     </div>
                 </div>
                  {{--Management Panel--}}
-                @if(Auth::user()->can('syndie_contract_moderate'))
+                @can('syndie_contract_moderate')
                     <div class="col-md-2">
                         <div class="panel panel-default">
                             <div class="panel-heading">Actions</div>
                             <div class="panel-body">
-                                 {{--Check if user is a contract mod--}}
-                                @can('syndie_contract_moderate')
-                                    <p><b>Contract Mod</b></p>
-                                    <p><a href="{{route('syndie.contracts.approve',['contract'=>$contract->contract_id])}}" class="btn btn-success @if(!in_array($contract->status,['new','mod-nok'])) disabled @endif" role="button">Approve</a></p>
-                                    <p><a href="{{route('syndie.contracts.reject',['contract'=>$contract->contract_id])}}" class="btn btn-warning @if($contract->status != 'new') disabled @endif" role="button">Reject </a></p>
-                                    <p><a href="{{route('syndie.contracts.deletecontract',['contract'=>$contract->contract_id])}}" class="btn btn-danger" role="button">Delete</a></p>
-                                @endcan()
+                                <p><b>Contract Mod</b></p>
+                                <p><a href="{{route('syndie.contracts.approve',['contract'=>$contract->contract_id])}}" class="btn btn-success @if(!in_array($contract->status,['new','mod-nok'])) disabled @endif" role="button">Approve</a></p>
+                                <p><a href="{{route('syndie.contracts.reject',['contract'=>$contract->contract_id])}}" class="btn btn-warning" role="button">Reject </a></p>
+                                <p><a href="{{route('syndie.contracts.deletecontract',['contract'=>$contract->contract_id])}}" class="btn btn-danger @if($contract->status != 'mod-nok') disabled @endif" role="button">Delete</a></p>
+                                <p><b>Created by:</b></p>
+                                <p>@if(isset($contractee) && $contractee->user_byond != ""){{$contractee->user_byond}} @else {{$contract->contractee_id}}@endif()</p>
                             </div>
                         </div>
                     </div>
-                @endif()
+                @endcan()
             </div>
         </div>
 
