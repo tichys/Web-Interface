@@ -17,11 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace App\Models;
 
+use App\Services\Auth\ForumUserModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SyndieContract extends Model
 {
@@ -98,13 +101,66 @@ class SyndieContract extends Model
         }
     }
 
+    /**
+     * Tries to approve a contract if possible. Checks the required preconditions.
+     *
+     * @param $user ForumUserModel who approved the contract
+     */
+    public function mod_approve(ForumUserModel $user)
+    {
+        if (!in_array($this->status, ['new', 'mod-nok'])) {
+            abort("420", "You can only approve new or rejected contracts");
+        }
+
+        if (in_array($this->status, ['open'])) {
+            abort("420", "The contract has already been approved");
+        }
+
+        $this->status = "open";
+        $this->save();
+        Log::notice('perm.contracts.approve - Contract has been approved', ['user_id' => $user->user_id, 'contract_id' => $this->contract_id]);
+    }
+
+    /**
+     * Rejects a Contract
+     *
+     * @param $user ForumUserModel who rejected the contract
+     */
+    public function mod_reject(ForumUserModel $user)
+    {
+        if (in_array($this->status, ['mod-nok'])) {
+            abort("420", "The Contract has already been rejected");
+        }
+
+        $this->status = "mod-nok";
+        $this->save();
+
+        Log::notice('perm.contracts.reject - Contract has been rejected', ['user_id' => $user->user_id, 'contract_id' => $this->contract_id]);
+    }
+
+    /**
+     * Deletes a contract
+     *
+     * @param $user ForumUserModel who deleted the contract
+     */
+    public function mod_delete(ForumUserModel $user)
+    {
+        //Check if the contract is marked as rejected
+        if ($this->status != "mod-nok") {
+            abort("420", "You can only delete rejected contracts");
+        }
+        $this->delete();
+
+        Log::notice('perm.contracts.delete - Contract has been deleted', ['user_id' => $user->user_id, 'contract_id' => $this->contract_id]);
+    }
+
     public function comments()
     {
-        return $this->hasMany('App\Models\SyndieContractComment','contract_id');
+        return $this->hasMany('App\Models\SyndieContractComment', 'contract_id');
     }
 
     public function objectives()
     {
-        return $this->hasMany('App\Models\SyndieContractObjective','contract_id');
+        return $this->hasMany('App\Models\SyndieContractObjective', 'contract_id');
     }
 }

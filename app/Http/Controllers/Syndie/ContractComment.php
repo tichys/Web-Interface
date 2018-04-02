@@ -49,7 +49,7 @@ class ContractComment extends Controller
         $type = $request->input("type");
         if ($request->user()->can('syndie_contract_moderate')) {
             $validate_array = [
-                'type' => 'required|in:ic,ic-failrep,ic-comprep,ic-cancel,ooc,mod-ooc,mod-author'
+                'type' => 'required|in:ic,ic-failrep,ic-comprep,ic-cancel,ooc,mod-ooc,mod-author,approve,reject'
             ];
         } else if ($request->user()->user_id == $contract->contractee_id) {
             $validate_array = [
@@ -102,6 +102,23 @@ class ContractComment extends Controller
 
                 $contract->status = "closed";
                 $contract->save();
+                break;
+
+            case "approve":
+            case "reject":
+                $this->validate($request, [
+                    'title' => 'required|max:50',
+                    'comment' => 'required'
+                ]);
+                if($type == "approve")
+                    $contract->mod_approve($request->user());
+                if($type == "reject")
+                    $contract->mod_reject($request->user());
+                $comment->type = "mod-author";
+                $comment->title = $request->input('title');
+                $comment->comment = $request->input('comment');
+                $comment->commentor_name = $request->user()->username;
+                $comment->save();
                 break;
 
             case "ooc":

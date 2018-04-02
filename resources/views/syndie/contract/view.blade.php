@@ -75,7 +75,7 @@
                             <td><b>Base Reward:</b></td>
                             <td>{{$contract->reward_other}}</td>
                         </tr>
-                        @if((Auth::user()->user_id == $contract->contractee_id && $contract->status = "new") || Auth::user()->can('syndie_contract_moderate') )
+                        @if((Auth::user()->user_id == $contract->contractee_id && $contract->status == "new") || Auth::user()->can('syndie_contract_moderate') )
                             <tr>
                                 <td><a href="{{route('syndie.contracts.edit.get',['contract'=>$contract->contract_id])}}" class="btn btn-warning" role="button">Edit the Contract</a></td>
                                 <td></td>
@@ -109,8 +109,8 @@
                             <div class="panel-heading">Actions</div>
                             <div class="panel-body">
                                 <p><b>Contract Mod</b></p>
-                                <p><a href="{{route('syndie.contracts.approve',['contract'=>$contract->contract_id])}}" class="btn btn-success @if(!in_array($contract->status,['new','mod-nok'])) disabled @endif" role="button">Approve</a></p>
-                                <p><a href="{{route('syndie.contracts.reject',['contract'=>$contract->contract_id])}}" class="btn btn-warning" role="button">Reject </a></p>
+                                {{--<p><a href="{{route('syndie.contracts.approve',['contract'=>$contract->contract_id])}}" class="btn btn-success @if(!in_array($contract->status,['new','mod-nok'])) disabled @endif" role="button">Approve</a></p>--}}
+                                {{--<p><a href="{{route('syndie.contracts.reject',['contract'=>$contract->contract_id])}}" class="btn btn-warning" role="button">Reject </a></p>--}}
                                 <p><a href="{{route('syndie.contracts.deletecontract',['contract'=>$contract->contract_id])}}" class="btn btn-danger @if($contract->status != 'mod-nok') disabled @endif" role="button">Delete</a></p>
                                 <p><b>Created by:</b></p>
                                 <p>@if(isset($contractee) && $contractee->user_byond != ""){{$contractee->user_byond}} @else {{$contract->contractee_id}}@endif()</p>
