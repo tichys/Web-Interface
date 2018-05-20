@@ -196,6 +196,9 @@
                                         <li>
                                             <a href="{{route('server.poll.index')}}"><i class="fa fa-btn"></i>Polls</a>
                                         </li>
+                                        <li @cannot('server_news_show')class="disabled"@endcannot>
+                                            <a href="{{route('server.news.index')}}"><i class="fa fa-btn"></i>News</a>
+                                        </li>
                                         <li @cannot('server_exterminatus')class="disabled"@endcannot>
                                             <a href="{{route('server.exterminatus.index')}}"><i class="fa fa-btn"></i>Exterminatus</a>
                                         </li>
@@ -240,7 +243,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2018 by Werner Maisl - Licensed under the AGPL - Version 0.23.0</p></small>
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2018 by Werner Maisl - Licensed under the AGPL - Version 0.24.0</p></small>
     </div>
 </footer>
 </html>

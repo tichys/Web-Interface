@@ -179,6 +179,17 @@ Route::group(['middleware' => 'web'], function () {
             Route::any('/duration/', ['as' => 'server.stats.duration', 'uses' => 'Server\StatsController@duration']);
         });
 
+        Route::group(['prefix' => 'news'], function () {
+            Route::get('', ['as' => 'server.news.index', 'uses' => 'Server\NewsController@index']);
+            Route::get('/{news_id}/show', ['as' => 'server.news.show.get', 'uses' => 'Server\NewsController@getShow']);
+            Route::get('/{news_id}/edit', ['as' => 'server.news.edit.get', 'uses' => 'Server\NewsController@getEdit']);
+            Route::post('/{news_id}/edit', ['as' => 'server.news.edit.post', 'uses' => 'Server\NewsController@postEdit']);
+            Route::get('/{news_id}/delete', ['as' => 'server.news.delete', 'uses' => 'Server\NewsController@delete']);
+            Route::get('/add', ['as' => 'server.news.add.get', 'uses' => 'Server\NewsController@getAdd']);
+            Route::post('/add', ['as' => 'server.news.add.post', 'uses' => 'Server\NewsController@postAdd']);
+            Route::get('/data', ['as' => 'server.news.data', 'uses' => 'Server\NewsController@getNewsData']);
+        });
+
         Route::get('/whitelist/log', ['as' => 'server.whitelist.log', 'uses' => 'Server\WhitelistLogController@getLog']);
     });
 
