@@ -158,9 +158,6 @@ class RoleController extends Controller
 
     public function addUser(Request $request, $role_id)
     {
-        $this->validate($request, [
-            'user_id' => 'numeric'
-        ]);
         if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
