@@ -165,7 +165,11 @@ class RoleController extends Controller
             abort('403', 'You do not have the required permission');
         }
         $role = SiteRole::findOrFail($role_id);
-        $user = ForumUserModel::findOrFail($request->input('user_id'));
+
+        if(is_numeric($request->input('user_id')))
+            $user = ForumUserModel::findOrFail($request->input('user_id'));
+        else
+            $user = ForumUserModel::where('username_clean',$request->input('user_id'))->first();
 
         $user->roles()->attach($role);
 
