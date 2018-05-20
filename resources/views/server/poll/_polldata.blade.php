@@ -42,7 +42,7 @@
                 </tr>
                 <tr>
                     <td><b>Endtime:</b></td>
-                    <td>{{$question->starttime}}</td>
+                    <td>{{$question->endtime}}</td>
                 </tr>
                 <tr>
                     <td><b>Admin Only:</b></td>
@@ -51,6 +51,10 @@
                 <tr>
                     <td><b>Public Result:</b></td>
                     <td>@if($question->publicresult) True @else False @endif()</td>
+                </tr>
+                <tr>
+                    <td><b>Info Link:</b></td>
+                    <td><a href="{{$question->link}}">{{$question->link}}</a></td>
                 </tr>
                 <tr>
                     <td><b>Created By:</b></td>
