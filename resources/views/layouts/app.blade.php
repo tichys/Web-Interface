@@ -196,6 +196,9 @@
                                         <li>
                                             <a href="{{route('server.poll.index')}}"><i class="fa fa-btn"></i>Polls</a>
                                         </li>
+                                        <li @cannot('server_news_show')class="disabled"@endcannot>
+                                            <a href="{{route('server.news.index')}}"><i class="fa fa-btn"></i>News</a>
+                                        </li>
                                         <li @cannot('server_exterminatus')class="disabled"@endcannot>
                                             <a href="{{route('server.exterminatus.index')}}"><i class="fa fa-btn"></i>Exterminatus</a>
                                         </li>

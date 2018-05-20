@@ -45,6 +45,9 @@ D - server_cargo_show -> Show the current cargo configuration
 
 D - server_poll_show -> Show all polls
 
+server_news_show -> Show the news on the server
+server_news_edit -> Edit the news on the server
+
 server_whitelist_log_show -> Show the Whitelist Log
 
 #
