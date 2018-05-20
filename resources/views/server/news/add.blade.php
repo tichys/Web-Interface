@@ -23,7 +23,7 @@
             <div class="col-md-10 col-md-offset-1">
                 @include('components.formerrors')
                 <div class="panel panel-default">
-                    <div class="panel-heading">Add a new Book</div>
+                    <div class="panel-heading">Add a new News Story</div>
 
                     <div class="panel-body">
                         {{Form::open(array('route' => 'server.news.add.post','method' => 'post')) }}

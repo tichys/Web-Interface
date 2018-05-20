@@ -29,6 +29,7 @@
                     <div class="panel-heading">News Overview</div>
 
                     <div class="panel-body">
+                        <p><a href="{{route('server.news.add.get')}}" class="btn btn-success" role="button">Add new News Story</a></p>
                         <table id="forms-table" class="table table-condensed">
                             <thead>
                             <tr>
