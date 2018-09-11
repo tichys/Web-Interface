@@ -24,7 +24,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">News Overview</div>
 
@@ -37,6 +37,7 @@
                                 <th>Author</th>
                                 <th>Channel Name</th>
                                 <th>Text</th>
+                                <th>Approved By</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -62,6 +63,7 @@
                     { data: 'author', name: 'author'},
                     { data: 'channel', name: 'channel'},
                     { data: 'body', name: 'body'},
+                    { data: 'approved_by', name: 'approved_by'},
                     { data: 'action', name: 'action'}
                 ]
             });
