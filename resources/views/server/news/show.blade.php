@@ -20,7 +20,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-5 col-md-offset-1">
             @include('components.formerrors')
             <div class="panel panel-default">
                 <table class="table">
@@ -39,11 +39,39 @@
                     </tr>
                     <tr>
                         <td><b>Timestamp:</b></td>
-                        <td>{{$news->time_stamp}}</td>
+                        <td>{{$news->ic_timestamp}}</td>
                     </tr>
                     <tr>
                         <td><b>Created By:</b></td>
                         <td>{{$news->created_by}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Created By:</b></td>
+                        <td>{{$news->created_at}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td><b>Publish At:</b></td>
+                        <td>{{$news->publish_at}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Publish Until:</b></td>
+                        <td>{{$news->publish_until}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Approved At:</b></td>
+                        <td>{{$news->approved_at}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Approved By:</b></td>
+                        <td>{{$news->approved_by}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -61,8 +89,15 @@
                 </div>
                 @can('server_news_edit')
                 <div class="panel-footer">
+                    <div class="btn-group" role="group">
                     <a href="{{route('server.news.edit.get',['news_id'=>$news->id])}}" class="btn btn-info" role="button">Edit</a>
+                    @if(!$news->approved_at)
+                        @can('server_news_approve')
+                        <a href="{{route('server.news.approve',['news_id'=>$news->id])}}" class="btn btn-success" role="button">Approve</a>
+                        @endcan()
+                    @endif
                     <a href="{{route('server.news.delete',['news_id'=>$news->id])}}" class="btn btn-danger" role="button">Delete</a>
+                    </div>
                 </div>
                 @endcan()
             </div>

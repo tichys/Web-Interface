@@ -185,6 +185,7 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/{news_id}/edit', ['as' => 'server.news.edit.get', 'uses' => 'Server\NewsController@getEdit']);
             Route::post('/{news_id}/edit', ['as' => 'server.news.edit.post', 'uses' => 'Server\NewsController@postEdit']);
             Route::get('/{news_id}/delete', ['as' => 'server.news.delete', 'uses' => 'Server\NewsController@delete']);
+            Route::get('/{news_id}/approve', ['as' => 'server.news.approve', 'uses' => 'Server\NewsController@approve']);
             Route::get('/add', ['as' => 'server.news.add.get', 'uses' => 'Server\NewsController@getAdd']);
             Route::post('/add', ['as' => 'server.news.add.post', 'uses' => 'Server\NewsController@postAdd']);
             Route::get('/data', ['as' => 'server.news.data', 'uses' => 'Server\NewsController@getNewsData']);

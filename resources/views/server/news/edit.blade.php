@@ -31,7 +31,9 @@
                     {{Form::token()}}
 
                     {{Form::bsText('author')}}
-                    {{Form::bsText('timestamp')}}
+                    {{Form::bsText('ic_timestamp')}}
+                    {{Form::bsText('publish_at')}}
+                    {{Form::bsText('publish_until')}}
                     {{Form::bsText('message_type')}}
                     {{Form::bsSelectList('channel_id',$channels)}}
                     {{Form::bsTextArea('body')}}

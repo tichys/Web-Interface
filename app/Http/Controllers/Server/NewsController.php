@@ -28,6 +28,7 @@ use App\Models\ServerNewsChannel;
 use App\Models\ServerNewsStory;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class NewsController extends Controller
 {
@@ -63,7 +64,7 @@ class NewsController extends Controller
         $news = ServerNewsStory::findOrFail($news_id);
         $channels = ServerNewsChannel::select('id', 'name')->get();
         $channel_array = [];
-        foreach($channels as $channel)
+        foreach ($channels as $channel)
             $channel_array[$channel->id] = $channel->name;
 
         return view('server.news.edit', ['news' => $news, 'channels' => $channel_array]);
@@ -71,6 +72,7 @@ class NewsController extends Controller
 
     public function postEdit($news_id, Request $request)
     {
+        //TODO: Enable player submitted news
         if ($request->user()->cannot('server_news_edit'))
             abort('403', 'You do not have the required permission');
 
@@ -81,19 +83,29 @@ class NewsController extends Controller
             'body' => 'required',
             'message_type' => 'required',
             'channel_id' => 'required|exists:server.news_channels,id',
-            'timestamp' => 'required|date|after:+440years'
+            'ic_timestamp' => 'required|date|after:+440years',
+            'publish_at' => 'sometimes|date',
+            'publish_until' => 'sometimes|date'
         ]);
 
         $news->author = htmlspecialchars($request->input('author'));
         $news->body = htmlspecialchars($request->input('body'));
         $news->message_type = htmlspecialchars($request->input('message_type'));
         $news->channel_id = $request->input('channel_id');
-        $news->time_stamp = $request->input('timestamp');
+        $news->ic_timestamp = $request->input('ic_timestamp');
+
+        if ($request->exists('publish_at')) {
+            $news->publish_at = $request->input('publish_at');
+        } else {
+            $news->publish_at = Carbon::now();
+        }
+        $news->publish_until = $request->input('publish_until');
+
         $news->save();
 
         Log::notice('perm.news.edit - News has been edited', ['user_id' => $request->user()->user_id, 'news_id' => $news->id]);
 
-        return redirect()->route('server.news.show.get', ['book_id' => $news_id]);
+        return redirect()->route('server.news.show.get', ['news_id' => $news_id]);
     }
 
     public function delete($news_id, Request $request)
@@ -102,10 +114,26 @@ class NewsController extends Controller
             abort('403', 'You do not have the required permission');
 
         $news = ServerNewsStory::findOrFail($news_id);
-        Log::notice('perm.news.delete - News has been deleted', ['user_id' => $request->user()->user_id, 'newd_id' => $news->id]);
+        Log::notice('perm.news.delete - News has been deleted', ['user_id' => $request->user()->user_id, 'news_id' => $news->id]);
         $news->delete();
 
         return redirect()->route('server.news.index');
+    }
+
+    public function approve($news_id, Request $request)
+    {
+        if ($request->user()->cannot('server_news_approve'))
+            abort('403', 'You do not have the required permission');
+
+        $news = ServerNewsStory::findOrFail($news_id);
+
+        $news->approved_at = Carbon::now();
+        $news->approved_by = $request->user()->username;
+        $news->save();
+
+        Log::notice('perm.news.approve - News has been approved', ['user_id' => $request->user()->user_id, 'news_id' => $news->id]);
+
+        return redirect()->route('server.news.show.get', ['news_id' => $news_id]);
     }
 
     public function getAdd(Request $request)
@@ -115,10 +143,10 @@ class NewsController extends Controller
 
         $channels = ServerNewsChannel::select('id', 'name')->get();
         $channel_array = [];
-        foreach($channels as $channel)
+        foreach ($channels as $channel)
             $channel_array[$channel->id] = $channel->name;
 
-        return view('server.news.add', [ 'channels' => $channel_array]);
+        return view('server.news.add', ['channels' => $channel_array]);
     }
 
     public function postAdd(Request $request)
@@ -131,7 +159,9 @@ class NewsController extends Controller
             'body' => 'required',
             'message_type' => 'required',
             'channel_id' => 'required|exists:server.news_channels,id',
-            'timestamp' => 'required|date|after:+440years'
+            'ic_timestamp' => 'required|date|after:+440years',
+            'publish_at' => 'sometimes|date',
+            'publish_until' => 'sometimes|date|after:publish_at'
         ]);
 
         $news = new ServerNewsStory();
@@ -139,8 +169,22 @@ class NewsController extends Controller
         $news->body = htmlspecialchars($request->input('body'));
         $news->message_type = htmlspecialchars($request->input('message_type'));
         $news->channel_id = $request->input('channel_id');
-        $news->time_stamp = $request->input('timestamp');
+        $news->ic_timestamp = $request->input('ic_timestamp');
         $news->created_by = $request->user()->user_byond;
+
+        if ($request->exists('publish_at')) {
+            $news->publish_at = $request->input('publish_at');
+        } else {
+            $news->publish_at = Carbon::now();
+        }
+
+        $news->publish_at = $request->input('publish_until');
+
+        if($request->user()->can('server_news_approve')){
+            $news->approved_at = Carbon::now();
+            $news->approved_by = "automatic";
+        }
+
         $news->save();
 
         Log::notice('perm.news.add - News has been added', ['user_id' => $request->user()->user_id, 'news_id' => $news->id]);
