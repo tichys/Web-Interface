@@ -138,6 +138,11 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('', ['as' => 'server.live.index', 'uses' => 'Server\LiveController@index']);
             Route::get('/coms', ['as' => 'server.live.coms', 'uses' => 'Server\LiveController@getComoptions']);
             Route::get('/ghosts', ['as' => 'server.live.ghosts', 'uses' => 'Server\LiveController@getGhostoptions']);
+            Route::get('/faxmachines', ['as' => 'server.live.get.faxmachines', 'uses' => 'Server\LiveController@getFaxmachines']);
+            Route::get('/ghostlist', ['as' => 'server.live.get.ghosts', 'uses' => 'Server\LiveController@getGhosts']);
+            Route::post('/sendfax', ['as' => 'server.live.post.sendfax', 'uses' => 'Server\LiveController@postSendfax']);
+            Route::post('/sendreport', ['as' => 'server.live.post.sendreport', 'uses' => 'Server\LiveController@postSendreport']);
+            Route::post('/grantrespawn', ['as' => 'server.live.post.grantrespawn', 'uses' => 'Server\LiveController@postGrantrespawn']);
         });
 
         Route::group(['prefix'=>'exterminatus'],function(){

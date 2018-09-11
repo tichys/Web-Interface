@@ -12,6 +12,8 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        "/server/live/sendfax",
+        "/server/live/sendreport",
+        "/server/live/grantrespawn",
     ];
 }

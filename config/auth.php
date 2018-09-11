@@ -41,10 +41,10 @@ return [
             'provider' => 'phpbbusers',
         ],
 
-//        'api' => [
-//            'driver' => 'token',
-//            'provider' => 'phpbbusers',
-//        ],
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'phpbbusers',
+        ],
     ],
 
     /*
