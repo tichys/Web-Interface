@@ -83,20 +83,24 @@
             @include('components.formerrors')
             <div class="panel panel-default">
                 <div class="panel-heading">News</div>
-
                 <div class="panel-body">
                     {{$news->body}}
                 </div>
                 @can('server_news_edit')
                 <div class="panel-footer">
                     <div class="btn-group" role="group">
-                    <a href="{{route('server.news.edit.get',['news_id'=>$news->id])}}" class="btn btn-info" role="button">Edit</a>
-                    @if(!$news->approved_at)
-                        @can('server_news_approve')
-                        <a href="{{route('server.news.approve',['news_id'=>$news->id])}}" class="btn btn-success" role="button">Approve</a>
-                        @endcan()
-                    @endif
-                    <a href="{{route('server.news.delete',['news_id'=>$news->id])}}" class="btn btn-danger" role="button">Delete</a>
+                        @if(!$news->approved_at)
+                            @can('server_news_approve')
+                                <a href="{{route('server.news.approve',['news_id'=>$news->id])}}" class="btn btn-success" role="button">Approve</a>
+                            @endcan()
+                            <a href="{{route('server.news.edit.get',['news_id'=>$news->id])}}" class="btn btn-info" role="button">Edit</a>
+                            <a href="{{route('server.news.delete',['news_id'=>$news->id])}}" class="btn btn-danger" role="button">Delete</a>
+                        @else()
+                            @can('server_news_approve')
+                                <a href="{{route('server.news.edit.get',['news_id'=>$news->id])}}" class="btn btn-info" role="button">Edit</a>
+                                <a href="{{route('server.news.delete',['news_id'=>$news->id])}}" class="btn btn-danger" role="button">Delete</a>
+                            @endcan()
+                        @endif()
                     </div>
                 </div>
                 @endcan()
