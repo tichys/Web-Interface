@@ -55,7 +55,6 @@ class LiveController extends Controller
         if ($request->user()->cannot('server_remote_coms')) {
             abort('403', 'You do not have the required permission');
         }
-
         $query = New ServerQuery();
         try {
             $query->setUp(config('aurora.gameserver_address'),config('aurora.gameserver_port'),config('aurora.gameserver_auth'));
