@@ -58,10 +58,13 @@ class NewsController extends Controller
 
     public function getEdit($news_id, Request $request)
     {
-        if ($request->user()->cannot('server_news_edit'))
-            abort('403', 'You do not have the required permission');
-
         $news = ServerNewsStory::findOrFail($news_id);
+        //Check if its unapproved and the user can only edit or if the user can approve orders
+        if($request->user()->cannot("server_news_edit"))
+            abort("403","You do not have the required permission");
+        if($news->approved_at && $request->user()->cannot('server_news_approve'))
+            abort("403","You do not have the required permission for approved news");
+
         $channels = ServerNewsChannel::select('id', 'name')->get();
         $channel_array = [];
         foreach ($channels as $channel)
@@ -72,11 +75,12 @@ class NewsController extends Controller
 
     public function postEdit($news_id, Request $request)
     {
-        //TODO: Enable player submitted news
-        if ($request->user()->cannot('server_news_edit'))
-            abort('403', 'You do not have the required permission');
-
         $news = ServerNewsStory::findOrFail($news_id);
+        //TODO: Enable player submitted news
+        if($request->user()->cannot("server_news_edit"))
+            abort("403","You do not have the required permission");
+        if($news->approved_at && $request->user()->cannot('server_news_approve'))
+            abort("403","You do not have the required permission for approved news");
 
         $this->validate($request, [
             'author' => 'required|max:50',
@@ -110,10 +114,12 @@ class NewsController extends Controller
 
     public function delete($news_id, Request $request)
     {
-        if ($request->user()->cannot('server_news_edit'))
-            abort('403', 'You do not have the required permission');
-
         $news = ServerNewsStory::findOrFail($news_id);
+        if($request->user()->cannot("server_news_edit"))
+            abort("403","You do not have the required permission");
+        if($news->approved_at && $request->user()->cannot('server_news_approve'))
+            abort("403","You do not have the required permission for approved news");
+
         Log::notice('perm.news.delete - News has been deleted', ['user_id' => $request->user()->user_id, 'news_id' => $news->id]);
         $news->delete();
 
@@ -160,8 +166,8 @@ class NewsController extends Controller
             'message_type' => 'required',
             'channel_id' => 'required|exists:server.news_channels,id',
             'ic_timestamp' => 'required|date|after:+440years',
-            'publish_at' => 'sometimes|date',
-            'publish_until' => 'sometimes|date|after:publish_at'
+            'publish_at' => 'date',
+            'publish_until' => 'nullable|date|after:publish_at'
         ]);
 
         $news = new ServerNewsStory();
@@ -178,7 +184,7 @@ class NewsController extends Controller
             $news->publish_at = Carbon::now();
         }
 
-        $news->publish_at = $request->input('publish_until');
+        $news->publish_until = $request->input('publish_until');
 
         if($request->user()->can('server_news_approve')){
             $news->approved_at = Carbon::now();
