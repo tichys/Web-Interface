@@ -34,6 +34,7 @@ class ServerQuery
      * @param string $auth_key
      *
      * @return void
+     * @throws \Exception
      */
     public function setUp($address, $port, $auth = NULL)
     {
@@ -53,6 +54,7 @@ class ServerQuery
             throw new \Exception("Error connecting to host.");
         }
         $this->socket = $sock;
+        return TRUE;
     }
 
     /**
@@ -67,8 +69,8 @@ class ServerQuery
      * Queries the server we're connected to.
      *
      * @param array   query
-     *
      * @return array
+     * @throws \Exception
      */
     public function runQuery($query)
     {
@@ -76,7 +78,7 @@ class ServerQuery
             throw new \Exception("Server not setup");
         }
 
-        if (!isset($query) || !sizeof($query || !is_array($query))) {
+        if (!isset($query) || !sizeof($query) || !is_array($query)) {
             throw new \Exception("Invalid query variable passed.");
         }
         $assembled_query = $this->assembleQuery($query);
@@ -103,7 +105,6 @@ class ServerQuery
      * Creates a query to send to the SS13 server.
      *
      * @param array $query
-     *
      * @return string
      */
     private function assembleQuery($query)
@@ -120,8 +121,8 @@ class ServerQuery
      * Parses the response from the server.
      *
      * @param string $result
-     *
      * @return object $response
+     * @throws \Exception
      */
     private function parseResult($result)
     {
