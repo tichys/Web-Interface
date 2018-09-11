@@ -200,7 +200,7 @@ class NewsController extends Controller
 
     public function getNewsData()
     {
-        $news = ServerNewsStory::with('channel')->select(['id', 'body', 'channel_id', 'author'])->get();
+        $news = ServerNewsStory::with('channel')->select(['id', 'body', 'channel_id', 'author','approved_by'])->get();
         return Datatables::of($news)
             ->removeColumn('channel_id')
             ->addColumn('channel', function (ServerNewsStory $story) {
