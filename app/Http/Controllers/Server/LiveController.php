@@ -62,13 +62,12 @@ class LiveController extends Controller
                 "query" => "get_faxmachines"
             ]);
         } catch (\Exception $e) {
-            dd($e->getMessage());
             abort(500, $e->getMessage());
         }
         if ($query->response->statuscode == "200") {
             return json_encode($query->response->data);
         } else {
-            abort($query->response->statuscode);
+            abort($query->response->statuscode,$query->response);
         }
     }
 
@@ -77,9 +76,7 @@ class LiveController extends Controller
         if ($request->user()->cannot('server_remote_ghosts')) {
             abort('403', 'You do not have the required permission');
         }
-
         $query = New ServerQuery();
-
         try {
             $query->setUp(config('aurora.gameserver_address'), config('aurora.gameserver_port'), config('aurora.gameserver_auth'));
             $query->runQuery([
@@ -100,9 +97,7 @@ class LiveController extends Controller
         if ($request->user()->cannot('server_remote_coms')) {
             abort('403', 'You do not have the required permission');
         }
-
         $query = New ServerQuery;
-
         try {
             $query->setUp(config('aurora.gameserver_address'), config('aurora.gameserver_port'), config('aurora.gameserver_auth'));
 

@@ -33,7 +33,7 @@ new Vue({
 
     methods: {
         getghosts: function() {
-            this.$http.get('/api/server/live/ghosts').then(
+            this.$http.get('/server/live/ghostlist').then(
                 function (response) {
                     this.$set('ghosts', response.json());
                     this.$set('ghoststatus', 'Ghosts loaded')
@@ -44,7 +44,7 @@ new Vue({
                 })
         },
         grantrespawn: function() {
-            this.$http.post('/api/server/live/grantrespawn', {
+            this.$http.post('/server/live/grantrespawn', {
                 'target':this.ghostselected
             }).then(
                 function (response) {

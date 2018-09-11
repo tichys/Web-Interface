@@ -103,7 +103,7 @@ new Vue({
     methods: {
         getfaxmachines: function()
         {
-            this.$http.get('/api/server/live/faxmachines').then(
+            this.$http.get('/server/live/faxmachines').then(
             function(response){
                 this.$set('faxmachines',response.json());
                 this.$set('faxstatus','Waiting for User Input')
@@ -120,7 +120,7 @@ new Vue({
             this.$set('faxstatus','Sending the fax ...');
             if(this.faxccia)
             {
-                this.$http.post('/api/server/live/sendfax', {
+                this.$http.post('/server/live/sendfax', {
                     'faxtitle':this.faxtitle,
                     'faxbody':this.faxcciabody,
                     'faxtargets': this.faxtargets,
@@ -139,7 +139,7 @@ new Vue({
             }
             else
             {
-                this.$http.post('/api/server/live/sendfax', {
+                this.$http.post('/server/live/sendfax', {
                     'faxtitle':this.faxtitle,
                     'faxbody':this.faxbody,
                     'faxtargets': this.faxtargets,
@@ -160,7 +160,7 @@ new Vue({
         sendreport: function()
         {
             this.$set('faxstatus','Sending the fax ...');
-            this.$http.post('/api/server/live/sendreport', {
+            this.$http.post('/server/live/sendreport', {
                 'reporttitle':this.reporttitle,
                 'reportbody':this.reportbody,
                 'reporttype': this.reporttype,

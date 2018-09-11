@@ -139,23 +139,5 @@ return [
     */
     "logserver_address" => env('LOGSERVER_ADDRESS', NULL),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Github Hook Secret
-    |--------------------------------------------------------------------------
-    |
-    | The secret of the github hook to verify its integrity
-    |
-    */
-    "github_hook_secret" => env('GITHUB_HOOK_SECRET', NULL),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Github Dev Branch
-    |--------------------------------------------------------------------------
-    |
-    | Branch that Pull requests need to target for them to be inserted into the db
-    |
-    */
-    "github_dev_branch" => env('GITHUB_DEV_BRANCH', "development"),
 ];
