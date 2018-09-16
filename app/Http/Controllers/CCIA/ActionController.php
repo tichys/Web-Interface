@@ -67,7 +67,7 @@ class ActionController extends Controller
         }
         $this->validate($request, [
             'title' => 'required',
-            'type' => 'required|in:injunction,suspension,warning,other',
+            'type' => 'required|in:injunction,suspension,reprimand,demotion,other',
             'issuedby' => 'required',
             'details' => 'required',
             'url' => 'required'
@@ -111,7 +111,7 @@ class ActionController extends Controller
 
         $this->validate($request, [
             'title' => 'required',
-            'type' => 'required|in:injunction,suspension,warning,other',
+            'type' => 'required|in:injunction,suspension,reprimand,demotion,other',
             'issuedby' => 'required',
             'details' => 'required',
             'url' => 'required'
@@ -191,7 +191,7 @@ class ActionController extends Controller
 
         return Datatables::of($data)
             ->editColumn('title', '<a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}">{{$title}}</a>')
-            ->addColumn('action', '<p><a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_action_edit\')<a href="{{route(\'ccia.actions.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.actions.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->addColumn('action', '<div class="btn-group" role="group"><a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_action_edit\')<a href="{{route(\'ccia.actions.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.actions.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</div>')
             ->rawColumns([0, 1])
             ->make();
     }
@@ -205,7 +205,7 @@ class ActionController extends Controller
 
         return Datatables::of($data)
             ->editColumn('title', '<a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}">{{$title}}</a>')
-            ->addColumn('action', '<p><a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_action_edit\')<a href="{{route(\'ccia.actions.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.actions.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->addColumn('action', '<div class="btn-group" role="group"><a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}" class="btn btn-success" type="button">Show</a>  @can(\'ccia_action_edit\')<a href="{{route(\'ccia.actions.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.actions.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</div>')
             ->rawColumns([0, 2])
             ->make();
     }
