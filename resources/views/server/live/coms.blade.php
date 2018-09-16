@@ -50,11 +50,12 @@
 
                                 <div class="form-group">
                                     <label for="faxAnnounce">Annonce Fax</label>
-                                    <div class="checkbox" id="faxAnnounce">
-                                        <label>
-                                            <input type="checkbox" v-model="faxannounce"> Announce Fax
-                                        </label>
-                                    </div>
+                                    <select class="form-control" v-model="faxannounce">
+                                        <option disabled value="">Please select one</option>
+                                        <option value="0">Never</option>
+                                        <option value="1">Always</option>
+                                        <option value="2">Only if PDA not linked</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-group">
