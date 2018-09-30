@@ -147,7 +147,7 @@ class LibraryController extends Controller
         return Datatables::of($books)
             ->removeColumn('id')
             ->editColumn('title', '<a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}">{{$title}}</a>')
-            ->addColumn('action','<p><a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}" class="btn btn-success" role="button">Show</a>  @can(\'server_library_edit\')<a href="{{route(\'server.library.edit.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'server.library.delete\',[\'book\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->addColumn('action','<div class="btn-group"><a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}" class="btn btn-success" role="button">Show</a>  @can(\'server_library_edit\')<a href="{{route(\'server.library.edit.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'server.library.delete\',[\'book\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</div>')
             ->rawColumns([0, 3])
             ->make();
     }
