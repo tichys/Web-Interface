@@ -35,7 +35,8 @@ class LoginController extends Controller
         $socialite_user = Socialite::driver('ipscommunity')->user();
 
         try {
-            $byond_key = $socialite_user['linkedAccounts'][15]['name'];
+            $linkedAccounts = $socialite_user->linkedAccounts;
+            $byond_key = $linkedAccounts[15]['value'];
         } catch (\ErrorException $e) {
             $byond_key = null;
         }
