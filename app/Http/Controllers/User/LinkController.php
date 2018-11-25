@@ -51,8 +51,8 @@ class LinkController extends Controller
                 $helpers = new Helpers();
 
                 //If its confirmed write it to the forum db
-                $request->user()->user_byond_linked = 1;
-                $request->user()->user_byond = $helpers->sanitize_ckey($linking_request->player_ckey);
+                $request->user()->byond_linked = 1;
+                $request->user()->byond_key = $helpers->sanitize_ckey($linking_request->player_ckey);
                 $request->user()->save();
 
                 //Set the status of the linking request to linked and set the deleted_at date

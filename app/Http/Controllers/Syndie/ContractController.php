@@ -20,12 +20,12 @@
 
 namespace App\Http\Controllers\Syndie;
 
-use App\Services\Auth\ForumUserModel;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Models\User;
 use App\Models\SyndieContract;
 use App\Models\SyndieContractComment;
 use App\Models\SyndieContractObjective;
@@ -47,7 +47,7 @@ class ContractController extends Controller
         $contract = SyndieContract::findOrFail($contract);
         $comments = SyndieContractComment::where('contract_id', '=', $contract->contract_id)->get();
         $objectives = SyndieContractObjective::where('contract_id', '=', $contract->contract_id)->get();
-        $contractee = ForumUserModel::find($contract->contractee_id);
+        $contractee = User::find($contract->contractee_id);
 
         return view('syndie.contract.view', ['contract' => $contract, 'objectives' => $objectives, 'comments' => $comments, 'contractee' => $contractee]);
     }

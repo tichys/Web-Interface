@@ -22,9 +22,9 @@ namespace App\Providers;
 
 use Auth;
 use App\Models\SitePermission;
-use App\Services\Auth\PhpbbUserProvider;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -47,34 +47,18 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(GateContract $gate)
     {
-        if (config("aurora.registerPhpbbAuthProvider") == TRUE) {
-            //Register the phpbb Auth Provider
-            $this->app['auth']->provider("phpbb", function ($app, array $config) {
-                return new PhpbbUserProvider();
-            });
-
-            $this->registerPolicies($gate);
-
-            foreach ($this->getPermissions() as $permission) {
-                $gate->define($permission->name, function ($user) use ($permission) {
-                    return $user->hasRole($permission->roles);
-                });
-
-            }
-
-            $gate->define('byond_linked', function ($user) {
-                return $user->user_byond_linked == 1;
-            });
-        }
-
         $gate->define('_heads-of-staff',function($user){
-            if($user->user_byond_linked){
+            if($user->byond_linked){
                 $serverplayer = $user->serverplayer();
                 return $serverplayer->check_whitelist("Heads of Staff");
             }else{
                 return FALSE;
             }
 
+        });
+
+        Gate::define('byond_linked', function ($user) {
+            return $user->byond_linked;
         });
 
     }

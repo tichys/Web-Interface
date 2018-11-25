@@ -304,7 +304,7 @@ class ServerPlayer extends Model
      */
     public function check_forum_linked()
     {
-        $forum_user = ForumUserModel::where('user_byond',$this->ckey)->first();
+        $forum_user = ForumUserModel::where('byond_key',$this->ckey)->first();
         if($forum_user != NULL)
             return $forum_user->username_clean;
         else

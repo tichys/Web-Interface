@@ -20,7 +20,7 @@
 
 namespace App\Models;
 
-use App\Services\Auth\ForumUserModel;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -104,9 +104,9 @@ class SyndieContract extends Model
     /**
      * Tries to approve a contract if possible. Checks the required preconditions.
      *
-     * @param $user ForumUserModel who approved the contract
+     * @param $user User who approved the contract
      */
-    public function mod_approve(ForumUserModel $user)
+    public function mod_approve(User $user)
     {
         if (!in_array($this->status, ['new', 'mod-nok'])) {
             abort("420", "You can only approve new or rejected contracts");
@@ -118,15 +118,15 @@ class SyndieContract extends Model
 
         $this->status = "open";
         $this->save();
-        Log::notice('perm.contracts.approve - Contract has been approved', ['user_id' => $user->user_id, 'contract_id' => $this->contract_id]);
+        Log::notice('perm.contracts.approve - Contract has been approved', ['user_id' => $user->id, 'contract_id' => $this->contract_id]);
     }
 
     /**
      * Rejects a Contract
      *
-     * @param $user ForumUserModel who rejected the contract
+     * @param $user User who rejected the contract
      */
-    public function mod_reject(ForumUserModel $user)
+    public function mod_reject(User $user)
     {
         if (in_array($this->status, ['mod-nok'])) {
             abort("420", "The Contract has already been rejected");
@@ -141,9 +141,9 @@ class SyndieContract extends Model
     /**
      * Deletes a contract
      *
-     * @param $user ForumUserModel who deleted the contract
+     * @param $user User who deleted the contract
      */
-    public function mod_delete(ForumUserModel $user)
+    public function mod_delete(User $user)
     {
         //Check if the contract is marked as rejected
         if ($this->status != "mod-nok") {

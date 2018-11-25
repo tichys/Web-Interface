@@ -49,10 +49,10 @@
                     @can('ccia_action_show')
                     <div id="all" class="tab-pane fade in">
                         <div class="tab-pane fade in ">
-                            <div class="panel panel-default">
+                            <div class="panel">
                                 <div class="panel-body">
                                     @can('ccia_action_edit')<p><a href="{{route('ccia.actions.add.post')}}" class="btn btn-success" role="button">Add new Action</a></p>@endcan()
-                                    <table id="all-actions-table" class="table table-condensed">
+                                    <table id="all-actions-table" class="table table-condensed" width="100%">
                                         <thead>
                                         <tr>
                                             <th width="30">ID</th>

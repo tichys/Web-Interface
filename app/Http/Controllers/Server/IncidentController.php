@@ -31,7 +31,7 @@ class IncidentController extends Controller
     public function index(Request $request)
     {
         //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
-        if ($request->user()->user_byond_linked == 0 && $request->user()->cannot('server_players_incidents_show')) {
+        if ($request->user()->byond_linked == False && $request->user()->cannot('server_players_incidents_show')) {
             abort('403', 'Your byond account is not linked to your forum account.');
         }
         return view('server.incidents.index');
