@@ -31,7 +31,7 @@ class StatsController extends Controller
     {
         $this->middleware(function($request, $next){
             //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
-            if($request->user()->user_byond_linked == 0 && $request->user()->cannot('server_stats_show'))
+            if($request->user()->byond_linked == False && $request->user()->cannot('server_stats_show'))
             {
                 abort('403','Your byond account is not linked to your forum account.');
             }

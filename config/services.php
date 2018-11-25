@@ -35,4 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'ipscommunity' => [
+        'client_id' => env('IPS_CLIENT_ID'),
+        'client_secret' => env('IPS_CLIENT_SECRET'),
+        'redirect' => env('IPS_REDIRECT_URL')
+    ]
+
 ];

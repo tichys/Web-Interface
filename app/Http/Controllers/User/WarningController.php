@@ -38,7 +38,7 @@ class WarningController extends Controller
             abort(403, 'Byond Account not linked');
         }
 
-        $warnings = new PlayerWarning($request->user()->user_byond);
+        $warnings = new PlayerWarning($request->user()->byond_key);
 
         //Display the View
         return view('user/warnings/index', ["warnings" => $warnings->get_warnings_object()]);

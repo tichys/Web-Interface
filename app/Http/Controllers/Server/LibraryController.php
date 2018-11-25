@@ -35,7 +35,7 @@ class LibraryController extends Controller
     {
         $this->middleware(function($request, $next){
             //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
-            if($request->user()->user_byond_linked == 0)
+            if($request->user()->byond_linked == False)
             {
                 abort('403','Your byond account is not linked to your forum account.');
             }
@@ -132,7 +132,7 @@ class LibraryController extends Controller
         $book->title = $purifier->purify($request->input('title'));
         $book->content =  $purifier->purify($request->input('content'));
         $book->category = $request->input('category');
-        $book->uploader = $request->user()->user_byond;
+        $book->uploader = $request->user()->byond_key;
         $book->save();
 
         Log::notice('perm.library.add - Book has been added',['user_id' => $request->user()->user_id, 'book_id' => $book->id]);
@@ -157,7 +157,7 @@ class LibraryController extends Controller
         //Check if user has library edit persm
         if ($user->can('server_library_edit'))
             return true;
-        if($user->user_byond == $book->uploader)
+        if($user->byond_key == $book->uploader)
             return true;
 
         return false;
