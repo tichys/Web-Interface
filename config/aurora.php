@@ -97,7 +97,7 @@ return [
     | Group Mapping
     |--------------------------------------------------------------------------
     |
-    | Mapps a Forum Group Name to a WI Role ID
+    | Maps a Forum Group Name to a WI Role ID
     |
     */
     "group_mappings" => [
@@ -108,6 +108,5 @@ return [
         "CCIA Leader"=>3,
         "Lore Writers"=>6,
         "Whitelist Managers"=>4
-    ]
-
+    ],
 ];

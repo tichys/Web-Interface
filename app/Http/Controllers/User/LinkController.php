@@ -92,7 +92,7 @@ class LinkController extends Controller
             DB::connection('server')->table('player_linking')
                 ->insert([
                     ['forum_id' => $request->user()->user_id,
-                        'forum_username_short' => $request->user()->username_clean,
+                        'forum_username_short' => $request->user()->username,
                         'forum_username' => $request->user()->username,
                         'player_ckey' => $ckey,
                         'status' => 'new',
