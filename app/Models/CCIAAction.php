@@ -22,7 +22,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Services\Auth\ForumUserModel;
 
 class CCIAAction extends Model
 {
@@ -39,7 +38,7 @@ class CCIAAction extends Model
         return $this->belongsToMany(ServerCharacter::class,'ccia_action_char','action_id','char_id');
     }
 
-    public function has_linked_char(ForumUserModel $user)
+    public function has_linked_char(User $user)
     {
         if($user->byond_linked != True)
             return false;

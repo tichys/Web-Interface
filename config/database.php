@@ -59,19 +59,6 @@ return [
             'engine'    => null,
         ],
 		
-		'forum' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST_FORUM', 'localhost'),
-            'database'  => env('DB_DATABASE_FORUM', 'aurora_forum'),
-            'username'  => env('DB_USERNAME_FORUM', 'root'),
-            'password'  => env('DB_PASSWORD_FORUM', ''),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => 'phpbb_',
-            'strict'    => false,
-            'engine'    => null,
-        ],
-		
 		'server' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST_SERVER', 'localhost'),
