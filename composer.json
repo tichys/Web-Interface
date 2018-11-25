@@ -10,7 +10,7 @@
         "erusev/parsedown": "^1.6",
         "ezyang/htmlpurifier": "^4.8",
         "fideloper/proxy": "~4.0",
-        "laravel/framework": "5.6.*",
+        "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.4.0",
         "pusher/pusher-php-server": "~3.0",
