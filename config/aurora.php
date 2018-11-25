@@ -54,17 +54,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Log Logins to Debug log
-    |--------------------------------------------------------------------------
-    |
-    | If logins should be logged to the debug log
-    |
-    */
-    "log_logins" => env('LOG_LOGINS', FALSE),
-
-
-    /*
-    |--------------------------------------------------------------------------
     | Game Server Address
     |--------------------------------------------------------------------------
     |
@@ -103,5 +92,22 @@ return [
     */
     "logserver_address" => env('LOGSERVER_ADDRESS', NULL),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Group Mapping
+    |--------------------------------------------------------------------------
+    |
+    | Mapps a Forum Group Name to a WI Role ID
+    |
+    */
+    "group_mappings" => [
+        "Developers"=>8,
+        "Moderators"=>2,
+        "Server Administrators"=>1,
+        "CCIA"=>3,
+        "CCIA Leader"=>3,
+        "Lore Writers"=>6,
+        "Whitelist Managers"=>4
+    ]
 
 ];

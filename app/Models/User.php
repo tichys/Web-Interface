@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'formatted_name', 'email', 'password', 'refresh_token', 'photo_url', 'linked_accounts', 'primary_group', 'secondary_groups'
+        'id', 'name', 'formatted_name', 'email', 'password', 'refresh_token', 'byond_key', 'photo_url', 'linked_accounts', 'primary_group', 'secondary_groups'
     ];
 
     /**
@@ -52,22 +52,9 @@ class User extends Authenticatable
         $this->attributes['secondary_groups'] = serialize($value);
     }
 
-    public function getByondKeyAttribute()
-    {
-        try {
-            return unserialize($this->attributes['linked_accounts'])[15]['value']; //TODO: Make the id configurable
-        } catch (Exception $e) {
-            return NULL;
-        }
-    }
-
     public function getByondLinkedAttribute()
     {
-        try {
-            return !!unserialize($this->attributes['linked_accounts'])[15]['value']; //TODO: Make the id configurable
-        } catch (Exception $e) {
-            return NULL;
-        }
+        return !!$this->byond_key;
     }
 
     public function getUserIdAttribute()
@@ -135,6 +122,10 @@ class User extends Authenticatable
 
     /**
      * Checks if a user has a specific char
+     *
+     * @param $char_id
+     *
+     * @return bool|null
      */
     public function checkPlayerChar($char_id)
     {

@@ -20,14 +20,13 @@
 
 namespace App\Http\Controllers\Site;
 
-use App\Services\Auth\ForumUserModel;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Log;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\SitePermission;
-Use App\Models\SiteRole;
+use App\Models\SiteRole;
+Use App\Models\User;
 
 class RoleController extends Controller
 {
@@ -164,9 +163,9 @@ class RoleController extends Controller
         $role = SiteRole::findOrFail($role_id);
 
         if(is_numeric($request->input('user_id')))
-            $user = ForumUserModel::findOrFail($request->input('user_id'));
+            $user = User::findOrFail($request->input('user_id'));
         else
-            $user = ForumUserModel::where('username_clean',$request->input('user_id'))->first();
+            $user = User::where('username_clean',$request->input('user_id'))->first();
 
         $user->roles()->attach($role);
 
@@ -181,7 +180,7 @@ class RoleController extends Controller
             abort('403', 'You do not have the required permission');
         }
         $role = SiteRole::findOrFail($role_id);
-        $user = ForumUserModel::findOrFail($request->input('user'));
+        $user = User::findOrFail($request->input('user'));
 
         $user->roles()->detach($role);
 

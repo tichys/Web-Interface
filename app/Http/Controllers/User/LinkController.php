@@ -51,9 +51,9 @@ class LinkController extends Controller
                 $helpers = new Helpers();
 
                 //If its confirmed write it to the forum db
-                $request->user()->byond_linked = 1;
                 $request->user()->byond_key = $helpers->sanitize_ckey($linking_request->player_ckey);
                 $request->user()->save();
+                //TODO: Make a post request to the forum to update it
 
                 //Set the status of the linking request to linked and set the deleted_at date
                 DB::connection('server')->table('player_linking')->where('forum_id', '=', $request->user()->user_id)->where('deleted_at','=',NULL)->update(['deleted_at' => date('Y-m-d H:i:s',time()),'status'=>'linked']);
