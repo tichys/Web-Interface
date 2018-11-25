@@ -34,6 +34,12 @@ class LoginController extends Controller
     {
         $socialite_user = Socialite::driver('ipscommunity')->user();
 
+        try {
+            $byond_key = $socialite_user['linkedAccounts'][15]['name'];
+        } catch (\ErrorException $e) {
+            $byond_key = null;
+        }
+
         //Update or create the user details in the db
         $user = User::updateOrCreate(
             ['id' => $socialite_user->id],
@@ -46,9 +52,22 @@ class LoginController extends Controller
                 'photo_url' => $socialite_user->avatar,
                 'linked_accounts' => $socialite_user->linkedAccounts,
                 'primary_group' => $socialite_user->primaryGroup,
-                'secondary_groups' => $socialite_user->secondaryGroups
+                'secondary_groups' => $socialite_user->secondaryGroups,
+                'byond_key' => $byond_key,
             ]
         );
+
+        //Sync the groups
+        if ($user->sync_groups){
+            //Check if the primary groupd is in the sync array
+            //TODO: Change that to sync the secondary groups aswell once that is fixed in IPB
+            $group_data = config("aurora.group_mappings");
+            $group_ids = [];
+            if(array_key_exists($user->primary_group,config("aurora.group_mappings"))){
+                $group_ids[] = $group_data[$user->primary_group];
+            }
+            $user->roles()->sync($group_ids);
+        }
 
         //Login the user and remember them.
         Auth::login($user, TRUE);

@@ -61,6 +61,13 @@ class AuthServiceProvider extends ServiceProvider
             return $user->byond_linked;
         });
 
+        foreach($this->getPermissions() as $permission)
+        {
+            $gate->define($permission->name, function($user) use ($permission)
+            {
+                return $user->hasRole($permission->roles);
+            });
+        }
     }
 
     protected function getPermissions()

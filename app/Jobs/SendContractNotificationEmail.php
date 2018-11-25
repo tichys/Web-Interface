@@ -19,14 +19,11 @@
  */
 namespace App\Jobs;
 
-use App\Jobs\Job;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\SyndieContract;
-use App\Services\Auth\ForumUserModel;
 use App\Services\Notification\Mailer;
-use Illuminate\Support\Facades\Mail;
 use App\Models\SiteRole;
 
 class SendContractNotificationEmail extends Job implements ShouldQueue
