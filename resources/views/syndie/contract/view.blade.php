@@ -113,7 +113,7 @@
                                 {{--<p><a href="{{route('syndie.contracts.reject',['contract'=>$contract->contract_id])}}" class="btn btn-warning" role="button">Reject </a></p>--}}
                                 <p><a href="{{route('syndie.contracts.deletecontract',['contract'=>$contract->contract_id])}}" class="btn btn-danger @if($contract->status != 'mod-nok') disabled @endif" role="button">Delete</a></p>
                                 <p><b>Created by:</b></p>
-                                <p>@if(isset($contractee) && $contractee->user_byond != ""){{$contractee->user_byond}} @else {{$contract->contractee_id}}@endif()</p>
+                                <p>@if(isset($contractee) && $contractee->byond_key != ""){{$contractee->byond_key}} @else {{$contract->contractee_id}}@endif()</p>
                             </div>
                         </div>
                     </div>

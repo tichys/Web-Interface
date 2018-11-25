@@ -63,7 +63,7 @@ class CharController extends Controller
     private function can_view_char(Request $request, $char)
     {
         //Check if the user is the owner of the char
-        if ($request->user()->user_byond == $char->ckey)
+        if ($request->user()->byond_key == $char->ckey)
             return TRUE;
 
         //Check if the user has the permission to view characters
@@ -76,7 +76,7 @@ class CharController extends Controller
     private function can_edit_char(Request $request, $char)
     {
         //Check if the user is the owner of the char
-        if ($request->user()->user_byond == $char->ckey)
+        if ($request->user()->byond_key == $char->ckey)
             return TRUE;
 
         //Check if the user has the permission to view characters
@@ -155,7 +155,7 @@ class CharController extends Controller
 
     public function getCharDataOwn(Request $request)
     {
-        $chars = ServerCharacter::select(['id', 'name'])->where('ckey', $request->user()->user_byond);
+        $chars = ServerCharacter::select(['id', 'name'])->where('ckey', $request->user()->byond_key);
 
         return Datatables::of($chars)
             ->removeColumn('id')

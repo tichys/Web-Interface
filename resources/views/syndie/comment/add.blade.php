@@ -78,8 +78,8 @@
                         <div id="agents-select" class="form-group" hidden>
                             <label for="agents">Select participating agent ckeys:</label><br>
                             <select class="form-control agents" id="agents" multiple="multiple" name="agents[]" style="width: 100%">
-                                @if(Auth::user()->user_byond_linked == 1)
-                                    <option value="{{Auth::user()->getServerPlayerID()}}" selected="selected">{{Auth::user()->user_byond}}</option>
+                                @if(Auth::user()->byond_linked == True)
+                                    <option value="{{Auth::user()->getServerPlayerID()}}" selected="selected">{{Auth::user()->byond_key}}</option>
                                 @endif
                             </select>
                         </div>

@@ -29,7 +29,7 @@
 
                 <div class="panel-body">
                     {{-- Check if Byond Account is linked already, If so, then only show this message --}}
-                    @if(Auth::user()->user_byond_linked == 1)
+                    @if(Auth::user()->byond_linked == True)
                         <div class="alert alert-success">
                             <strong>Linking completed!</strong><br>
                             You have already linked your byond account with your forum account.

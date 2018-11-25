@@ -36,7 +36,7 @@ class NewsController extends Controller
     {
         $this->middleware(function ($request, $next) {
             //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
-            if ($request->user()->user_byond_linked == 0)
+            if ($request->user()->byond_linked == False)
                 abort('403', 'Your byond account is not linked to your forum account.');
             if ($request->user()->cannot('server_news_show'))
                 abort('403', 'You do not have the required permission.');
@@ -176,7 +176,7 @@ class NewsController extends Controller
         $news->message_type = htmlspecialchars($request->input('message_type'));
         $news->channel_id = $request->input('channel_id');
         $news->ic_timestamp = $request->input('ic_timestamp');
-        $news->created_by = $request->user()->user_byond;
+        $news->created_by = $request->user()->byond_key;
 
         if ($request->exists('publish_at')) {
             $news->publish_at = $request->input('publish_at');

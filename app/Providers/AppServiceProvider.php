@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Blade;
+use IPBProvider;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -31,5 +32,16 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+    }
+
+    private function bootIPBSocialite(){
+        $socialite = $this->app->make('Laravel\Socialite\Contracts\Factory');
+        $socialite->extend(
+            'ipb',
+            function ($app) use ($socialite) {
+                $config = $app['config']['services.ipb'];
+                return $socialite->buildProvider(IPBProvider::class,$config);
+            }
+        );
     }
 }

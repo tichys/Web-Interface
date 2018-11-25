@@ -11,7 +11,7 @@
 |
 */
 
-//Copyright (c) 2016 "Werner Maisl", "Sierra Brown"
+//Copyright (c) 2016-2018 "Werner Maisl", "Sierra Brown"
 //
 //This file is part of the Aurora Webinterface
 //
@@ -57,8 +57,10 @@ Route::group(['middleware' => 'web'], function () {
         });
     });
 
-    Auth::routes(); //Auth Routes
-    Route::get('/logout', 'Auth\LoginController@logout');
+    Route::get('login', 'Auth\LoginController@redirectToProvider')->name('login');
+    Route::get('login/callback', 'Auth\LoginController@handleProviderCallback')->name('login.callback');
+    Route::any('logout', 'Auth\LoginController@logout')->name('logout');
+
 
     //Route for SSO
     Route::any('/login/sso_server/', ['as' => 'login.sso', 'uses' => 'Auth\ServerSSOController@sso_server']);
@@ -145,7 +147,7 @@ Route::group(['middleware' => 'web'], function () {
             Route::post('/grantrespawn', ['as' => 'server.live.post.grantrespawn', 'uses' => 'Server\LiveController@postGrantrespawn']);
         });
 
-        Route::group(['prefix'=>'exterminatus'],function(){
+        Route::group(['prefix' => 'exterminatus'], function () {
             Route::get('', ['as' => 'server.exterminatus.index', 'uses' => 'Server\ExterminatusController@index']);
         });
 
@@ -211,10 +213,6 @@ Route::group(['middleware' => 'web'], function () {
 
     //Website Stuff
     Route::group(['prefix' => 'site', 'middleware' => 'auth'], function () {
-        Route::group(['prefix' => 'log', 'middleware' => 'permission.site:site_logs_show'], function () {
-            Route::get('web', ['as' => 'site.log.index', 'uses' => 'Site\LogViewerController@index']);
-        });
-
         Route::group(['prefix' => 'role'], function () {
             Route::get('', ['as' => 'site.roles.index', 'uses' => 'Site\RoleController@index']);
             Route::get('/add', ['as' => 'site.roles.add.get', 'uses' => 'Site\RoleController@getAdd']);
@@ -293,3 +291,7 @@ Route::group(['middleware' => 'web'], function () {
     });
 });
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

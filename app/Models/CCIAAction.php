@@ -41,11 +41,11 @@ class CCIAAction extends Model
 
     public function has_linked_char(ForumUserModel $user)
     {
-        if($user->user_byond_linked != 1)
+        if($user->byond_linked != True)
             return false;
 
         //Get the chars from the user
-        $player = ServerPlayer::where('ckey',$user->user_byond)->first();
+        $player = ServerPlayer::where('ckey',$user->byond_key)->first();
         $char_ids_player = $player->get_char_ids();
 
         //Chet the chars from the action

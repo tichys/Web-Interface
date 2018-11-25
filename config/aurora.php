@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2016 "Werner Maisl"
+ * Copyright (c) 2016-2018 "Werner Maisl"
  *
  * This file is part of Aurorastation-Wi
  * Aurorastation-Wi is free software: you can redistribute it and/or modify
@@ -19,42 +19,6 @@
  */
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Register the phpbb auth provider
-    |--------------------------------------------------------------------------
-    |
-    | If the phpbb auth provider should be registered.
-    | This might need to be disabled for the initial migration of the database
-    |
-    */
-    "registerPhpbbAuthProvider" => env('AURORA_REGISTER_PHPBB_AUTH_PROVIDER', TRUE),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Enable the remember me token
-    |--------------------------------------------------------------------------
-    |
-    | This is disabled by default, because it requires a additional
-    | column in the phpbb_users table on the forum database.
-    |
-    */
-    "enable_remember_me" => env('AURORA_ENABLE_REMEBER_ME', FALSE),
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Hash Passwords
-    |--------------------------------------------------------------------------
-    |
-    | This needs to be disabled when testing the auth on php 7
-    | Because phpbb 3.0 uses a hashing function that does not support php 7
-    |
-    */
-    "hash_password" => env('AURORA_HASH_PASSWORD', FALSE),
-
-
     /*
     |--------------------------------------------------------------------------
     | Token Expire Time

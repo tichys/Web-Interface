@@ -38,12 +38,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'phpbbusers',
+            'provider' => 'users',
         ],
 
         'api' => [
             'driver' => 'token',
-            'provider' => 'phpbbusers',
+            'provider' => 'users',
         ],
     ],
 
@@ -65,13 +65,10 @@ return [
     */
 
     'providers' => [
-        'phpbbusers' => [
-            'driver' => 'phpbb'
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
         ],
-//        'users' => [
-//            'driver' => 'eloquent',
-//            'model' => App\User::class,
-//        ],
 //         'users' => [
 //             'driver' => 'database',
 //             'table' => 'users',
