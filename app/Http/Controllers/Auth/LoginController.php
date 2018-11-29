@@ -60,17 +60,34 @@ class LoginController extends Controller
 
         //Sync the groups
         if ($user->sync_groups){
-            //Check if the primary groupd is in the sync array
-            //TODO: Change that to sync the secondary groups aswell once that is fixed in IPB
-            $group_data = config("aurora.group_mappings");
-            $group_ids = [];
-            if(array_key_exists($user->primary_group,config("aurora.group_mappings"))){
-                $group_ids[] = $group_data[$user->primary_group];
+            $ipb_groups = array();
+            foreach($socialite_user->secondaryGroups as $ipb_group){
+                $ipb_groups[] = $ipb_group->id;
             }
-            $user->roles()->sync($group_ids);
+            $ipb_groups[] = $socialite_user->primaryGroup->id;
+
+            $wi_roles = array_unique($user->roles()->get());
+            Log::debug('login.permsync - Synchronizing permissions',['user_id' => $user->id, 'wi_roles' => $wi_roles, 'ipb_groups' => $ipb_groups]);
+
+            $groupmap = config("aurora.group_mappings");
+            if (is_array($groupmap)) {
+                foreach ($groupmap as $wi_role => $ipb_group) {
+                    $user_has_ug = in_array($wi_role, $wi_roles);
+                    if (in_array($ipb_group, $ipb_groups) && !$user_has_ug) {
+                        $wi_roles[] = $wi_role;
+                    } elseif (!in_array($ipb_group, $ipb_groups) && $user_has_ug) {
+                        if (($key = array_search($wi_role, $wi_roles)) !== false) {
+                            unset($wi_role[$key]);
+                        }
+                    }
+                }
+                Log::debug('login.permsync.save - Saving new permissions',['user_id' => $user->id, 'wi_roles' => $wi_roles]);
+                $user->groups->sync($wi_roles);
+            }
         }
 
         //Login the user and remember them.
+        //TODO: Change that to use the auth/refresh token instead (and then look that up at the forums if they come back later and their session is expired)
         Auth::login($user, TRUE);
 
         return redirect('home');

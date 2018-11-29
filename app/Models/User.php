@@ -42,6 +42,16 @@ class User extends Authenticatable
         $this->attributes['linked_accounts'] = serialize($value);
     }
 
+    public function getPrimaryGroupAttribute($value)
+    {
+        return unserialize($value);
+    }
+
+    public function setPrimaryGroupAttribute($value)
+    {
+        $this->attributes['primary_group'] = serialize($value);
+    }
+
     public function getSecondaryGroupsAttribute($value)
     {
         return unserialize($value);

@@ -69,8 +69,8 @@ class Provider extends AbstractProvider implements ProviderInterface
             'nickname'          => $user['name'],
             'email'             => $user['email'],
             'avatar'            => $user['photoUrl'],
-            'linkedAccounts'    => $user['customFields'][3]['fields'], //TODO: Make this id configurable
-            'primaryGroup'      => $user['primaryGroup']['name'],
+            'linkedAccounts'    => $user['customFields'][3]['fields'], //TODO: Make this (and additional mappings) configurable
+            'primaryGroup'      => $user['primaryGroup'],
             'secondaryGroups'   => (array_key_exists('secondaryGroups',$user)) ? $user['secondaryGroups'] : []
         ]);
     }
