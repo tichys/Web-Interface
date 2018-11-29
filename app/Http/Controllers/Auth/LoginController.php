@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Log;
 
 
 class LoginController extends Controller
@@ -59,31 +60,32 @@ class LoginController extends Controller
         );
 
         //Sync the groups
-        if ($user->sync_groups){
+        if ($user->sync_groups) {
+            //Get a complete list of IPB Group IDs
             $ipb_groups = array();
-            foreach($socialite_user->secondaryGroups as $ipb_group){
-                $ipb_groups[] = $ipb_group->id;
+            foreach ($socialite_user->secondaryGroups as $ipb_group) {
+                $ipb_groups[] = $ipb_group["id"];
             }
-            $ipb_groups[] = $socialite_user->primaryGroup->id;
+            $ipb_groups[] = $socialite_user->primaryGroup["id"];
 
-            $wi_roles = array_unique($user->roles()->get());
-            Log::debug('login.permsync - Synchronizing permissions',['user_id' => $user->id, 'wi_roles' => $wi_roles, 'ipb_groups' => $ipb_groups]);
+            $wi_roles_old = array_unique($user->roles()->get()->toArray());
 
+            //Map the IPB Roles to WI roles
+            $wi_roles_new = array();
             $groupmap = config("aurora.group_mappings");
             if (is_array($groupmap)) {
-                foreach ($groupmap as $wi_role => $ipb_group) {
-                    $user_has_ug = in_array($wi_role, $wi_roles);
-                    if (in_array($ipb_group, $ipb_groups) && !$user_has_ug) {
-                        $wi_roles[] = $wi_role;
-                    } elseif (!in_array($ipb_group, $ipb_groups) && $user_has_ug) {
-                        if (($key = array_search($wi_role, $wi_roles)) !== false) {
-                            unset($wi_role[$key]);
-                        }
+                foreach ($groupmap as $ipb_group => $wi_role) {
+                    //Check if the user has the IPB Group
+                    if (in_array($ipb_group, $ipb_groups)) {
+                        $wi_roles_new[] = $wi_role;
                     }
                 }
-                Log::debug('login.permsync.save - Saving new permissions',['user_id' => $user->id, 'wi_roles' => $wi_roles]);
-                $user->groups->sync($wi_roles);
             }
+            $wi_roles_new = array_unique($wi_roles_new);
+
+            $user->roles()->sync($wi_roles_new);
+
+            Log::debug('login.permsync - Synchronizing permissions', ['user_id' => $user->id, 'wi_roles_old' => $wi_roles_old, 'wi_roles_new' => $wi_roles_new, 'ipb_groups' => $ipb_groups]);
         }
 
         //Login the user and remember them.
@@ -99,7 +101,8 @@ class LoginController extends Controller
         return redirect("/");
     }
 
-    public function showLoginForm(){
+    public function showLoginForm()
+    {
         return $this->redirectToProvider();
     }
 }
