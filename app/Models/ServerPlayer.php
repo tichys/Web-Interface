@@ -305,7 +305,7 @@ class ServerPlayer extends Model
     {
         $forum_user = User::where('byond_key',$this->ckey)->first();
         if($forum_user != NULL)
-            return $forum_user->username_clean;
+            return $forum_user->name;
         else
             return false;
     }

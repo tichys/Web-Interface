@@ -165,11 +165,11 @@ class RoleController extends Controller
         if(is_numeric($request->input('user_id')))
             $user = User::findOrFail($request->input('user_id'));
         else
-            $user = User::where('username_clean',$request->input('user_id'))->first();
+            $user = User::where('name',$request->input('user_id'))->first();
 
         $user->roles()->attach($role);
 
-        Log::notice('perm.site_role.add_user - Site Role User added',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->username_clean]);
+        Log::notice('perm.site_role.add_user - Site Role User added',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->name]);
 
         return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
     }
@@ -184,7 +184,7 @@ class RoleController extends Controller
 
         $user->roles()->detach($role);
 
-        Log::notice('perm.site_role.remove_user - Site Role User removed',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->username_clean]);
+        Log::notice('perm.site_role.remove_user - Site Role User removed',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->name]);
 
         return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
     }
