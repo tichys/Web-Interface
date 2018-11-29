@@ -97,16 +97,18 @@ return [
     | Group Mapping
     |--------------------------------------------------------------------------
     |
-    | Maps a Forum Group Name to a WI Role ID
+    | Maps a IPB Group to a WI Role
     |
     */
     "group_mappings" => [
-        "Developers"=>8,
-        "Moderators"=>2,
-        "Server Administrators"=>1,
-        "CCIA"=>3,
-        "CCIA Leader"=>3,
-        "Lore Writers"=>6,
-        "Whitelist Managers"=>4
+        4=>1,   //Forum: Forum Admins,            WI: administrators
+        8=>1,   //Forum: Server Administrators,   WI: administrators
+        5=>2,   //Forum: Moderators,   WI: moderators
+        13=>3,   //Forum: CCIA Agents,   WI: duty officers
+        16=>3,   //Forum: CCIA Leader,   WI: duty officers
+        11=>4,  //Forum: Server Administrators,   WI: whitelist_managers
+        10=>6,   //Forum: Server Administrators,   WI: lore_writers
+        17=>6,   //Forum: Server Administrators,   WI: lore_writers
+        9=>8,   //Forum: Server Administrators,   WI: developers
     ],
 ];
