@@ -68,7 +68,12 @@ class LoginController extends Controller
             }
             $ipb_groups[] = $socialite_user->primaryGroup["id"];
 
-            $wi_roles_old = array_unique($user->roles()->get()->toArray());
+            try {
+                $wi_roles_old = array_unique($user->roles()->get()->toArray());
+            } catch (\Exception $e){
+                $wi_roles_old = "";
+                Log::debug("login.wi_roles_old.invalid_format", ['user_id' => $user->id, 'wi_roles_old' => $user->roles()->get()]);
+            }
 
             //Map the IPB Roles to WI roles
             $wi_roles_new = array();
