@@ -111,4 +111,25 @@ return [
         17=>6,   //Forum: Lore Masters,   WI: lore_writers
         9=>8,   //Forum: Developers,   WI: developers
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Forum URL
+    |--------------------------------------------------------------------------
+    |
+    | The base URL of the forum
+    |
+    */
+    "forum_url" => env('FORUM_URL',NULL),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Forum API Key
+    |--------------------------------------------------------------------------
+    |
+    | The API Key to use for the API of the forum
+    |
+    */
+    "forum_api_key" => env('FORUM_API_KEY',NULL),
+
 ];
