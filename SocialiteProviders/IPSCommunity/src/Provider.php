@@ -50,7 +50,7 @@ class Provider extends AbstractProvider implements ProviderInterface
         $user_id = $response_data["id"];
 
 
-        $response2 = $this->getHttpClient()->get(config('aurora.forum_url').'api/core/members/'.$user_id.'?key='.config("aurora.ipb_auth"), [ //TODO: Make this link configurable
+        $response2 = $this->getHttpClient()->get(config('aurora.forum_url').'api/core/members/'.$user_id.'?key='.config("aurora.forum_api_key"), [
 
         ]);
 
