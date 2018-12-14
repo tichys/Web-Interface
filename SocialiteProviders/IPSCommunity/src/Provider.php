@@ -5,6 +5,7 @@ namespace SocialiteProviders\IPSCommunity;
 use Laravel\Socialite\Two\ProviderInterface;
 use SocialiteProviders\Manager\OAuth2\AbstractProvider;
 use SocialiteProviders\Manager\OAuth2\User;
+use Illuminate\Support\Facades\Log;
 
 class Provider extends AbstractProvider implements ProviderInterface
 {
@@ -23,7 +24,7 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function getAuthUrl($state)
     {
-        return $this->buildAuthUrlFromBase('https://forums.aurorastation.org/oauth/authorize', $state); //TODO: Make this link configurable
+        return $this->buildAuthUrlFromBase(config('aurora.forum_url').'oauth/authorize', $state);
     }
 
     /**
@@ -31,7 +32,7 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function getTokenUrl()
     {
-        return 'https://forums.aurorastation.org/oauth/token/'; //TODO: Make this link configurable
+        return config('aurora.forum_url').'oauth/token/';
     }
 
     /**
@@ -39,23 +40,24 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get('https://forums.aurorastation.org/api/core/me', [ //TODO: Make this link configurable
+        $response = $this->getHttpClient()->get(config('aurora.forum_url').'api/core/me', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
             ],
         ]);
 
         $response_data = json_decode($response->getBody(), true);
+        $user_id = $response_data["id"];
 
-        $response2 = $this->getHttpClient()->get('https://forums.aurorastation.org/api/core/me/email', [ //TODO: Make this link configurable
-            'headers' => [
-                'Authorization' => 'Bearer '.$token,
-            ],
+
+        $response2 = $this->getHttpClient()->get(config('aurora.forum_url').'api/core/members/'.$user_id.'?key='.config("aurora.ipb_auth"), [ //TODO: Make this link configurable
+
         ]);
 
         $response2_data = json_decode($response2->getBody(), true);
+        Log::debug('login.datafetch - Fetched Userdata', ['user_id' => $user_id, 'userdata' => $response2_data]);
 
-        return array_merge($response_data, $response2_data);
+        return $response2_data;
     }
 
     /**
