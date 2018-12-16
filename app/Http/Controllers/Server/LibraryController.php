@@ -27,7 +27,6 @@ use App\Models\ServerLibrary;
 use MongoDB\Driver\Server;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Log;
-use HTMLPurifier;
 
 class LibraryController extends Controller
 {
@@ -82,12 +81,9 @@ class LibraryController extends Controller
             'category' => 'required|in:Reference,Non-Fiction,Fiction,Religion,Adult'
         ]);
 
-        $config = \HTMLPurifier_Config::createDefault();
-        $purifier = new HTMLPurifier($config);
-
         $book->author = $request->input('author');
-        $book->title = $purifier->purify($request->input('title'));
-        $book->content = $purifier->purify($request->input('content'));
+        $book->title = $request->input('title');
+        $book->content = $request->input('content');
         $book->category = $request->input('category');
         $book->save();
 
@@ -123,14 +119,10 @@ class LibraryController extends Controller
             'content' => 'required',
             'category' => 'required|in:Reference,Non-Fiction,Fiction,Religion,Adult'
         ]);
-
-        $config = \HTMLPurifier_Config::createDefault();
-        $purifier = new HTMLPurifier($config);
-
         $book = new ServerLibrary();
         $book->author = $request->input('author');
-        $book->title = $purifier->purify($request->input('title'));
-        $book->content =  $purifier->purify($request->input('content'));
+        $book->title = $request->input('title');
+        $book->content =  $request->input('content');
         $book->category = $request->input('category');
         $book->uploader = $request->user()->byond_key;
         $book->save();

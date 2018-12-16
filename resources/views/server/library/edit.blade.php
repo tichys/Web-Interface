@@ -51,6 +51,17 @@
 @endsection
 
 @section('javascripts')
-    <script src="//cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
-    <script>CKEDITOR.replace('content');</script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/11.2.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(
+            document.querySelector( '#content' ),{
+                removePlugins: ['EasyImage','Image','MediaEmbed','ImageCaption','ImageStyle','ImageToolbar','ImageUpload','Link'],
+                toolbar: [ 'heading', 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable', 'undo', 'redo' ]
+            }
+        ).then( editor => {
+            console.log( editor )
+        }).catch( error => {
+            console.error( error )
+        });
+    </script>
 @endsection
