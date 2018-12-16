@@ -47,3 +47,19 @@
     </div>
 </div>
 @endsection
+
+@section('javascripts')
+    <script src="https://cdn.ckeditor.com/ckeditor5/11.2.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(
+            document.querySelector( '#body' ),{
+                removePlugins: ['EasyImage','Image','MediaEmbed','ImageCaption','ImageStyle','ImageToolbar','ImageUpload','Link'],
+                toolbar: [ 'heading', 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable', 'undo', 'redo' ]
+            }
+        ).then( editor => {
+            console.log( editor )
+        }).catch( error => {
+            console.error( error )
+        });
+    </script>
+@endsection

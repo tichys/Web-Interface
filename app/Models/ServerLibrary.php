@@ -20,6 +20,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use HTMLPurifier;
 
 class ServerLibrary extends Model
 {
@@ -28,4 +29,27 @@ class ServerLibrary extends Model
     protected $fillable = ['author', 'title', 'content', 'category', 'uploadtime', 'uploader'];
     protected $primaryKey = 'id';
     public $timestamps = FALSE;
+
+    private $purifier;
+
+    function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $config = \HTMLPurifier_Config::createDefault();
+        $config->set('HTML.Allowed','p, ul, ol, li, h1, h2, h3, h4, h5, h6, br, strong, em, b, i ,u');  //No a[href]
+        $config->set('AutoFormat.RemoveEmpty', true);
+        $this->purifier = new HTMLPurifier($config);
+    }
+
+    public function setAuthorAttribute($value){
+        $this->attributes['author'] = $this->purifier->purify($value);
+    }
+
+    public function setTitleAttribute($value){
+        $this->attributes['title'] = $this->purifier->purify($value);
+    }
+
+    public function setContentAttribute($value){
+        $this->attributes['content'] = $this->purifier->purify($value);
+    }
 }
