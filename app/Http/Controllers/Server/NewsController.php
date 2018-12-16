@@ -80,7 +80,7 @@ class NewsController extends Controller
         if($request->user()->cannot("server_news_edit"))
             abort("403","You do not have the required permission");
         if($news->approved_at && $request->user()->cannot('server_news_approve'))
-            abort("403","You do not have the required permission for approved news");
+            abort("403","You do not have the required permission to edit approved news");
 
         $this->validate($request, [
             'author' => 'required|max:50',
@@ -88,13 +88,13 @@ class NewsController extends Controller
             'message_type' => 'required',
             'channel_id' => 'required|exists:server.news_channels,id',
             'ic_timestamp' => 'required|date|after:+440years',
-            'publish_at' => 'sometimes|date',
-            'publish_until' => 'sometimes|date'
+            'publish_at' => 'nullable|date',
+            'publish_until' => 'nullable|date|after:publish_at'
         ]);
 
-        $news->author = htmlspecialchars($request->input('author'));
-        $news->body = htmlspecialchars($request->input('body'));
-        $news->message_type = htmlspecialchars($request->input('message_type'));
+        $news->author = $request->input('author');
+        $news->body = $request->input('body');
+        $news->message_type = $request->input('message_type');
         $news->channel_id = $request->input('channel_id');
         $news->ic_timestamp = $request->input('ic_timestamp');
 
@@ -166,14 +166,14 @@ class NewsController extends Controller
             'message_type' => 'required',
             'channel_id' => 'required|exists:server.news_channels,id',
             'ic_timestamp' => 'required|date|after:+440years',
-            'publish_at' => 'date',
+            'publish_at' => 'nullable|date',
             'publish_until' => 'nullable|date|after:publish_at'
         ]);
 
         $news = new ServerNewsStory();
-        $news->author = htmlspecialchars($request->input('author'));
-        $news->body = htmlspecialchars($request->input('body'));
-        $news->message_type = htmlspecialchars($request->input('message_type'));
+        $news->author = $request->input('author');
+        $news->body = $request->input('body');
+        $news->message_type = $request->input('message_type');
         $news->channel_id = $request->input('channel_id');
         $news->ic_timestamp = $request->input('ic_timestamp');
         $news->created_by = $request->user()->byond_key;

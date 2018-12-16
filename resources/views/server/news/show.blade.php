@@ -84,7 +84,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">News</div>
                 <div class="panel-body">
-                    {{$news->body}}
+                    {!! $news->body !!}
                 </div>
                 @can('server_news_edit')
                 <div class="panel-footer">
