@@ -57,7 +57,7 @@ Route::group(['middleware' => 'web'], function () {
         });
     });
 
-    Route::get('login', 'Auth\LoginController@redirectToProvider')->name('login');
+    Route::get('login', 'Auth\LoginController@login')->name('login');
     Route::get('login/callback', 'Auth\LoginController@handleProviderCallback')->name('login.callback');
     Route::any('logout', 'Auth\LoginController@logout')->name('logout');
 
@@ -291,8 +291,5 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/warnings', ['as' => 'user.warnings', 'uses' => 'User\WarningController@index']);
     });
 });
-
-
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

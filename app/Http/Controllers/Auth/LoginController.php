@@ -12,8 +12,13 @@ use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
+    public function login()
+    {
+        return $this->redirectToProvider();
+    }
+
     /**
-     * Redirect the user to the GitHub authentication page.
+     * Redirect the user to the Aurora authentication page.
      *
      * @return \Illuminate\Http\Response
      */
@@ -94,7 +99,6 @@ class LoginController extends Controller
         }
 
         //Login the user and remember them.
-        //TODO: Change that to use the auth/refresh token instead (and then look that up at the forums if they come back later and their session is expired)
         Auth::login($user, TRUE);
 
         return redirect('home');
@@ -104,10 +108,5 @@ class LoginController extends Controller
     {
         Auth::logout();
         return redirect("/");
-    }
-
-    public function showLoginForm()
-    {
-        return $this->redirectToProvider();
     }
 }
