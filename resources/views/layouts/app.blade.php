@@ -179,13 +179,13 @@
                                             {{--<a href="{{route('server.permissions.index')}}"><i class="fa fa-btn"></i>Server Permissions</a>--}}
                                         {{--</li>--}}
                                         <li @cannot('server_stats_show')class="disabled"@endcannot>
-                                            <a href="{{route('server.stats.index')}}"><i class="fa fa-btn"></i>Statistics <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                                        </li>
-                                        <li @cannot('server_logs_show')class="disabled"@endcannot>
-                                            <a href="{{config("aurora.logserver_address")}}"><i class="fa fa-btn"></i>Server Logs</a>
+                                            <a href="{{route('server.stats.index')}}"><i class="fa fa-btn"></i>Round Stats</a>
                                         </li>
                                         <li @cannot('syndie_contest_show')class="disabled"@endcannot>
                                             <a href="{{route('syndie.contest.view')}}"><i class="fa fa-btn"></i>Contest Stats</a>
+                                        </li>
+                                        <li @cannot('server_logs_show')class="disabled"@endcannot>
+                                            <a href="{{config("aurora.logserver_address")}}"><i class="fa fa-btn"></i>Server Logs</a>
                                         </li>
                                         <li @cannot('server_cargo_show')class="disabled"@endcannot>
                                             <a href="{{route('server.cargo.index')}}"><i class="fa fa-btn"></i>Cargo</a>
@@ -239,7 +239,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2018 by Werner Maisl - Licensed under the AGPL - Version 0.30.0</p></small>
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2018 by Werner Maisl - Licensed under the AGPL - Version 0.31.0</p></small>
     </div>
 </footer>
 </html>

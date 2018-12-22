@@ -510,7 +510,6 @@
                                 <th width="20px">Game ID</th>
                                 <th width="20px">DateTime</th>
                                 <th width="50px">Job Name</th>
-                                <th width="50px">Special Role</th>
                             </tr>
                             </thead>
                         </table>
@@ -548,8 +547,7 @@
                 columns:[
                     { data: 'game_id', name: 'game_id' },
                     { data: 'datetime', name: 'datetime' },
-                    { data: 'job_name', name: 'job_name' },
-                    { data: 'special_role', name: 'special_role' }
+                    { data: 'job_name', name: 'job_name' }
                 ]
             });
             @endcan()

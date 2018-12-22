@@ -57,7 +57,7 @@ Route::group(['middleware' => 'web'], function () {
         });
     });
 
-    Route::get('login', 'Auth\LoginController@redirectToProvider')->name('login');
+    Route::get('login', 'Auth\LoginController@login')->name('login');
     Route::get('login/callback', 'Auth\LoginController@handleProviderCallback')->name('login.callback');
     Route::any('logout', 'Auth\LoginController@logout')->name('logout');
 
@@ -182,7 +182,8 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::group(['prefix' => 'stats'], function () {
             Route::get('/', ['as' => 'server.stats.index', 'uses' => 'Server\StatsController@index']);
-            Route::any('/round/{game_id}', ['as' => 'server.stats.round', 'uses' => 'Server\StatsController@round']);
+            Route::any('/round/{game_id?}', ['as' => 'server.stats.round', 'uses' => 'Server\StatsController@round']);
+            Route::any('/antag/{game_id?}', ['as' => 'server.stats.antag', 'uses' => 'Server\StatsController@antag']);
             Route::any('/duration/', ['as' => 'server.stats.duration', 'uses' => 'Server\StatsController@duration']);
         });
 
@@ -290,8 +291,5 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/warnings', ['as' => 'user.warnings', 'uses' => 'User\WarningController@index']);
     });
 });
-
-
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

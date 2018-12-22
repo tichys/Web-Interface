@@ -37,6 +37,23 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-5">
+            @include('components.formerrors')
+            <div class="panel panel-default">
+                <div class="panel-heading">Antag Stats</div>
+
+                <div class="panel-body">
+                    {{Form::open(array('route' => 'server.stats.antag','method' => 'post')) }}
+                    {{Form::token()}}
+
+                    {{Form::bsText('game_id')}}
+
+                    {{Form::submit('Submit', array('class'=>'btn btn-default'))}}
+
+                    {{ Form::close() }}
+                </div>
+            </div>
+        </div>
         {{--<div class="col-md-5">--}}
             {{--@include('components.formerrors')--}}
             {{--<div class="panel panel-default">--}}
@@ -54,7 +71,7 @@
                     {{--{{ Form::close() }}--}}
                 {{--</div>--}}
             {{--</div>--}}
-        </div>
+        {{--</div>--}}
     </div>
 </div>
 @endsection
