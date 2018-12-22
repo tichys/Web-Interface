@@ -132,10 +132,16 @@ class CharController extends Controller
             abort('403', 'You do not have the required permission');
         }
 
-        $charslog = ServerCharacterLog::select(['game_id', 'datetime', 'job_name', 'special_role'])->where('char_id', $char_id);
+        $charslog = ServerCharacterLog::select(['game_id', 'datetime', 'job_name'])->where('char_id', $char_id);
 
-        return Datatables::of($charslog)
-            ->make();
+        $datatable = Datatables::of($charslog);
+
+        if($request->user()->can('server_stats_show')){
+            $datatable->editColumn('game_id', '<a href="{{route(\'server.stats.antag\',[\'game_id\'=>$game_id])}}">{{$game_id}}</a>')
+                ->rawColumns([0]);
+        }
+
+        return $datatable->make();
     }
 
     public function getCharDataAll(Request $request, Datatables $datatables)

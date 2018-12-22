@@ -134,4 +134,14 @@ return [
     */
     "forum_api_key" => env('FORUM_API_KEY',NULL),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Forum Byond Attribute ID
+    |--------------------------------------------------------------------------
+    |
+    | The ID of the custom attribute that holds the byond key
+    |
+    */
+    "forum_byond_attribute" => env('FORUM_BYOND_ATTRIBUTE',15),
+
 ];
