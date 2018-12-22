@@ -175,11 +175,9 @@ class ContractController extends Controller
 
     public function getAgentList(Request $request)
     {
-        $helpers = new Helpers();
-
         $term = $request->input('term');
 
-        $search_key = $helpers->sanitize_ckey($term);
+        $search_key = Helpers::sanitize_ckey($term);
 
         //Check for proper input length
         if (strlen($term) >= 3) {

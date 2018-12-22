@@ -37,7 +37,7 @@ class LoginController extends Controller
 
         try {
             $linkedAccounts = $socialite_user->linkedAccounts;
-            $byond_key = $linkedAccounts[15]['value'];
+            $byond_key = $linkedAccounts[config('aurora.forum_byond_attribute')]['value'];
         } catch (\ErrorException $e) {
             $byond_key = null;
         }
