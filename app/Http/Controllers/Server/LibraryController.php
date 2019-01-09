@@ -19,6 +19,7 @@
  */
 namespace App\Http\Controllers\Server;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -125,6 +126,7 @@ class LibraryController extends Controller
         $book->content =  $request->input('content');
         $book->category = $request->input('category');
         $book->uploader = $request->user()->byond_key;
+        $book->uploadtime = Carbon::now();
         $book->save();
 
         Log::notice('perm.library.add - Book has been added',['user_id' => $request->user()->user_id, 'book_id' => $book->id]);
