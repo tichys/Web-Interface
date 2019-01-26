@@ -84,13 +84,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Log Server Address
+    | Game Server Log Key
     |--------------------------------------------------------------------------
     |
-    | Auth Key for the Game Server
+    | Auth Key used by the GameServer to upload Logs
     |
     */
-    "logserver_address" => env('LOGSERVER_ADDRESS', NULL),
+    "gameserver_logkey" => env('GAMESERVER_LOGKEY', NULL),
 
     /*
     |--------------------------------------------------------------------------

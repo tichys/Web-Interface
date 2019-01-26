@@ -12,3 +12,9 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::group(['prefix' => 'server'], function () {
+    Route::group(['prefix' => 'log'],function(){
+        Route::any('/upload',['as'=>'api.server.log.upload', 'uses' => 'Server\LogController@upload']);
+    });
+});
