@@ -199,6 +199,12 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/data', ['as' => 'server.news.data', 'uses' => 'Server\NewsController@getNewsData']);
         });
 
+        Route::group(['prefix' => 'log'],function(){
+            Route::get('',['as'=>'server.log.index', 'uses' => 'Server\LogController@index']);
+            Route::get('/data', ['as' => 'server.log.data', 'uses' => 'Server\LogController@getLogData']);
+            Route::get('/{log_id}',['as'=>'server.log.show.get', 'uses' => 'Server\LogController@getShow']);
+        });
+
         Route::get('/whitelist/log', ['as' => 'server.whitelist.log', 'uses' => 'Server\WhitelistLogController@getLog']);
     });
 

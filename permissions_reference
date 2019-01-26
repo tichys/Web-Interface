@@ -35,7 +35,7 @@ server_players_notes_edit -> Edit a players notes (admin_notes_edit)
 D - server_players_incidents_show -> Show a players incidents
 D - server_players_incidents_edit -> Edit a players incidents
 
-server_logs_show -> Show the server logs (admin_server_logs_show)
+D - server_logs_show -> Show the server logs (admin_server_logs_show)
 server_stats_show -> Show the admin stats
 
 D - server_remote_coms -> Access to the coms API page
