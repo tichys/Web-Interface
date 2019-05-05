@@ -108,6 +108,17 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/data/ckey/{ckey}', ['as' => 'server.chars.data.ckey', 'uses' => 'Server\CharController@getCharDataCkey']);
         });
 
+        Route::group(['prefix' => 'documents'], function () {
+            Route::get('', ['as' => 'server.documents.index', 'uses' => 'Server\DocumentsController@index']);
+            Route::get('/{document_id}/show', ['as' => 'server.documents.show.get', 'uses' => 'Server\DocumentsController@getShow']);
+            Route::get('/{document_id}/edit', ['as' => 'server.documents.edit.get', 'uses' => 'Server\DocumentsController@getEdit']);
+            Route::post('/{document_id}/edit', ['as' => 'server.documents.edit.post', 'uses' => 'Server\DocumentsController@postEdit']);
+            Route::get('/{document_id}/delete', ['as' => 'server.documents.delete', 'uses' => 'Server\DocumentsController@delete']);
+            Route::get('/add', ['as' => 'server.documents.add.get', 'uses' => 'Server\DocumentsController@getAdd']);
+            Route::post('/add', ['as' => 'server.documents.add.post', 'uses' => 'Server\DocumentsController@postAdd']);
+            Route::get('/data', ['as' => 'server.documents.data', 'uses' => 'Server\DocumentsController@getDocumentData']);
+        });
+
         Route::group(['prefix' => 'incidents'], function () {
             Route::get('/{incident_id}/show', ['as' => 'server.incidents.show.get', 'uses' => 'Server\IncidentController@getShow']);
             Route::get('/{incident_id}/delete', ['as' => 'server.incidents.delete.get', 'uses' => 'Server\IncidentController@getDelete']);
