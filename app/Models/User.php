@@ -34,32 +34,32 @@ class User extends Authenticatable
 
     public function getLinkedAccountsAttribute($value)
     {
-        return unserialize($value);
+        return unserialize(base64_decode($value));
     }
 
     public function setLinkedAccountsAttribute($value)
     {
-        $this->attributes['linked_accounts'] = serialize($value);
+        $this->attributes['linked_accounts'] =  base64_encode(serialize($value));
     }
 
     public function getPrimaryGroupAttribute($value)
     {
-        return unserialize($value);
+        return unserialize(base64_decode($value));
     }
 
     public function setPrimaryGroupAttribute($value)
     {
-        $this->attributes['primary_group'] = serialize($value);
+        $this->attributes['primary_group'] = base64_encode(serialize($value));
     }
 
     public function getSecondaryGroupsAttribute($value)
     {
-        return unserialize($value);
+        return unserialize(base64_decode($value));
     }
 
     public function setSecondaryGroupsAttribute($value)
     {
-        $this->attributes['secondary_groups'] = serialize($value);
+        $this->attributes['secondary_groups'] = base64_encode(serialize($value));
     }
 
     public function getByondLinkedAttribute()
