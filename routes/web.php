@@ -57,16 +57,15 @@ Route::group(['middleware' => 'web'], function () {
         });
     });
 
+    //Route for SSO
+    Route::any('login/sso_server', ['as' => 'login.sso', 'uses' => 'Auth\ServerSSOController@sso_server']);
+
     Route::get('login', 'Auth\LoginController@login')->name('login');
     Route::get('login/callback', 'Auth\LoginController@handleProviderCallback')->name('login.callback');
     Route::any('logout', 'Auth\LoginController@logout')->name('logout');
 
     Route::get('server/auth', 'Auth\ServerController@beginLogin')->name('server.login.begin');
     Route::get('server/login', 'Auth\ServerController@endLogin')->name('server.login.end');
-
-
-    //Route for SSO
-    Route::any('/login/sso_server/', ['as' => 'login.sso', 'uses' => 'Auth\ServerSSOController@sso_server']);
 
     Route::get('/home', 'HomeController@index'); //Home Page
 
