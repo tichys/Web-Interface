@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Log;
@@ -36,7 +37,7 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function handleProviderCallback()
+    public function handleProviderCallback(Request $request)
     {
         $socialite_user = Socialite::driver('ipscommunity')->user();
 
@@ -101,6 +102,10 @@ class LoginController extends Controller
         //Login the user and remember them.
         Auth::login($user, TRUE);
 
+        // If user was trying to auth, then we send them to finish authing.
+        if($request->session()->has('server_client_token')) {
+            return redirect()->route('server.login.end');
+        }
         return redirect('home');
     }
 

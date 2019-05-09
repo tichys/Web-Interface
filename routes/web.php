@@ -64,6 +64,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('login/callback', 'Auth\LoginController@handleProviderCallback')->name('login.callback');
     Route::any('logout', 'Auth\LoginController@logout')->name('logout');
 
+    Route::get('server/auth', 'Auth\ServerController@beginLogin')->name('server.login.begin');
+    Route::get('server/login', 'Auth\ServerController@endLogin')->name('server.login.end');
+
     Route::get('/home', 'HomeController@index'); //Home Page
 
     //CCIA Stuff
