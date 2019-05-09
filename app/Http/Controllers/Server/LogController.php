@@ -21,8 +21,11 @@ class LogController extends Controller
         return view('server.log.index',["logs"=>$logs]);
     }
 
-    public function getLogData()
+    public function getLogData(Request $request)
     {
+        if ($request->user()->cannot('server_logs_show'))
+            abort('403', 'You do not have the required permission.');
+
         $logs = ServerLog::select(['id', 'logdate', 'gameid']);
 
         return Datatables::of($logs)

@@ -57,13 +57,15 @@ Route::group(['middleware' => 'web'], function () {
         });
     });
 
+    //Route for SSO
+    Route::any('login/sso_server', ['as' => 'login.sso', 'uses' => 'Auth\ServerSSOController@sso_server']);
+
     Route::get('login', 'Auth\LoginController@login')->name('login');
     Route::get('login/callback', 'Auth\LoginController@handleProviderCallback')->name('login.callback');
     Route::any('logout', 'Auth\LoginController@logout')->name('logout');
 
-
-    //Route for SSO
-    Route::any('/login/sso_server/', ['as' => 'login.sso', 'uses' => 'Auth\ServerSSOController@sso_server']);
+    Route::get('server/auth', 'Auth\ServerController@beginLogin')->name('server.login.begin');
+    Route::get('server/login', 'Auth\ServerController@endLogin')->name('server.login.end');
 
     Route::get('/home', 'HomeController@index'); //Home Page
 
@@ -107,6 +109,17 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/data/own', ['as' => 'server.chars.data.own', 'uses' => 'Server\CharController@getCharDataOwn']);
             Route::get('/data/all', ['as' => 'server.chars.data.all', 'uses' => 'Server\CharController@getCharDataAll']);
             Route::get('/data/ckey/{ckey}', ['as' => 'server.chars.data.ckey', 'uses' => 'Server\CharController@getCharDataCkey']);
+        });
+
+        Route::group(['prefix' => 'documents'], function () {
+            Route::get('', ['as' => 'server.documents.index', 'uses' => 'Server\DocumentsController@index']);
+            Route::get('/{document_id}/show', ['as' => 'server.documents.show.get', 'uses' => 'Server\DocumentsController@getShow']);
+            Route::get('/{document_id}/edit', ['as' => 'server.documents.edit.get', 'uses' => 'Server\DocumentsController@getEdit']);
+            Route::post('/{document_id}/edit', ['as' => 'server.documents.edit.post', 'uses' => 'Server\DocumentsController@postEdit']);
+            Route::get('/{document_id}/delete', ['as' => 'server.documents.delete', 'uses' => 'Server\DocumentsController@delete']);
+            Route::get('/add', ['as' => 'server.documents.add.get', 'uses' => 'Server\DocumentsController@getAdd']);
+            Route::post('/add', ['as' => 'server.documents.add.post', 'uses' => 'Server\DocumentsController@postAdd']);
+            Route::get('/data', ['as' => 'server.documents.data', 'uses' => 'Server\DocumentsController@getDocumentData']);
         });
 
         Route::group(['prefix' => 'incidents'], function () {

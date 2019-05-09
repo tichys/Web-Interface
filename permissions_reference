@@ -16,6 +16,9 @@ ccia_recorderlogs_edit -> Edit the ccia recorder logs
 D - server_chars_show -> Show the Character Records (admin_char_show)
 D - server_chars_edit -> Edit the Characters
 
+D - server_documents_show -> Show the random maint documents
+D - server_documents_edit -> Edit the random maint documents
+
 D - server_forms_show -> Show the corporate Form Database (admin_forms_show)
 D - server_forms_edit -> Edit the corporate Form Database (admin_forms_edit)
 
@@ -36,7 +39,7 @@ D - server_players_incidents_show -> Show a players incidents
 D - server_players_incidents_edit -> Edit a players incidents
 
 D - server_logs_show -> Show the server logs (admin_server_logs_show)
-server_stats_show -> Show the admin stats
+server_stats_show -> Show the admin statss
 
 D - server_remote_coms -> Access to the coms API page
 D - server_remote_ghosts -> Access to the ghosts API page
@@ -45,9 +48,9 @@ D - server_cargo_show -> Show the current cargo configuration
 
 D - server_poll_show -> Show all polls
 
-server_news_show -> Show the news on the server
-server_news_edit -> Edit the news on the server
-server_news_approve -> Approve the news on the server
+D - server_news_show -> Show the news on the server
+D - server_news_edit -> Edit the news on the server
+D - server_news_approve -> Approve the news on the server
 
 server_whitelist_log_show -> Show the Whitelist Log
 

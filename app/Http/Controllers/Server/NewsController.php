@@ -35,7 +35,7 @@ class NewsController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
+            //If the users byond account is not linked and he doesnt have permission to access the server news -> Abort
             if ($request->user()->byond_linked == False)
                 abort('403', 'Your byond account is not linked to your forum account.');
             if ($request->user()->cannot('server_news_show'))

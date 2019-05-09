@@ -15,6 +15,6 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'server'], function () {
     Route::group(['prefix' => 'log'],function(){
-        Route::any('/upload',['as'=>'api.server.log.upload', 'uses' => 'Server\LogController@upload']);
+        Route::post('/upload',['as'=>'api.server.log.upload', 'uses' => 'Server\LogController@upload']);
     });
 });
