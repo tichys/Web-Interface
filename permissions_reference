@@ -6,8 +6,8 @@ D - ccia_general_notice_edit -> Edit DO Notices
 D - ccia_action_show -> Show the ccia actions
 D - ccia_action_edit -> Edit the ccia actions
 
-ccia_recorderlogs_show -> Show the ccia recorder logs
-ccia_recorderlogs_edit -> Edit the ccia recorder logs
+ccia_report_show -> Show the ccia reports
+ccia_report_edit -> Edit the ccia reports
 
 
 #

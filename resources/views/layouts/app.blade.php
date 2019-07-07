@@ -137,9 +137,9 @@
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">DO</a>
                                     <ul class="dropdown-menu">
-                                        {{--<li @cannot('ccia_recorderlogs_show')class="disabled"@endcannot>--}}
-                                            {{--<a href="#"><i class="fa fa-btn"></i>DO Recorder Logs <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>--}}
-                                        {{--</li>--}}
+                                        <li @cannot('ccia_report_show')class="disabled"@endcannot>
+                                            <a href="{{route('ccia.report.index')}}"><i class="fa fa-btn"></i>CCIA Reports</a>
+                                        </li>
                                         <li @cannot('ccia_action_show')class="disabled"@endcannot>
                                             <a href="{{route('ccia.actions.index')}}"><i class="fa fa-btn"></i>DO Actions</a>
                                         </li>
