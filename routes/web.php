@@ -94,6 +94,19 @@ Route::group(['middleware' => 'web'], function () {
             Route::post('/add', ['as' => 'ccia.generalnotice.add.post', 'uses' => 'CCIA\GeneralNoticeController@postAdd']);
             Route::get('/data', ['as' => 'ccia.generalnotice.data', 'uses' => 'CCIA\GeneralNoticeController@getData']);
         });
+        Route::group(['prefix' => 'report'], function() {
+            Route::get('', ['as'=>'ccia.report.index', 'uses'=> 'CCIA\ReportController@index']);
+            Route::get('/{report_id}/show', ['as'=>'ccia.report.show.get', 'uses'=> 'CCIA\ReportController@getShow']);
+            Route::get('/{report_id}/edit', ['as'=>'ccia.report.edit.get', 'uses'=> 'CCIA\ReportController@getEdit']);
+            Route::post('/{report_id}/edit', ['as'=>'ccia.report.edit.post', 'uses'=> 'CCIA\ReportController@postEdit']);
+            Route::get('/{report_id}/delete', ['as' => 'ccia.report.delete', 'uses' => 'CCIA\ReportController@delete']);
+            Route::get('/add', ['as'=>'ccia.report.add.get', 'uses'=> 'CCIA\ReportController@getAdd']);
+            Route::post('/add', ['as'=>'ccia.report.add.post', 'uses'=> 'CCIA\ReportController@postAdd']);
+            Route::get('/data', ['as' => 'ccia.report.data', 'uses' => 'CCIA\ReportController@getData']);
+            Route::group(['prefix' => 'transcript'],function(){
+                Route::get('/{transcript_id}', ['as'=>'ccia.report.transcript.get', 'uses'=> 'CCIA\ReportController@getTranscript']);
+            });
+        });
     });
 
     //Server Stuff
