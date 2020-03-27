@@ -38,7 +38,7 @@ class Mailer
         //Get user E-Mail
         Mail::send('emails.contract_notification', ['forum_user' => $forum_user, 'contract' => $contract, 'type' => $type], function ($m) use ($forum_user, $contract, $from_name, $from_address) {
             $m->from($from_address, $from_name);
-            $m->to($forum_user->user_email, $forum_user->username);
+            $m->to($forum_user->email, $forum_user->username);
             $m->subject('Contract Update - ' . $contract->title);
         });
     }
@@ -54,7 +54,7 @@ class Mailer
         //Get user E-Mail
         Mail::send('emails.contract_new_mod', ['forum_user' => $forum_user, 'contract' => $contract], function ($m) use ($forum_user, $contract, $from_name, $from_address) {
             $m->from($from_address, $from_name);
-            $m->to($forum_user->user_email, $forum_user->username);
+            $m->to($forum_user->email, $forum_user->username);
             $m->subject('Contract Update - ' . $contract->title);
         });
     }
