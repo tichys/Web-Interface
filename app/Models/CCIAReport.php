@@ -37,4 +37,9 @@ class CCIAReport extends Model
     {
         return $this->hasMany('App\Models\CCIAReportTranscript', 'report_id');
     }
+
+    public function antagonists()
+    {
+        return $this->hasMany('App\Models\ServerAntagLog', 'game_id', 'game_id');
+    }
 }

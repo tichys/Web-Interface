@@ -46,6 +46,20 @@ class LogController extends Controller
         return Storage::download($logfile->filename);
     }
 
+    public function getLogByGameId(Request $request, $game_id){
+        if ($request->user()->cannot('server_logs_show'))
+            abort('403', 'You do not have the required permission.');
+
+        $logfile = ServerLog::where('gameid',$game_id)->first();
+        if(!isset($logfile)){
+            abort('404','There is no log file for the requested game id.');
+        }
+
+        Log::notice('server.log.download - Log Downloaded', ['user_id' => $request->user()->user_id, 'log_id' => $logfile->id]);
+
+        return Storage::download($logfile->filename);
+    }
+
     public function upload(Request $request){
         $validator = Validator::make($request->all(),[
             'logfile' => ['required','file'],

@@ -38,6 +38,32 @@
                         <td><b>Status:</b></td>
                         <td>{{$report->status}}</td>
                     </tr>
+                    <tr>
+                        <td><b>Game ID:</b></td>
+                        @if(isset($report->game_id))
+                            @can('server_logs_show')
+                                <td><a href="{{route('server.log.show.getbygame',['game_id'=>$report->game_id])}}" class="btn btn-success" role="button">{{$report->game_id}} - Download Log</a></td>
+                            @else()
+                                <td>{{$report->game_id}}</td>
+                            @endcan()
+                        @else
+                            <td>Not Set</td>
+                        @endif()
+                    </tr>
+                    @if(isset($report->public_topic) || isset($report->internal_topic))
+                    <tr>
+                        <td colspan="2">
+                            <div class="btn-group">
+                                @if(isset($report->public_topic))
+                                    <a href="{{$report->public_topic}}" target="_blank" class="btn btn-success" role="button">Public Topic</a>
+                                @endif
+                                @if(isset($report->internal_topic))
+                                    <a href="{{$report->internal_topic}}" target="_blank" class="btn btn-warning" role="button">Internal Topic</a>
+                                @endif()
+                            </div>
+                        </td>
+                    </tr>
+                    @endif()
                     </tbody>
                 </table>
             </div>
@@ -52,6 +78,7 @@
                         <th>Transcript ID</th>
                         <th>Character Name</th>
                         <th>Interviewer</th>
+                        <th>Claimed Antag Involvement</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -62,12 +89,64 @@
                         <td>{{$transcript->id}}</td>
                         <td>{{$transcript->character->name}}</td>
                         <td>{{$transcript->interviewer}}</td>
-                        <td><a href="{{route('ccia.report.transcript.get',['transcript_id'=>$transcript->id])}}" class="btn btn-success" role="button">View</a></td>
+                        <td>
+                            @if($transcript->antag_involvement === 0)
+                                No
+                            @else
+                                <a href="{{route('ccia.report.claim.get',['transcript_id'=>$transcript->id])}}" class="btn btn-success" role="button">Yes - View Claim</a>
+                            @endif
+                        </td>
+                        <td>
+                            <a href="{{route('ccia.report.transcript.get',['transcript_id'=>$transcript->id])}}" class="btn btn-success" role="button">View Interview</a>
+                        </td>
                     </tr>
                     @endforeach
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Antag ID</th>
+                    <th>Ckey</th>
+                    <th>Character Name (Actual)</th>
+                    <th>Character Name (Assumed)</th>
+                    <th>Antag Type</th>
+                    <th>Added At</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                @if(count($report->antagonists) > 0)
+                    @foreach($report->antagonists as $antag)
+                        <tr>
+                            <td>{{$antag->id}}</td>
+                            <td>{{$antag->ckey}}</td>
+                            @if($antag->char_name)
+                                <td>{{$antag->char_name}}</td>
+                            @else
+                                <td>- Unavailable -</td>
+                            @endif()
+                            @if($antag->character)
+                                <td>{{$antag->character->name}}</td>
+                            @else
+                                <td>- Unavailable -</td>
+                            @endif()
+                            <td>{{$antag->special_role_name}}</td>
+                            <td>{{$antag->special_role_added}}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="5">No Antags Found - Either there were no antags or the game id is invalid</td>
+                    </tr>
+                @endif()
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
