@@ -53,9 +53,17 @@ class ServerPollQuestion extends Model
      */
     public function isActive()
     {
-        if($this->starttime < Carbon::now() && ($this->endtime = NULL || $this->endtime > Carbon::now()))
-            return true;
-        return false;
+        return $this->starttime < Carbon::now() && ($this->endtime = NULL || $this->endtime > Carbon::now());
+    }
+
+    /**
+     * Returns if the poll has been completed
+     *
+     * @return bool
+     */
+    public function isComplete()
+    {
+        return $this->endtime < Carbon::now();
     }
 
     /**
