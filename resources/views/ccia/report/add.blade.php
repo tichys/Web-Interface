@@ -31,6 +31,9 @@
 
                         {{Form::bsText('title')}}
                         {{Form::bsDate('report_date')}}
+                        {{Form::bsText('public_topic')}}
+                        {{Form::bsText('internal_topic')}}
+                        {{Form::bsText('game_id')}}
                         {{Form::bsSelectList('status',array('new'=>'New','approved'=> 'Approved','rejected'=>'Rejected','completed' => 'Completed'))}}
 
                         @can('ccia_report_edit'){{Form::submit('Submit', array('class'=>'btn btn-default'))}}@endcan()

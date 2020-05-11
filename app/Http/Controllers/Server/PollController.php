@@ -74,9 +74,12 @@ class PollController extends Controller
         if($request->user())
             $show_all = $request->user()->can('server_poll_show');
 
-        //Check if the poll is visible to the public (or if the user has view permissions)
+        //Check if the poll is visible to the public (or if the user has view permissions)ServerPollQuestion
         if (!$question->isVisible($show_all, $key))
             abort(403,"You are not authorized to view this poll");
+
+        if (!$question->isComplete())
+            abort(403,"This poll is still ongoing.");
 
         //Check the poll type and prepare the data accordingly
         switch ($question->polltype) {

@@ -30,6 +30,7 @@ Use Illuminate\Support\Facades\Log;
 
 use App\Models\CCIAReport;
 use App\Models\CCIAReportTranscript;
+use App\Models\ServerAntagLog;
 
 class ReportController extends Controller
 {
@@ -53,7 +54,7 @@ class ReportController extends Controller
     {
         $report = CCIAReport::findOrFail($report_id);
         $transcripts = $report->transcripts()
-            ->select(['id', 'character_id', 'interviewer'])
+            ->select(['id', 'character_id', 'interviewer', 'antag_involvement'])
             ->with(
             array(
                 'character' => function ($query) { $query->select('id', 'name');})
@@ -85,6 +86,9 @@ class ReportController extends Controller
         $report = CCIAReport::findOrFail($report_id);
         $report->title = $request->input('title');
         $report->report_date = $request->input('report_date');
+        $report->public_topic = $request->input('public_topic');
+        $report->internal_topic = $request->input('internal_topic');
+        $report->game_id = $request->input('game_id');
         $report->status = $request->input('status');
         $report->save();
 
@@ -117,6 +121,9 @@ class ReportController extends Controller
         $report = new CCIAReport();
         $report->title = $request->input('title');
         $report->report_date = $request->input('report_date');
+        $report->public_topic = $request->input('public_topic');
+        $report->internal_topic = $request->input('internal_topic');
+        $report->game_id = $request->input('game_id');
         $report->status = $request->input('status');
         $report->save();
 
@@ -152,5 +159,10 @@ class ReportController extends Controller
     public function getTranscript(Request $request, $transcript_id){
         $transcript = CCIAReportTranscript::findOrFail($transcript_id);
         return $transcript->text;
+    }
+
+    public function getAntagClaim(Request $request, $transcript_id){
+        $transcript = CCIAReportTranscript::findOrFail($transcript_id);
+        return $transcript->antag_involvement_text;
     }
 }

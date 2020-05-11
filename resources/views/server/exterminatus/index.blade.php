@@ -22,12 +22,17 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 @include('components.formerrors')
+                @if($submitted)
+                <div class="alert alert-success">
+                    Extermination Request <a href="https://www.youtube.com/watch?v=h67JpMyrOVE" target="_blank">Submitted</a>.
+                </div>
+                @endif()
 
                 <div class="panel panel-default">
                     <div class="panel-heading">Exterminatus Control Panel</div>
 
                     <div class="panel-body">
-                        {{Form::open(array('route' => 'server.library.add.post','method' => 'post')) }}
+                        {{Form::open(array('route' => 'server.exterminatus.index','method' => 'post')) }}
                         {{Form::token()}}
 
                         {{Form::bsText('Name')}}

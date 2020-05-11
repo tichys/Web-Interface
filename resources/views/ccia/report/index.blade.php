@@ -63,7 +63,8 @@
                     { data: 'title', name: 'title' },
                     { data: 'status', name: 'status' },
                     { data: 'action', name: 'action' },
-                ]
+                ],
+                order: [[ 0, 'desc' ]]
             });
         });
     </script>
