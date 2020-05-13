@@ -106,9 +106,8 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/add', ['as'=>'ccia.report.add.get', 'uses'=> 'CCIA\ReportController@getAdd']);
             Route::post('/add', ['as'=>'ccia.report.add.post', 'uses'=> 'CCIA\ReportController@postAdd']);
             Route::get('/data', ['as' => 'ccia.report.data', 'uses' => 'CCIA\ReportController@getData']);
-            Route::group(['prefix' => 'transcript'],function(){
-                Route::get('/{transcript_id}', ['as'=>'ccia.report.transcript.get', 'uses'=> 'CCIA\ReportController@getTranscript']);
-            });
+            Route::get('/transcript/{transcript_id}', ['as'=>'ccia.report.transcript.get', 'uses'=> 'CCIA\ReportController@getTranscript']);
+            Route::get('/claim/{transcript_id}', ['as'=>'ccia.report.claim.get', 'uses'=> 'CCIA\ReportController@getAntagClaim']);
         });
     });
 
@@ -178,6 +177,7 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::group(['prefix' => 'exterminatus'], function () {
             Route::get('', ['as' => 'server.exterminatus.index', 'uses' => 'Server\ExterminatusController@index']);
+            Route::post('', ['uses' => 'Server\ExterminatusController@exterminate']);
         });
 
 //        Route::group(['prefix' => 'permissions'], function () {
@@ -231,7 +231,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::group(['prefix' => 'log'],function(){
             Route::get('',['as'=>'server.log.index', 'uses' => 'Server\LogController@index']);
             Route::get('/data', ['as' => 'server.log.data', 'uses' => 'Server\LogController@getLogData']);
+            Route::get('/game/{game_id}',['as'=>'server.log.show.getbygame', 'uses' => 'Server\LogController@getLogByGameId']);
             Route::get('/{log_id}',['as'=>'server.log.show.get', 'uses' => 'Server\LogController@getShow']);
+
         });
 
         Route::get('/whitelist/log', ['as' => 'server.whitelist.log', 'uses' => 'Server\WhitelistLogController@getLog']);

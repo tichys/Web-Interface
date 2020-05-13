@@ -59,7 +59,7 @@
                     { data: 'question', name: 'question'},
                     { data: 'action', name: 'action'}
                 ],
-                "order": [[ 0, 'desc' ]]
+                order: [[ 0, 'desc' ]]
             });
         });
     </script>
