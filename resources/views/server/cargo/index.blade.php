@@ -60,6 +60,7 @@
                     { data: 'name', name: 'name' },
                     { data: 'supplier', name: 'supplier' },
                     { data: 'categories', name: 'categories' },
+                    { data: 'price', name: 'price' },
                     { data: 'action', name: 'action' }
                 ]
             });
