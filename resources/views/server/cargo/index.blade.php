@@ -35,6 +35,7 @@
                                 <th>Item Name</th>
                                 <th>Supplier</th>
                                 <th>Categories</th>
+                                <th>Price</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
