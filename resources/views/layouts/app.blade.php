@@ -1,4 +1,4 @@
-{{--Copyright (c) 2016 "Werner Maisl"--}}
+{{--Copyright (c) 2016-2018 "Werner Maisl"--}}
 
 {{--This file is part of the Aurora Webinterface--}}
 
@@ -79,7 +79,6 @@
                                     <li class="disabled"><a href="#"><i class="fa fa-btn"></i>Messaging System</a></li>
                                     <li><a href="{{route('user.warnings')}}"><i class="fa fa-btn"></i>Warnings / DO Notes</a></li>
                                     <li><a href="{{route('server.library.index')}}"><i class="fa fa-btn"></i>Library</a></li>
-                                    <li><a href="{{route('server.git.index')}}"><i class="fa fa-btn"></i>Pull Requests</a></li>
                                     @can('_heads-of-staff')
                                         <li class="dropdown-submenu">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Head of Staff</a>
@@ -138,9 +137,9 @@
                                 <li class="dropdown-submenu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">DO</a>
                                     <ul class="dropdown-menu">
-                                        {{--<li @cannot('ccia_recorderlogs_show')class="disabled"@endcannot>--}}
-                                            {{--<a href="#"><i class="fa fa-btn"></i>DO Recorder Logs <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>--}}
-                                        {{--</li>--}}
+                                        <li @cannot('ccia_report_show')class="disabled"@endcannot>
+                                            <a href="{{route('ccia.report.index')}}"><i class="fa fa-btn"></i>CCIA Reports</a>
+                                        </li>
                                         <li @cannot('ccia_action_show')class="disabled"@endcannot>
                                             <a href="{{route('ccia.actions.index')}}"><i class="fa fa-btn"></i>DO Actions</a>
                                         </li>
@@ -157,9 +156,6 @@
                                         </li>
                                         <li @cannot('site_permissions_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>Site Permissions <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                                        </li>
-                                        <li @cannot('site_logs_show')class="disabled"@endcannot>
-                                            <a href="{{route('site.log.index')}}"><i class="fa fa-btn"></i>WebSite Logs</a>
                                         </li>
                                         <li @cannot('site_staff_roster_show')class="disabled"@endcannot>
                                             <a href="#"><i class="fa fa-btn"></i>Staff Roster <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
@@ -183,16 +179,25 @@
                                             {{--<a href="{{route('server.permissions.index')}}"><i class="fa fa-btn"></i>Server Permissions</a>--}}
                                         {{--</li>--}}
                                         <li @cannot('server_stats_show')class="disabled"@endcannot>
-                                            <a href="{{route('server.stats.index')}}"><i class="fa fa-btn"></i>Statistics <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                                        </li>
-                                        <li @cannot('server_logs_show')class="disabled"@endcannot>
-                                            <a href="{{config("aurora.logserver_address")}}"><i class="fa fa-btn"></i>Server Logs</a>
+                                            <a href="{{route('server.stats.index')}}"><i class="fa fa-btn"></i>Round Stats</a>
                                         </li>
                                         <li @cannot('syndie_contest_show')class="disabled"@endcannot>
                                             <a href="{{route('syndie.contest.view')}}"><i class="fa fa-btn"></i>Contest Stats</a>
                                         </li>
+                                        <li @cannot('server_logs_show')class="disabled"@endcannot>
+                                            <a href="{{route('server.log.index')}}"><i class="fa fa-btn"></i>Logs</a>
+                                        </li>
                                         <li @cannot('server_cargo_show')class="disabled"@endcannot>
                                             <a href="{{route('server.cargo.index')}}"><i class="fa fa-btn"></i>Cargo</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('server.poll.index')}}"><i class="fa fa-btn"></i>Polls</a>
+                                        </li>
+                                        <li @cannot('server_news_show')class="disabled"@endcannot>
+                                            <a href="{{route('server.news.index')}}"><i class="fa fa-btn"></i>News</a>
+                                        </li>
+                                        <li @cannot('server_documents_show')class="disabled"@endcannot>
+                                            <a href="{{route('server.documents.index')}}"><i class="fa fa-btn"></i>Documents</a>
                                         </li>
                                         <li @cannot('server_exterminatus')class="disabled"@endcannot>
                                             <a href="{{route('server.exterminatus.index')}}"><i class="fa fa-btn"></i>Exterminatus</a>
@@ -204,7 +209,6 @@
                         @endcan
                     @endif
                 </ul>
-
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
@@ -238,7 +242,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2017 by Werner Maisl - Licensed under the AGPL - Version 0.19.1</p></small>
+        <small><p class="text-muted">Aurora Webinterface &copy; 2016-2020 by Werner Maisl - Licensed under the AGPL - Version 0.35.0</p></small>
     </div>
 </footer>
 </html>

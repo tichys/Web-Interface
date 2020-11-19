@@ -19,15 +19,15 @@
  */
 namespace App\Http\Controllers\Server;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\ServerLibrary;
 use MongoDB\Driver\Server;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Log;
-use HTMLPurifier;
 
 class LibraryController extends Controller
 {
@@ -35,7 +35,7 @@ class LibraryController extends Controller
     {
         $this->middleware(function($request, $next){
             //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
-            if($request->user()->user_byond_linked == 0)
+            if($request->user()->byond_linked == False)
             {
                 abort('403','Your byond account is not linked to your forum account.');
             }
@@ -82,12 +82,9 @@ class LibraryController extends Controller
             'category' => 'required|in:Reference,Non-Fiction,Fiction,Religion,Adult'
         ]);
 
-        $config = \HTMLPurifier_Config::createDefault();
-        $purifier = new HTMLPurifier($config);
-
         $book->author = $request->input('author');
-        $book->title = $purifier->purify($request->input('title'));
-        $book->content = $purifier->purify($request->input('content'));
+        $book->title = $request->input('title');
+        $book->content = $request->input('content');
         $book->category = $request->input('category');
         $book->save();
 
@@ -123,16 +120,13 @@ class LibraryController extends Controller
             'content' => 'required',
             'category' => 'required|in:Reference,Non-Fiction,Fiction,Religion,Adult'
         ]);
-
-        $config = \HTMLPurifier_Config::createDefault();
-        $purifier = new HTMLPurifier($config);
-
         $book = new ServerLibrary();
         $book->author = $request->input('author');
-        $book->title = $purifier->purify($request->input('title'));
-        $book->content =  $purifier->purify($request->input('content'));
+        $book->title = $request->input('title');
+        $book->content =  $request->input('content');
         $book->category = $request->input('category');
-        $book->uploader = $request->user()->user_byond;
+        $book->uploader = $request->user()->byond_key;
+        $book->uploadtime = Carbon::now();
         $book->save();
 
         Log::notice('perm.library.add - Book has been added',['user_id' => $request->user()->user_id, 'book_id' => $book->id]);
@@ -147,7 +141,7 @@ class LibraryController extends Controller
         return Datatables::of($books)
             ->removeColumn('id')
             ->editColumn('title', '<a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}">{{$title}}</a>')
-            ->addColumn('action','<p><a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}" class="btn btn-success" role="button">Show</a>  @can(\'server_library_edit\')<a href="{{route(\'server.library.edit.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'server.library.delete\',[\'book\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->addColumn('action','<div class="btn-group"><a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}" class="btn btn-success" role="button">Show</a>  @can(\'server_library_edit\')<a href="{{route(\'server.library.edit.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'server.library.delete\',[\'book\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</div>')
             ->rawColumns([0, 3])
             ->make();
     }
@@ -157,7 +151,7 @@ class LibraryController extends Controller
         //Check if user has library edit persm
         if ($user->can('server_library_edit'))
             return true;
-        if($user->user_byond == $book->uploader)
+        if($user->byond_key == $book->uploader)
             return true;
 
         return false;

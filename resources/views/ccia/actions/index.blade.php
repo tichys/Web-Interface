@@ -18,7 +18,7 @@
 @extends('layouts.app')
 
 @section('styles')
-    <link href="{{ asset('/assets/css/datatables.bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('/DataTables/datatables.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -49,10 +49,10 @@
                     @can('ccia_action_show')
                     <div id="all" class="tab-pane fade in">
                         <div class="tab-pane fade in ">
-                            <div class="panel panel-default">
+                            <div class="panel">
                                 <div class="panel-body">
                                     @can('ccia_action_edit')<p><a href="{{route('ccia.actions.add.post')}}" class="btn btn-success" role="button">Add new Action</a></p>@endcan()
-                                    <table id="all-actions-table" class="table table-condensed">
+                                    <table id="all-actions-table" class="table table-condensed" width="100%">
                                         <thead>
                                         <tr>
                                             <th width="30">ID</th>
@@ -74,20 +74,31 @@
 @endsection
 
 @section('javascripts')
-    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         $(function() {
             $('#active-actions-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('ccia.actions.data.active') }}'
+                ajax: '{{ route('ccia.actions.data.active') }}',
+                columns:[
+                    { data: 'id', name: 'id' },
+                    { data: 'title', name: 'title' },
+                    { data: 'action', name: 'action' }
+                ]
             });
             @can('ccia_action_show')
             $('#all-actions-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('ccia.actions.data.all') }}'
+                ajax: '{{ route('ccia.actions.data.all') }}',
+                columns:[
+                    { data: 'id', name: 'id' },
+                    { data: 'title', name: 'title' },
+                    { data: 'expires_at', name: 'expires_at' },
+                    { data: 'action', name: 'action' }
+                ]
             });
             @endcan()
         });

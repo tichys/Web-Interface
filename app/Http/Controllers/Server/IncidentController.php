@@ -23,7 +23,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ServerIncident;
 use Illuminate\Support\Collection;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Log;
 
 class IncidentController extends Controller
@@ -31,7 +31,7 @@ class IncidentController extends Controller
     public function index(Request $request)
     {
         //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
-        if ($request->user()->user_byond_linked == 0 && $request->user()->cannot('server_players_incidents_show')) {
+        if ($request->user()->byond_linked == False && $request->user()->cannot('server_players_incidents_show')) {
             abort('403', 'Your byond account is not linked to your forum account.');
         }
         return view('server.incidents.index');
@@ -92,7 +92,7 @@ class IncidentController extends Controller
             ->editColumn('fine', '{{$fine}} Credits')
             ->addColumn('status','@if(isset($deleted_at)) Deleted @else() Active @endif()')
             ->addColumn('action', '<p><a href="{{route(\'server.incidents.show.get\',[\'incident_id\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
-            ->rawColumns([1, 6])
+            ->rawColumns([0, 5])
             ->make();
     }
 

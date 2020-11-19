@@ -34,7 +34,8 @@
                     {{Form::bsSelectList('type',array(
                     'injunction'=>'Injunction',
                     'suspension'=>'Suspension',
-                    'warning'=>'Warning',
+                    'reprimand'=>'Reprimand',
+                    'demotion'=>'Demotion',
                     'other'=>'Other'))}}
                     {{Form::bsText('issuedby')}}
                     {{Form::bsTextArea('details')}}

@@ -22,7 +22,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Auth;
-use App\Services\Auth\ForumUserModel;
 
 class ServerPlayer extends Model
 {
@@ -302,11 +301,11 @@ class ServerPlayer extends Model
      *
      * @returns bool
      */
-    public function check_forum_linked()
+    public function check_forum_linked() //TODO: Fix this
     {
-        $forum_user = ForumUserModel::where('user_byond',$this->ckey)->first();
+        $forum_user = User::where('byond_key',$this->ckey)->first();
         if($forum_user != NULL)
-            return $forum_user->username_clean;
+            return $forum_user->name;
         else
             return false;
     }

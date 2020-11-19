@@ -28,7 +28,7 @@ use App\Models\ServerCharacter;
 use App\Models\ServerCharacterFlavour;
 use App\Models\ServerCharacterLog;
 use phpDocumentor\Reflection\Types\Null_;
-use Yajra\Datatables\Facades\Datatables;
+use Yajra\Datatables\Datatables;
 use Log;
 
 class CharController extends Controller
@@ -63,7 +63,7 @@ class CharController extends Controller
     private function can_view_char(Request $request, $char)
     {
         //Check if the user is the owner of the char
-        if ($request->user()->user_byond == $char->ckey)
+        if ($request->user()->byond_key == $char->ckey)
             return TRUE;
 
         //Check if the user has the permission to view characters
@@ -76,7 +76,7 @@ class CharController extends Controller
     private function can_edit_char(Request $request, $char)
     {
         //Check if the user is the owner of the char
-        if ($request->user()->user_byond == $char->ckey)
+        if ($request->user()->byond_key == $char->ckey)
             return TRUE;
 
         //Check if the user has the permission to view characters
@@ -132,21 +132,26 @@ class CharController extends Controller
             abort('403', 'You do not have the required permission');
         }
 
-        $charslog = ServerCharacterLog::select(['game_id', 'datetime', 'job_name', 'special_role'])->where('char_id', $char_id);
+        $charslog = ServerCharacterLog::select(['game_id', 'datetime', 'job_name'])->where('char_id', $char_id);
 
-        return Datatables::of($charslog)
-            ->make();
+        $datatable = Datatables::of($charslog);
+
+        if($request->user()->can('server_stats_show')){
+            $datatable->editColumn('game_id', '<a href="{{route(\'server.stats.antag\',[\'game_id\'=>$game_id])}}">{{$game_id}}</a>')
+                ->rawColumns([0]);
+        }
+
+        return $datatable->make();
     }
 
-    public function getCharDataAll(Request $request)
+    public function getCharDataAll(Request $request, Datatables $datatables)
     {
         if ($request->user()->cannot('server_chars_show')) {
             abort('403', 'You do not have the required permission');
         }
 
-        $chars = ServerCharacter::select(['id', 'name', 'ckey']);
-
-        return Datatables::of($chars)
+        $builder = ServerCharacter::query()->select(['id', 'name', 'ckey'])->whereNotNull('name');
+        return $datatables->eloquent($builder)
             ->removeColumn('id')
             ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
@@ -156,7 +161,7 @@ class CharController extends Controller
 
     public function getCharDataOwn(Request $request)
     {
-        $chars = ServerCharacter::select(['id', 'name'])->where('ckey', $request->user()->user_byond);
+        $chars = ServerCharacter::select(['id', 'name'])->where('ckey', $request->user()->byond_key);
 
         return Datatables::of($chars)
             ->removeColumn('id')

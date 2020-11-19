@@ -122,7 +122,7 @@ class PlayerController extends Controller
         //Get Server Player
         $player = ServerPlayer::findOrFail($player_id);
 
-        $player->add_player_whitelist_flag($whitelist, $request->user()->username_clean);
+        $player->add_player_whitelist_flag($whitelist, $request->user()->name);
 
         Log::notice('perm.whitelist.add - Whitelist has been added', ['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
 
@@ -137,7 +137,7 @@ class PlayerController extends Controller
 
         //Get Server Player
         $player = ServerPlayer::findOrFail($player_id);
-        $player->strip_player_whitelist_flag($whitelist, $request->user()->username_clean);
+        $player->strip_player_whitelist_flag($whitelist, $request->user()->name);
 
         Log::notice('perm.whitelist.remove - Whitelist has been removed', ['user_id' => $request->user()->user_id, 'whitelist' => $whitelist, 'player_ckey' => $player->ckey]);
         return redirect()->route('server.players.show', ['player_id' => $player_id]);
@@ -185,7 +185,7 @@ class PlayerController extends Controller
 
         return Datatables::of($players)
             ->editColumn('ckey', '<a href="{{route(\'server.players.show\',[\'player_id\'=>$id])}}">{{$ckey}}</a>')
-            ->rawColumns([1])
+            ->rawColumns([0])
             ->make();
     }
 }

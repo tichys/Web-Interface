@@ -18,20 +18,19 @@
 @extends('layouts.app')
 
 @section('styles')
-    <link href="{{ asset('/assets/css/datatables.bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('/DataTables/datatables.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">Library Overview</div>
 
                     <div class="panel-body">
-                        {{--@can('server_library_edit')<p><a href="{{route('server.library.add.post')}}" class="btn btn-success" role="button">Add new Book</a></p>@endcan()--}}
                         <p><a href="{{route('server.library.add.post')}}" class="btn btn-success" role="button">Add new Book</a></p>
-                        <table id="forms-table" class="table table-condensed">
+                        <table id="library-table" class="table table-condensed">
                             <thead>
                             <tr>
                                 <th>Title</th>
@@ -49,14 +48,19 @@
 @endsection
 
 @section('javascripts')
-    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         $(function() {
-            $('#forms-table').DataTable({
+            $('#library-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('server.library.data') }}'
+                ajax: '{{ route('server.library.data') }}',
+                columns:[
+                    { data: 'title', name: 'title'},
+                    { data: 'author', name: 'author'},
+                    { data: 'category', name: 'category'},
+                    { data: 'action', name: 'action'},
+                ]
             });
         });
     </script>

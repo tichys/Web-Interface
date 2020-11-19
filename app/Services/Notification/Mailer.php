@@ -22,7 +22,7 @@ namespace App\Services\Notification;
 
 use Illuminate\Support\Facades\Mail;
 use App\Models\SyndieContract;
-use App\Services\Auth\ForumUserModel;
+use App\Models\User;
 
 class Mailer
 {
@@ -30,7 +30,7 @@ class Mailer
     public function send_contract_notification($forum_user_id, $contract_id, $type)
     {
         $contract = SyndieContract::find($contract_id);
-        $forum_user = ForumUserModel::find($forum_user_id);
+        $forum_user = User::find($forum_user_id);
 
         $from_name = config('aurora.syndie_contract_from_name');
         $from_address = config('aurora.syndie_contract_from_address');
@@ -38,7 +38,7 @@ class Mailer
         //Get user E-Mail
         Mail::send('emails.contract_notification', ['forum_user' => $forum_user, 'contract' => $contract, 'type' => $type], function ($m) use ($forum_user, $contract, $from_name, $from_address) {
             $m->from($from_address, $from_name);
-            $m->to($forum_user->user_email, $forum_user->username);
+            $m->to($forum_user->email, $forum_user->username);
             $m->subject('Contract Update - ' . $contract->title);
         });
     }
@@ -46,7 +46,7 @@ class Mailer
     public function send_contract_new_mod($forum_user_id, $contract_id)
     {
         $contract = SyndieContract::find($contract_id);
-        $forum_user = ForumUserModel::find($forum_user_id);
+        $forum_user = User::find($forum_user_id);
 
         $from_name = config('aurora.syndie_contract_from_name');
         $from_address = config('aurora.syndie_contract_from_address');
@@ -54,7 +54,7 @@ class Mailer
         //Get user E-Mail
         Mail::send('emails.contract_new_mod', ['forum_user' => $forum_user, 'contract' => $contract], function ($m) use ($forum_user, $contract, $from_name, $from_address) {
             $m->from($from_address, $from_name);
-            $m->to($forum_user->user_email, $forum_user->username);
+            $m->to($forum_user->email, $forum_user->username);
             $m->subject('Contract Update - ' . $contract->title);
         });
     }

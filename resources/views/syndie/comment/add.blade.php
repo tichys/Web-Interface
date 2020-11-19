@@ -34,7 +34,7 @@
                         {{Form::token()}}
 
                         @if(Auth::user()->can('syndie_contract_moderate')){{-- Check if user is contract mod --}}
-                        {{Form::bsSelectList('type',array('ic'=>'IC Comment','ic-failrep'=> 'IC Failure Report','ic-comprep'=>'IC Completion Report','ic-cancel'=>'IC Cancel Contract','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM','mod-ooc'=>'MOD-OOC Message'))}}
+                        {{Form::bsSelectList('type',array('approve'=>'Approve the Contract','reject'=>'Reject the Contract','ic'=>'IC Comment','ic-failrep'=> 'IC Failure Report','ic-comprep'=>'IC Completion Report','ic-cancel'=>'IC Cancel Contract','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM','mod-ooc'=>'MOD-OOC Message'))}}
                         @elseif(Auth::user()->user_id == $contract->contractee_id ){{-- Check if user is contract owner --}}
                         {{Form::bsSelectList('type',array('ic'=>'IC Comment','ic-cancel'=>'IC Cancel Contract','ooc' => 'OOC Comment','mod-author'=>'MOD-Author PM'))}}
                         @else(){{-- Otherwise --}}
@@ -78,8 +78,8 @@
                         <div id="agents-select" class="form-group" hidden>
                             <label for="agents">Select participating agent ckeys:</label><br>
                             <select class="form-control agents" id="agents" multiple="multiple" name="agents[]" style="width: 100%">
-                                @if(Auth::user()->user_byond_linked == 1)
-                                    <option value="{{Auth::user()->getServerPlayerID()}}" selected="selected">{{Auth::user()->user_byond}}</option>
+                                @if(Auth::user()->byond_linked == True)
+                                    <option value="{{Auth::user()->getServerPlayerID()}}" selected="selected">{{Auth::user()->byond_key}}</option>
                                 @endif
                             </select>
                         </div>
@@ -234,6 +234,22 @@
                 $('label[for="comment"]').show();
             }
             else if(type == "mod-ooc")
+            {
+                $("#title").show();
+                $('label[for="title"]').show();
+
+                $("#comment").show();
+                $('label[for="comment"]').show();
+            }
+            else if(type == "approve")
+            {
+                $("#title").show();
+                $('label[for="title"]').show();
+
+                $("#comment").show();
+                $('label[for="comment"]').show();
+            }
+            else if(type == "reject")
             {
                 $("#title").show();
                 $('label[for="title"]').show();

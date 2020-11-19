@@ -18,7 +18,7 @@
 @extends('layouts.app')
 
 @section('styles')
-    <link href="{{ asset('/assets/css/datatables.bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('/DataTables/datatables.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -45,14 +45,18 @@
 @endsection
 
 @section('javascripts')
-    <script src="{{ asset('/assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/assets/js/datatables.bootstrap.js') }}"></script>
+
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         $(function() {
             $('#users-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('server.players.data') }}'
+                ajax: '{{ route('server.players.data') }}',
+                columns:[
+                    { data: 'id', name: 'id' },
+                    { data: 'ckey', name: 'ckey' },
+                ]
             });
         });
     </script>

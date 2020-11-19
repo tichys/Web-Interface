@@ -28,8 +28,8 @@
                 <table class="table">
                     <tbody>
                     <tr>
-                        <td><b>Path:</b></td>
-                        <td>{{$item->path}}</td>
+                        <td><b>Supplier:</b></td>
+                        <td>{{$item->supplier}}</td>
                     </tr>
                     <tr>
                         <td><b>Categories:</b></td>
@@ -61,6 +61,10 @@
                         <td><b>Groupable:</b></td>
                         <td>@if($item->groupable == 1) Yes @else No @endif()</td>
                     </tr>
+                    <tr>
+                        <td><b>Item Mul:</b></td>
+                        <td>{{$item->item_mul}}</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -75,8 +79,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Supplier Data</div>
-                <div class="panel-body">{{json_encode(json_decode($item->suppliers),JSON_PRETTY_PRINT)}}</div>
+                <div class="panel-heading">Item Data</div>
+                <div class="panel-body">{{json_encode(json_decode($item->items),JSON_PRETTY_PRINT)}}</div>
             </div>
         </div>
     </div>

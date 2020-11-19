@@ -31,7 +31,7 @@ class StatsController extends Controller
     {
         $this->middleware(function($request, $next){
             //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
-            if($request->user()->user_byond_linked == 0 && $request->user()->cannot('server_stats_show'))
+            if($request->user()->byond_linked == False && $request->user()->cannot('server_stats_show'))
             {
                 abort('403','Your byond account is not linked to your forum account.');
             }
@@ -50,9 +50,11 @@ class StatsController extends Controller
         return view("server.stats.index");
     }
 
-    public function round(Request $request)
+    public function round(Request $request, $game_id = null)
     {
-        $game_id = $request->input("game_id");
+        if($game_id == null)
+            $game_id = $request->input("game_id");
+
         //Query the db for the game id
         $game_details = \DB::connection('server')->table('feedback')->where('game_id',$game_id)->get();
         //Prep the stats for display
@@ -63,6 +65,17 @@ class StatsController extends Controller
 
         $details["game_details"] = $game_details;
         return view("server.stats.round",$details);
+    }
+
+    public function antag(Request $request, $game_id = null)
+    {
+        if($game_id == null)
+            $game_id = $request->input("game_id");
+
+        //Query the db for the game id
+        $antags = \DB::connection('server')->table('antag_log')->where('game_id',$game_id)->orderby('char_name','desc')->get();
+
+        return view("server.stats.antag",["antags"=>$antags, "game_id"=>$game_id]);
     }
 
     public function duration(Request $request)

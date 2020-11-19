@@ -20,14 +20,13 @@
 
 namespace App\Http\Controllers\Site;
 
-use App\Services\Auth\ForumUserModel;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Log;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\SitePermission;
-Use App\Models\SiteRole;
+use App\Models\SiteRole;
+Use App\Models\User;
 
 class RoleController extends Controller
 {
@@ -158,18 +157,19 @@ class RoleController extends Controller
 
     public function addUser(Request $request, $role_id)
     {
-        $this->validate($request, [
-            'user_id' => 'numeric'
-        ]);
         if ($request->user()->cannot('site_roles_edit')) {
             abort('403', 'You do not have the required permission');
         }
         $role = SiteRole::findOrFail($role_id);
-        $user = ForumUserModel::findOrFail($request->input('user_id'));
+
+        if(is_numeric($request->input('user_id')))
+            $user = User::findOrFail($request->input('user_id'));
+        else
+            $user = User::where('name',$request->input('user_id'))->first();
 
         $user->roles()->attach($role);
 
-        Log::notice('perm.site_role.add_user - Site Role User added',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->username_clean]);
+        Log::notice('perm.site_role.add_user - Site Role User added',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->name]);
 
         return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
     }
@@ -180,11 +180,11 @@ class RoleController extends Controller
             abort('403', 'You do not have the required permission');
         }
         $role = SiteRole::findOrFail($role_id);
-        $user = ForumUserModel::findOrFail($request->input('user'));
+        $user = User::findOrFail($request->input('user'));
 
         $user->roles()->detach($role);
 
-        Log::notice('perm.site_role.remove_user - Site Role User removed',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->username_clean]);
+        Log::notice('perm.site_role.remove_user - Site Role User removed',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->name]);
 
         return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2016 "Werner Maisl"
+ * Copyright (c) 2016-2018 "Werner Maisl"
  *
  * This file is part of Aurorastation-Wi
  * Aurorastation-Wi is free software: you can redistribute it and/or modify
@@ -19,42 +19,6 @@
  */
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Register the phpbb auth provider
-    |--------------------------------------------------------------------------
-    |
-    | If the phpbb auth provider should be registered.
-    | This might need to be disabled for the initial migration of the database
-    |
-    */
-    "registerPhpbbAuthProvider" => env('AURORA_REGISTER_PHPBB_AUTH_PROVIDER', TRUE),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Enable the remember me token
-    |--------------------------------------------------------------------------
-    |
-    | This is disabled by default, because it requires a additional
-    | column in the phpbb_users table on the forum database.
-    |
-    */
-    "enable_remember_me" => env('AURORA_ENABLE_REMEBER_ME', FALSE),
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Hash Passwords
-    |--------------------------------------------------------------------------
-    |
-    | This needs to be disabled when testing the auth on php 7
-    | Because phpbb 3.0 uses a hashing function that does not support php 7
-    |
-    */
-    "hash_password" => env('AURORA_HASH_PASSWORD', FALSE),
-
-
     /*
     |--------------------------------------------------------------------------
     | Token Expire Time
@@ -90,17 +54,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Log Logins to Debug log
-    |--------------------------------------------------------------------------
-    |
-    | If logins should be logged to the debug log
-    |
-    */
-    "log_logins" => env('LOG_LOGINS', FALSE),
-
-
-    /*
-    |--------------------------------------------------------------------------
     | Game Server Address
     |--------------------------------------------------------------------------
     |
@@ -131,31 +84,64 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Log Server Address
+    | Game Server Log Key
     |--------------------------------------------------------------------------
     |
-    | Auth Key for the Game Server
+    | Auth Key used by the GameServer to upload Logs
     |
     */
-    "logserver_address" => env('LOGSERVER_ADDRESS', NULL),
+    "gameserver_logkey" => env('GAMESERVER_LOGKEY', NULL),
 
     /*
     |--------------------------------------------------------------------------
-    | Github Hook Secret
+    | Group Mapping
     |--------------------------------------------------------------------------
     |
-    | The secret of the github hook to verify its integrity
+    | Maps a IPB Group to a WI Role
     |
     */
-    "github_hook_secret" => env('GITHUB_HOOK_SECRET', NULL),
+    "group_mappings" => [
+        4=>1,   //Forum: Forum Admins,              WI: administrators
+        18=>1,  //Forum: Primary Administrators     WI: administrators
+        8=>1,   //Forum: Secondary Administrators,  WI: administrators
+        6=>2,   //Forum: Moderators,        WI: moderators
+        13=>3,  //Forum: CCIA Agents,       WI: duty officers
+        16=>3,  //Forum: CCIA Leader,       WI: duty officers
+        11=>4,  //Forum: Whitelist Managers,WI: whitelist_managers
+        19=>5,  //Forum: Contract Managers, WI: contract_managers
+        10=>6,  //Forum: Lore Writers,      WI: lore_writers
+        17=>6,  //Forum: Lore Masters,      WI: lore_writers
+        9=>8,   //Forum: Developers,        WI: developers
+    ],
 
     /*
     |--------------------------------------------------------------------------
-    | Github Dev Branch
+    | Forum URL
     |--------------------------------------------------------------------------
     |
-    | Branch that Pull requests need to target for them to be inserted into the db
+    | The base URL of the forum
     |
     */
-    "github_dev_branch" => env('GITHUB_DEV_BRANCH', "development"),
+    "forum_url" => env('FORUM_URL',NULL),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Forum API Key
+    |--------------------------------------------------------------------------
+    |
+    | The API Key to use for the API of the forum
+    |
+    */
+    "forum_api_key" => env('FORUM_API_KEY',NULL),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Forum Byond Attribute ID
+    |--------------------------------------------------------------------------
+    |
+    | The ID of the custom attribute that holds the byond key
+    |
+    */
+    "forum_byond_attribute" => env('FORUM_BYOND_ATTRIBUTE',15),
+
 ];

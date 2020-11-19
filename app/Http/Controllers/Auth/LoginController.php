@@ -1,69 +1,117 @@
 <?php
 
-/**
- * Copyright (c) 2016 "Werner Maisl"
- *
- * This file is part of Aurorastation-Wi
- * Aurorastation-Wi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+
+use App\Models\User;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use App\Services\Auth\ForumUserModel;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Log;
+
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/user';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function login()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        return $this->redirectToProvider();
     }
 
-    public function username()
+    /**
+     * Redirect the user to the Aurora authentication page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function redirectToProvider()
     {
-        return 'username';
+        if (Auth::check()) {
+            return redirect("home");
+        }
+
+        return Socialite::driver('ipscommunity')->redirect();
     }
 
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleProviderCallback(Request $request)
+    {
+        $socialite_user = Socialite::driver('ipscommunity')->user();
+
+        try {
+            $linkedAccounts = $socialite_user->linkedAccounts;
+            $byond_key = $linkedAccounts[config('aurora.forum_byond_attribute')]['value'];
+        } catch (\ErrorException $e) {
+            $byond_key = null;
+        }
+
+        //Update or create the user details in the db
+        $user = User::updateOrCreate(
+            ['id' => $socialite_user->id],
+            [
+                'name' => $socialite_user->nickname,
+                'formatted_name' => $socialite_user->formattedName,
+                'email' => $socialite_user->email,
+                'password' => $socialite_user->token,
+                'refresh_token' => $socialite_user->refreshToken,
+                'photo_url' => $socialite_user->avatar,
+                'linked_accounts' => $socialite_user->linkedAccounts,
+                'primary_group' => $socialite_user->primaryGroup,
+                'secondary_groups' => $socialite_user->secondaryGroups,
+                'byond_key' => $byond_key,
+            ]
+        );
+
+        //Sync the groups
+        if ($user->sync_groups) {
+            //Get a complete list of IPB Group IDs
+            $ipb_groups = array();
+            foreach ($socialite_user->secondaryGroups as $ipb_group) {
+                $ipb_groups[] = $ipb_group["id"];
+            }
+            $ipb_groups[] = $socialite_user->primaryGroup["id"];
+
+            try {
+                $wi_roles_old = array_unique($user->roles()->get()->toArray());
+            } catch (\Exception $e){
+                $wi_roles_old = "";
+                Log::debug("login.wi_roles_old.invalid_format", ['user_id' => $user->id, 'wi_roles_old' => $user->roles()->get()]);
+            }
+
+            //Map the IPB Roles to WI roles
+            $wi_roles_new = array();
+            $groupmap = config("aurora.group_mappings");
+            if (is_array($groupmap)) {
+                foreach ($groupmap as $ipb_group => $wi_role) {
+                    //Check if the user has the IPB Group
+                    if (in_array($ipb_group, $ipb_groups)) {
+                        $wi_roles_new[] = $wi_role;
+                    }
+                }
+            }
+            $wi_roles_new = array_unique($wi_roles_new);
+
+            $user->roles()->sync($wi_roles_new);
+
+            Log::debug('login.permsync - Synchronizing permissions', ['user_id' => $user->id, 'wi_roles_old' => $wi_roles_old, 'wi_roles_new' => $wi_roles_new, 'ipb_groups' => $ipb_groups]);
+        }
+
+        //Login the user and remember them.
+        Auth::login($user, TRUE);
+
+        // If user was trying to auth, then we send them to finish authing.
+        if($request->session()->has('server_client_token')) {
+            return redirect()->route('server.login.begin');
+        }
+        return redirect('home');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect("/");
+    }
 }

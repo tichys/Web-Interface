@@ -23,7 +23,7 @@ namespace App\Services\Server;
 
 class Helpers
 {
-    public function sanitize_ckey($ckey)
+    public static function sanitize_ckey($ckey)
     {
         return strtolower(preg_replace("/[^A-Za-z0-9]/", '', $ckey));
     }

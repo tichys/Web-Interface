@@ -6,7 +6,4 @@ Homestead.json
 .env
 .idea
 _ide_helper.php
-config/aurora.php
-config/database.php
 public/phpinfo.php
-config/aurora.php

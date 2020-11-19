@@ -20,7 +20,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Services\Auth\ForumUserModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 
@@ -45,7 +44,7 @@ class SiteRole extends Model
         } else {
             $user_data = array();
             foreach ($users as $user) {
-                $user_data[] = ForumUserModel::findOrFail($user);
+                $user_data[] = User::findOrFail($user);
             }
             return Collection::make($user_data);
         }
